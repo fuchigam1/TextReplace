@@ -89,6 +89,18 @@ if ($searchType === 'replace') {
 			$(this).parent().children('h3').append(count + '件');
 		});
 
+		// 検索フィールドの結果テキストの検索語句にマークを付ける
+		$('.box-field-result-all').each(function(){
+			$(this).find('.box-field-result').find('.replace-before').each(function(){
+				var text = $(this).html();
+				var patternVal = $('#TextReplaceSearchPattern').val();
+				console.log(patternVal);
+				var pattern = new RegExp(patternVal, 'g');
+				console.log(pattern);
+				//$(this).html(text.replace(pattern, "<strong>$1</strong>"));
+			});
+		});
+
 	});
 </script>
 
@@ -219,16 +231,19 @@ if ($searchType === 'replace') {
 <?php endif ?>
 
 
+<?php // モデル毎のループ ?>
 <?php foreach ($datas as $modelName => $modelData): ?>
 <div class="box-model-result">
 <h3><?php echo $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) ?>（<?php echo $modelName; ?>）</h3>
 	<?php $fieldCount = 0; ?>
 	<div class="box-field-result-all">
+	<?php // フィールド毎のループ ?>
 	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
 		<?php $fieldCount = $fieldCount + count($fieldValue); ?>
 		<div class="box-field-result">
 		<table cellpadding="0" cellspacing="0" class="list-table form-table">
 			<tbody>
+				<?php // フィールド毎にヒットした結果のループ ?>
 				<?php foreach ($fieldValue as $num => $result): ?>
 				<tr>
 					<th class="col-head"<?php echo $rowspan; ?>>
@@ -241,13 +256,13 @@ if ($searchType === 'replace') {
 						</label>
 					</td>
 					<?php endif ?>
-					<td class="col-input" style="width: 100%;">
+					<td class="col-input replace-before" style="width: 100%;">
 						<?php echo $this->BcBaser->mark($query, h($result[$modelName][$fieldName])) ?>
 					</td>
 				</tr>
-				<?php if ($rowspan): ?>
+				<?php if ($judgeReplace): ?>
 				<tr>
-					<td class="col-input">
+					<td class="col-input replace-after">
 						<?php echo $this->BcBaser->mark($query, h($this->TextReplace->getReplaceData($result[$modelName][$fieldName]))) ?>
 					</td>
 				</tr>
