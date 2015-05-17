@@ -107,6 +107,7 @@ if ($searchType === 'replace') {
 				<div id="helptextSearchPattern" class="helptext">
 					<ul>
 						<li>検索する文字列を指定します。</li>
+						<li>文字列には正規表現を利用できます。「/〜/」は不要です。</li>
 					</ul>
 				</div>
 				<?php echo $this->BcForm->error('TextReplace.search') ?>
