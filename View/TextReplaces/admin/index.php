@@ -12,7 +12,7 @@ $this->TextReplace->replaceText = $replaceText;
 
 $rowspan = '';
 $judgeReplace = false;
-if ($searchType === 'replace') {
+if ($searchType === 'dryrun') {
 	$rowspan = ' rowspan="2"';
 	$judgeReplace = true;
 }
@@ -32,8 +32,8 @@ if ($searchType === 'replace') {
 		});
 
 		// 置換確認ボタン 実行時
-		$('#BtnTypeReplace').on('click', function(){
-			$('#TextReplaceType').val('replace');
+		$('#BtnTypeDryrun').on('click', function(){
+			$('#TextReplaceType').val('dryrun');
 //			if (!confirm('検索置換対象の指定内容で、検索語句を一括検索し、置換後の状態を表示します。\n宜しいですか？')) {
 //				return false;
 //			}
@@ -176,9 +176,9 @@ if ($searchType === 'replace') {
 	<?php //echo $this->BcForm->submit('検索', array('div' => false, 'id' => 'BtnTypeSearch', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageSearch')")) ?>
 	<?php echo $this->BcForm->submit('検索', array('div' => false, 'id' => 'BtnTypeSearch', 'class' => 'button')) ?>
 
-	<?php $confirmMessageReplace = '検索置換対象の指定内容で、検索語句を一括検索し、置換後の状態を表示します。\n宜しいですか？' ?>
-	<?php //echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeReplace', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageReplace')")) ?>
-	<?php echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeReplace', 'class' => 'button')) ?>
+	<?php $confirmMessageDryrun = '検索置換対象の指定内容で、検索語句を一括検索し、置換後の状態を表示します。\n宜しいですか？' ?>
+	<?php //echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageDryrun')")) ?>
+	<?php echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button')) ?>
 </div>
 <?php //echo $this->BcForm->end() ?>
 

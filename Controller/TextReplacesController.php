@@ -141,10 +141,11 @@ class TextReplacesController extends BcPluginAppController
 			
 			// 実行ボタン別に処理を行う
 			switch ($this->request->data['TextReplace']['type']) {
-				case 'search':
-				case 'replace':
 				case 'search-and-replace':
 					$this->search_and_replace($this->request->data, $searchText, $replaceText);
+					break;
+				case 'search':
+				case 'dryrun':
 				default:
 					foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
 						$exploded = explode('.', $value);
