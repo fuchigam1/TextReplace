@@ -31,7 +31,6 @@ class TextReplace extends BcPluginAppModel {
  * @return array 初期値データ
  */
 	public function getDefaultValue() {
-		$data = array();
 		$data = array(
 			$this->name => array(
 				'choice' => 0,

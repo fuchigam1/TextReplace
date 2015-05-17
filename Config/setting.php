@@ -31,6 +31,14 @@ $config['BcApp.adminNavi.text_replace'] = array(
 $config['TextReplace'] = array(
 	// フィールドタイプ種別
 	'target' => array(
+//		設定用雛形
+//		'PLUGIN_NAME.MODEL_NAME' => array(
+//			'name' => 'MODEL_NAME',
+//			'title' => 'MODEL_TITLE',
+//			'fields' => array(
+//				'MODEL_NAME.FIELD_NAME' => 'FIELD_TITLE',
+//				),
+//		),
 		'Page' => array(
 			'name' => 'Page',
 			'title' => '固定ページ',
@@ -52,19 +60,6 @@ $config['TextReplace'] = array(
 				'BlogPost.detail_draft' => '記事詳細下書き',
 			),
 		),
-//		'固定ページ（Page）' => array(
-//			'Page.name' => 'ページタイトル',
-//			'Page.description' => '説明文',
-//			'Page.contents' => '記事本文',
-//			'Page.draft' => '記事本文下書き',
-//		),
-//		'ブログ記事（Blog.BlogPost）' => array(
-//			'BlogPost.name' => 'タイトル',
-//			'BlogPost.content' => '記事概要',
-//			'BlogPost.detail' => '記事詳細',
-//			'BlogPost.content_draft' => '記事概要下書き',
-//			'BlogPost.detail_draft' => '記事詳細下書き',
-//		),
 	),
 );
 /**
