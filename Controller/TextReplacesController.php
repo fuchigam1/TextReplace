@@ -158,7 +158,9 @@ class TextReplacesController extends BcPluginAppController
 					}
 					break;
 			}
-			
+			if (!$countResult) {
+				$this->setMessage('該当する検索語句がありませんでした。');
+			}
 		}
 		
 		$query = array();

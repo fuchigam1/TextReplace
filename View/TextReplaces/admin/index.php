@@ -257,7 +257,7 @@ if ($searchType === 'replace') {
 		</table>
 		</div>
 	<?php endforeach ?>
-		<span class="field-count"><?php echo $fieldCount; ?></span>
+		<span class="field-count display-none"><?php echo $fieldCount; ?></span>
 	</div>
 </div>
 <?php endforeach ?>
