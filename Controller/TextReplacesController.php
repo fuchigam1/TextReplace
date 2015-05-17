@@ -79,6 +79,22 @@ class TextReplacesController extends BcPluginAppController
 	public $errorFieldInfo = '';
 	
 	/**
+	 * 設定ファイルの設定値
+	 * 
+	 * @var array
+	 */
+	public $pluginSetting = array();
+	
+	/**
+	 * beforeFilter
+	 * 
+	 */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->pluginSetting = Configure::read('TextReplace.target');
+	}
+	
+	/**
 	 * [ADMIN] 検索、置換確認
 	 * 
 	 */
@@ -87,7 +103,7 @@ class TextReplacesController extends BcPluginAppController
 		$this->help = 'text_replaces_index';
 		$this->pageTitle = 'テキスト置換処理';
 		
-		$setting = Configure::read('TextReplace.target');
+		$setting = $this->pluginSetting;
 		$useModel = TextReplaceUtil::getUseModel($setting);
 		$this->uses = Hash::merge($this->uses, $useModel);
 		
