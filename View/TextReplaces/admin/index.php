@@ -6,18 +6,15 @@
  * @author			arata
  * @package			TextReplace
  * @license			MIT
- * 
- * @TODO 置換確認はDryRunにする
- * @TODO 正規表現はチェックボックスで選択できるようにする
- * @TODO 置換保存したデータはログに吐き出すようにする
- * @TODO 検索置換対象の大項目をクリックで、大項目に含まれるチェックボックスをON・OFFできる
  */
 $this->TextReplace->searchText = $searchText;
 $this->TextReplace->replaceText = $replaceText;
 
 $rowspan = '';
+$judgeReplace = false;
 if ($searchType === 'replace') {
 	$rowspan = ' rowspan="2"';
+	$judgeReplace = true;
 }
 ?>
 <script type="text/javascript">
@@ -33,6 +30,7 @@ if ($searchType === 'replace') {
 //				return false;
 //			}
 		});
+
 		// 置換確認ボタン 実行時
 		$('#BtnTypeReplace').on('click', function(){
 			$('#TextReplaceType').val('replace');
@@ -40,6 +38,7 @@ if ($searchType === 'replace') {
 //				return false;
 //			}
 		});
+
 		// 検索＆保存ボタン 実行時
 		$('#BtnTypeSearchAndReplace').on('click', function(){
 			$('#TextReplaceType').val('search-and-replace');
@@ -47,7 +46,8 @@ if ($searchType === 'replace') {
 				return false;
 			}
 		});
-		
+
+		// 検索置換対象のチェックボックスを全てチェックする
 		$('#TextReplaceCheckAll').on('click', function(){
 			if ($(this).prop('checked')) {
 				$('.target-check input[type=checkbox]').prop('checked', true);
@@ -55,10 +55,31 @@ if ($searchType === 'replace') {
 				$('.target-check input[type=checkbox]').prop('checked', false);
 			}
 		});
-		
 //		$('#TextReplaceCheckAll').children('fieldset legend').on('click', function(){
 //			$('#TextReplaceCheckAll').children('fieldset').children('.checkbox input[type=checkbox]').each();
 //		});
+
+		// 検索結果一覧の見方を表示する
+		$('#TextReplaceInsight').hide();
+		$('#helpTextReplaceInsight').on('click', function(){
+			$('#TextReplaceInsight').slideToggle();
+		});
+
+		// モデル別の検索結果を開閉する
+		$('.box-model-result h3').on('click', function(){
+			console.log($(this).next());
+			$(this).next().slideToggle();
+		});
+
+		// 置換対象指定チェックボックスを全てチェックする
+		$('#TextReplaceCheckBoxModelResult').on('click', function(){
+			if ($(this).prop('checked')) {
+				$('.box-model-result input[type=checkbox]').prop('checked', true);
+			} else {
+				$('.box-model-result input[type=checkbox]').prop('checked', false);
+			}
+		});
+
 	});
 </script>
 
@@ -116,7 +137,7 @@ if ($searchType === 'replace') {
 		<tr>
 			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_all', '全て選択') ?></th>
 			<td class="col-input">
-				<?php echo $this->BcForm->input('TextReplace.check_all', array('type' => 'checkbox', 'label' => '全てにチェックを入れる')); ?>
+				<?php echo $this->BcForm->input('TextReplace.check_all', array('type' => 'checkbox', 'label' => '検索置換対象全てにチェックを入れる')); ?>
 				<?php echo $this->BcForm->error('TextReplace.check_all') ?>
 			</td>
 		</tr>
@@ -141,37 +162,91 @@ if ($searchType === 'replace') {
 <?php if ($datas): ?>
 <?php //echo $this->BcForm->create('TextReplace', array('url' => array('action' => 'batch_replace'))) ?>
 
-<h2>実行結果一覧</h2>
-<?php foreach ($datas as $modelName => $modelData): ?>
-<h3><?php echo $modelName ?></h3>
-	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
+<h2 id="helpTextReplaceInsight">実行結果一覧（<?php echo $countResult ?>件）
+	&nbsp;<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => '', 'class' => 'btn', 'alt' => 'ヘルプ')) ?>
+</h2>
+
+<?php if ($judgeReplace): ?>
+<table cellpadding="0" cellspacing="0" class="form-table section">
+	<tbody>
+		<tr>
+			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_box_model_result', '全て選択') ?></th>
+			<td class="col-input">
+				<?php echo $this->BcForm->input('TextReplace.check_box_model_result', array('type' => 'checkbox', 'label' => '置換対象全てにチェックを入れる')); ?>
+				<?php echo $this->BcForm->error('TextReplace.check_box_model_result') ?>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<?php endif ?>
+
+<div id="TextReplaceInsight">
+	<h3>コンテンツ（モデル名）・・・クリックすると結果を開閉できます。</h3>
 	<table cellpadding="0" cellspacing="0" class="list-table form-table">
 		<tbody>
-			<?php foreach ($fieldValue as $num => $result): ?>
-			<tr>
-				<th class="col-head"<?php echo $rowspan ?>>
-					<?php echo $fieldName ?>（ID:<?php echo $result[$modelName]['id'] ?>）
-				</th>
-				<td class="col-input" nowrap="nowrap"<?php echo $rowspan ?>>
-					<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
-						<input type="checkbox" name="data[<?php echo $modelName ?>][<?php echo $fieldName ?>][]" value="<?php echo $result[$modelName]['id'] ?>" id="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
-					</label>
-				</td>
-				<td class="col-input" style="width: 100%;">
-					<?php echo $this->BcBaser->mark($query, h($result[$modelName][$fieldName])) ?>
-				</td>
-			</tr>
-			<?php if ($rowspan): ?>
-			<tr>
-				<td class="col-input">
-					<?php echo $this->BcBaser->mark($query, h($this->TextReplace->getReplaceData($result[$modelName][$fieldName]))) ?>
-				</td>
-			</tr>
-			<?php endif ?>
-			<?php endforeach ?>
+				<tr>
+					<th class="col-head"<?php echo $rowspan ?>>
+						フィールド名（ID:モデルID）
+					</th>
+					<?php if ($judgeReplace): ?>
+					<td class="col-input" nowrap="nowrap"<?php echo $rowspan ?>>
+						置換対象<br />チェック
+					</td>
+					<?php endif ?>
+					<td class="col-input" style="width: 100%;">
+						検索結果
+					</td>
+				</tr>
+				<?php if ($rowspan): ?>
+				<tr>
+					<td class="col-input">
+						検索置換結果
+					</td>
+				</tr>
+				<?php endif ?>
 		</tbody>
 	</table>
+</div>
+
+
+<?php foreach ($datas as $modelName => $modelData): ?>
+<div class="box-model-result">
+<h3><?php echo $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) ?>（<?php echo $modelName ?>）</h3>
+	<div class="box-field-result-all">
+	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
+		<div class="box-field-result">
+		<table cellpadding="0" cellspacing="0" class="list-table form-table">
+			<tbody>
+				<?php foreach ($fieldValue as $num => $result): ?>
+				<tr>
+					<th class="col-head"<?php echo $rowspan ?>>
+						<?php echo $fieldName ?>（ID:<?php echo $result[$modelName]['id'] ?>）
+					</th>
+					<?php if ($judgeReplace): ?>
+					<td class="col-input" nowrap="nowrap"<?php echo $rowspan ?>>
+						<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
+							<input type="checkbox" name="data[<?php echo $modelName ?>][<?php echo $fieldName ?>][]" value="<?php echo $result[$modelName]['id'] ?>" id="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
+						</label>
+					</td>
+					<?php endif ?>
+					<td class="col-input" style="width: 100%;">
+						<?php echo $this->BcBaser->mark($query, h($result[$modelName][$fieldName])) ?>
+					</td>
+				</tr>
+				<?php if ($rowspan): ?>
+				<tr>
+					<td class="col-input">
+						<?php echo $this->BcBaser->mark($query, h($this->TextReplace->getReplaceData($result[$modelName][$fieldName]))) ?>
+					</td>
+				</tr>
+				<?php endif ?>
+				<?php endforeach ?>
+			</tbody>
+		</table>
+		</div>
 	<?php endforeach ?>
+	</div>
+</div>
 <?php endforeach ?>
 
 <div class="submit">

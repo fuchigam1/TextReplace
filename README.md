@@ -26,3 +26,10 @@ TextReplaceプラグインは、固定ページとブログ記事の任意のキ
 - [http://basercms.net/](http://basercms.net/)
 - [http://wiki.basercms.net/](http://wiki.basercms.net/)
 - [http://cakephp.jp](http://cakephp.jp)
+
+
+ * @TODO 置換確認はDryRunにする
+ * @TODO 正規表現はチェックボックスで選択できるようにする
+ * @TODO 置換保存したデータはログに吐き出すようにする
+ * @TODO 検索置換対象の大項目をクリックで、大項目に含まれるチェックボックスをON・OFFできる
+ * @TODO 検索数にリミット選択を設ける
