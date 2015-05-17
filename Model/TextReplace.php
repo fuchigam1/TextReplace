@@ -9,7 +9,25 @@
  */
 class TextReplace extends BcPluginAppModel
 {
+	/**
+	 * ModelName
+	 * 
+	 * @var string
+	 */
 	public $name = 'TextReplace';
+	
+	/**
+	 * PluginName
+	 * 
+	 * @var string
+	 */
+	public $plugin = 'TextReplace';
+	
+	/**
+	 * table
+	 * 
+	 * @var string or boolean
+	 */
 	public $useTable = false;
 	
 	/**
