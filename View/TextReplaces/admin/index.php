@@ -16,11 +16,8 @@ $this->TextReplace->searchText = $searchText;
 $this->TextReplace->replaceText = $replaceText;
 
 $rowspan = '';
-
-if (isset($this->request->data['TextReplace'])) {
-	if ($this->request->data['TextReplace']['type'] == 'replace') {
-		$rowspan = ' rowspan="2"';
-	}
+if ($searchType === 'replace') {
+	$rowspan = ' rowspan="2"';
 }
 ?>
 <script type="text/javascript">

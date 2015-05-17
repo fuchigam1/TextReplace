@@ -102,6 +102,7 @@ class TextReplacesController extends BcPluginAppController {
 		$searchText = '';
 		$replaceText = '';
 		$searchTarget = array();
+		$searchType = '';
 		
 		if ($this->request->data) {
 			if (!$this->request->data['TextReplace']['search_pattern']) {
@@ -115,6 +116,7 @@ class TextReplacesController extends BcPluginAppController {
 			
 			$searchText = $this->request->data['TextReplace']['search_pattern'];	// 検索語句
 			$replaceText = $this->request->data['TextReplace']['replace_pattern'];	// 置換後
+			$searchType = $this->request->data['TextReplace']['type'];
 			
 			// 実行ボタン別に処理を行う
 			switch ($this->request->data['TextReplace']['type']) {
@@ -160,7 +162,7 @@ class TextReplacesController extends BcPluginAppController {
 			$query = array($searchText, $replaceText);
 		}
 		
-		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget'));
+		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType'));
 		$this->set('datas', $datas);
 	}
 	
