@@ -72,6 +72,9 @@ if ($searchType === 'replace') {
 		});
 
 		// 置換対象指定チェックボックスを全てチェックする
+		if ($('#TextReplaceCheckBoxModelResult').prop('checked')) {
+			$('.box-model-result input[type=checkbox]').prop('checked', true);
+		}
 		$('#TextReplaceCheckBoxModelResult').on('click', function(){
 			if ($(this).prop('checked')) {
 				$('.box-model-result input[type=checkbox]').prop('checked', true);
@@ -166,20 +169,6 @@ if ($searchType === 'replace') {
 	&nbsp;<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => '', 'class' => 'btn', 'alt' => 'ヘルプ')) ?>
 </h2>
 
-<?php if ($judgeReplace): ?>
-<table cellpadding="0" cellspacing="0" class="form-table section">
-	<tbody>
-		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_box_model_result', '全て選択') ?></th>
-			<td class="col-input">
-				<?php echo $this->BcForm->input('TextReplace.check_box_model_result', array('type' => 'checkbox', 'label' => '置換対象全てにチェックを入れる')); ?>
-				<?php echo $this->BcForm->error('TextReplace.check_box_model_result') ?>
-			</td>
-		</tr>
-	</tbody>
-</table>
-<?php endif ?>
-
 <div id="TextReplaceInsight">
 	<h3>コンテンツ（モデル名）・・・クリックすると結果を開閉できます。</h3>
 	<table cellpadding="0" cellspacing="0" class="list-table form-table">
@@ -207,6 +196,20 @@ if ($searchType === 'replace') {
 		</tbody>
 	</table>
 </div>
+
+<?php if ($judgeReplace): ?>
+<table cellpadding="0" cellspacing="0" class="form-table section">
+	<tbody>
+		<tr>
+			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_box_model_result', '全て選択') ?></th>
+			<td class="col-input">
+				<?php echo $this->BcForm->input('TextReplace.check_box_model_result', array('type' => 'checkbox', 'label' => '置換対象全てにチェックを入れる')); ?>
+				<?php echo $this->BcForm->error('TextReplace.check_box_model_result') ?>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<?php endif ?>
 
 
 <?php foreach ($datas as $modelName => $modelData): ?>
