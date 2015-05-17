@@ -65,7 +65,13 @@ class TextReplaceHelper extends AppHelper
 	 */
 	public function getReplaceData($data = '')
 	{
-		return preg_replace('/'. $this->searchText .'/', $this->replaceText, $data);
+		$result = '';
+		if ($this->request->data['TextReplace']['search_regex']) {
+			$result = preg_replace($this->searchText, $this->replaceText, $data);
+		} else {
+			$result = str_replace($this->searchText, $this->replaceText, $data);
+		}
+		return $result;
 	}
 	
 	/**

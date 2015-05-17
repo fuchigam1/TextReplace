@@ -94,9 +94,9 @@ if ($searchType === 'replace') {
 			$(this).find('.box-field-result').find('.replace-before').each(function(){
 				var text = $(this).html();
 				var patternVal = $('#TextReplaceSearchPattern').val();
-				console.log(patternVal);
-				var pattern = new RegExp(patternVal, 'g');
-				console.log(pattern);
+				//console.log(patternVal);
+				var pattern = new RegExp(patternVal);
+				//console.log(pattern);
 				//$(this).html(text.replace(pattern, "<strong>$1</strong>"));
 			});
 		});
@@ -125,10 +125,13 @@ if ($searchType === 'replace') {
 				<div id="helptextSearchPattern" class="helptext">
 					<ul>
 						<li>検索する文字列を指定します。</li>
-						<li>文字列には正規表現を利用できます。「/〜/」は不要です。</li>
+						<li>正規表現を利用する際には、文字列両端にデリミタ「/〜/」を付けてください。</li>
 					</ul>
 				</div>
 				<?php echo $this->BcForm->error('TextReplace.search') ?>
+				<br />
+				<?php echo $this->BcForm->input('TextReplace.search_regex', array('type' => 'checkbox', 'label' => '正規表現を利用する（デリミタ「/〜/」を付けてください）')); ?>
+				<?php echo $this->BcForm->error('TextReplace.search_regex') ?>
 			</td>
 		</tr>
 		<tr>

@@ -22,6 +22,7 @@ class TextReplacesController extends BcPluginAppController
 	 * @var array
 	 */
 	public $uses = array(
+//		'TextReplace',
 //		'Page',
 //		'Blog.BlogPost'
 	);
@@ -116,7 +117,7 @@ class TextReplacesController extends BcPluginAppController
 			$this->setMessage($this->errorFieldInfo, true);
 		}
 		
-		$datas = array();
+		$datas = array();	// 検索結果一覧のデータ
 		$searchText = '';
 		$replaceText = '';
 		$searchTarget = array();
@@ -134,6 +135,7 @@ class TextReplacesController extends BcPluginAppController
 			
 			$searchText = $this->request->data['TextReplace']['search_pattern'];	// 検索語句
 			$replaceText = $this->request->data['TextReplace']['replace_pattern'];	// 置換後
+			$useRegex = $this->request->data['TextReplace']['search_regex'];		// 置換後
 			$searchType = $this->request->data['TextReplace']['type'];				// 検索タイプ
 			$countResult = 0;	// 検索結果数
 			
@@ -150,25 +152,46 @@ class TextReplacesController extends BcPluginAppController
 							'modelName' => $exploded[0],
 							'field' => $exploded[1],
 						);
-						// $conditions = array($value .' LIKE' => "%{$searchText}%");
+						
+						$conditions = array();
 						// 'conditions' => array($value .' REGEXP' => "^$param$|^$param,"),
-						$conditions = array($value .' REGEXP' => "$searchText");
-						// $conditions = $this->createSearchConditions($this->request->data);
-						if ($conditions) {
-							$result = $this->{$searchTarget['modelName']}->find('all', array(
-								'fields' => array('id', $searchTarget['field']),
-								'conditions' => $conditions,
-								'order' => '',
-								'recursive' => -1,
-							));
-							if ($result) {
-								// 検索語句を置換後の文字列で置換する処理
-//								foreach ($result as $num => $resultData) {
-//									$result[$num][$searchTarget['modelName']][$searchTarget['field']]
-//									= preg_replace('/'. $searchText .'/', $replaceText, $result[$num][$searchTarget['modelName']][$searchTarget['field']]);
-//								}
-								$datas[$searchTarget['modelName']][$searchTarget['field']] = $result;
-								$countResult = $countResult + count($result);
+						// $conditions = array($value .' REGEXP' => "$searchText");
+						if (!$useRegex) {
+							$conditions = array($value .' LIKE' => "%{$searchText}%");
+						}
+						
+						$allData = $this->{$searchTarget['modelName']}->find('all', array(
+							'fields' => array('id', $searchTarget['field']),
+							'conditions' => $conditions,
+							'order' => '',
+							'recursive' => -1,
+						));
+						
+						if ($allData) {
+							if (!$useRegex) {
+								$datas[$searchTarget['modelName']][$searchTarget['field']] = $allData;
+								$countResult = $countResult + count($allData);
+							} else {
+								$result = array();
+								if ($allData) {
+									foreach ($allData as $resultKey => $resultValue) {
+										if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
+											$allData[$resultKey][$searchTarget['modelName']][$searchTarget['field']] = preg_replace_callback(
+													$searchText,
+													array($this, 'replaceHitString'),
+													$resultValue[$searchTarget['modelName']][$searchTarget['field']]
+											);
+											$result[] = $allData[$resultKey];
+										}
+//										if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
+//											$result[] = $allData[$resultKey];
+//										}
+									}
+								}
+								if ($result) {
+									$datas[$searchTarget['modelName']][$searchTarget['field']] = $result;
+									$countResult = $countResult + count($result);
+								}
 							}
 						}
 					}
@@ -188,6 +211,19 @@ class TextReplacesController extends BcPluginAppController
 		$this->set('datas', $datas);
 	}
 	
+	/**
+	 * callback
+	 * 
+	 * @param array $matches
+	 * @return string
+	 */
+	private function replaceHitString($matches) {
+		foreach ($matches as $key => $value) {
+			$matches[$key] = str_replace($value, ''. $value .'', $value);
+		}
+		return $matches[$key];
+	}
+
 	/**
 	 * [ADMIN] 検索、置換確認
 	 * 
