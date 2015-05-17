@@ -83,6 +83,12 @@ if ($searchType === 'replace') {
 			}
 		});
 
+		// モデル別の検索結果数を表示する
+		$('.box-field-result-all').each(function(){
+			var count = $(this).find('.field-count').html();
+			$(this).parent().children('h3').append(count + '件');
+		});
+
 	});
 </script>
 
@@ -166,7 +172,7 @@ if ($searchType === 'replace') {
 <?php if ($datas): ?>
 <?php //echo $this->BcForm->create('TextReplace', array('url' => array('action' => 'batch_replace'))) ?>
 
-<h2 id="helpTextReplaceInsight">実行結果一覧（<?php echo $countResult ?>件）
+<h2 id="helpTextReplaceInsight">実行結果一覧（<?php echo $countResult; ?>件）
 	&nbsp;<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => '', 'class' => 'btn', 'alt' => 'ヘルプ')) ?>
 </h2>
 
@@ -175,11 +181,11 @@ if ($searchType === 'replace') {
 	<table cellpadding="0" cellspacing="0" class="list-table form-table">
 		<tbody>
 				<tr>
-					<th class="col-head"<?php echo $rowspan ?>>
+					<th class="col-head"<?php echo $rowspan; ?>>
 						フィールド名（ID:モデルID）
 					</th>
 					<?php if ($judgeReplace): ?>
-					<td class="col-input" nowrap="nowrap"<?php echo $rowspan ?>>
+					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
 						置換対象<br />チェック
 					</td>
 					<?php endif ?>
@@ -215,21 +221,23 @@ if ($searchType === 'replace') {
 
 <?php foreach ($datas as $modelName => $modelData): ?>
 <div class="box-model-result">
-<h3><?php echo $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) ?>（<?php echo $modelName ?>）</h3>
+<h3><?php echo $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) ?>（<?php echo $modelName; ?>）</h3>
+	<?php $fieldCount = 0; ?>
 	<div class="box-field-result-all">
 	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
+		<?php $fieldCount = $fieldCount + count($fieldValue); ?>
 		<div class="box-field-result">
 		<table cellpadding="0" cellspacing="0" class="list-table form-table">
 			<tbody>
 				<?php foreach ($fieldValue as $num => $result): ?>
 				<tr>
-					<th class="col-head"<?php echo $rowspan ?>>
-						<?php echo $fieldName ?>（ID:<?php echo $result[$modelName]['id'] ?>）
+					<th class="col-head"<?php echo $rowspan; ?>>
+						<?php echo $fieldName; ?>（ID:<?php echo $result[$modelName]['id']; ?>）
 					</th>
 					<?php if ($judgeReplace): ?>
-					<td class="col-input" nowrap="nowrap"<?php echo $rowspan ?>>
-						<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
-							<input type="checkbox" name="data[<?php echo $modelName ?>][<?php echo $fieldName ?>][]" value="<?php echo $result[$modelName]['id'] ?>" id="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
+					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
+						<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id']; ?>">
+							<input type="checkbox" name="data[<?php echo $modelName; ?>][<?php echo $fieldName; ?>][]" value="<?php echo $result[$modelName]['id']; ?>" id="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id']; ?>">
 						</label>
 					</td>
 					<?php endif ?>
@@ -249,12 +257,13 @@ if ($searchType === 'replace') {
 		</table>
 		</div>
 	<?php endforeach ?>
+		<span class="field-count"><?php echo $fieldCount; ?></span>
 	</div>
 </div>
 <?php endforeach ?>
 
 <div class="submit">
-	<?php $confirmMessageSearchAndReplace = '実行前に必ずDBのバックアップを取ってください。\n検索語句を置換後の内容で一括変換します。\n宜しいですか？' ?>
+	<?php $confirmMessageSearchAndReplace = '実行前に必ずDBのバックアップを取ってください。\n検索語句を置換後の内容で一括変換します。\n宜しいですか？'; ?>
 	<?php //echo $this->BcForm->submit('置換＆保存', array('div' => false, 'id' => 'BtnTypeSearchAndReplace', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageSearchAndReplace')")) ?>
 	<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'id' => 'BtnTypeSearchAndReplace', 'class' => 'button')) ?>
 </div>
