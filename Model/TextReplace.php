@@ -7,15 +7,16 @@
  * @package			TextReplace
  * @license			MIT
  */
-class TextReplace extends BcPluginAppModel {
+class TextReplace extends BcPluginAppModel
+{
 	public $name = 'TextReplace';
 	public $useTable = false;
 	
-/**
- * Validation
- *
- * @var array
- */
+	/**
+	 * Validation
+	 *
+	 * @var array
+	 */
 	public $validate = array(
 		'search_pattern' => array(
 			'notEmpty' => array(
@@ -25,12 +26,13 @@ class TextReplace extends BcPluginAppModel {
 		)
 	);
 	
-/**
- * フォームの初期値を設定する
- * 
- * @return array 初期値データ
- */
-	public function getDefaultValue() {
+	/**
+	 * フォームの初期値を設定する
+	 * 
+	 * @return array 初期値データ
+	 */
+	public function getDefaultValue()
+	{
 		$data = array(
 			$this->name => array(
 				'choice' => 0,

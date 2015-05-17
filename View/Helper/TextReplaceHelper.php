@@ -7,60 +7,64 @@
  * @package			TextReplace
  * @license			MIT
  */
-class TextReplaceHelper extends AppHelper {
-/**
- * ヘルパー
- *
- */
+class TextReplaceHelper extends AppHelper
+{
+	/**
+	 * ヘルパー
+	 *
+	 */
 	public $helpers = array('BcBaser');
 	
-/**
- * 検索語句
- * 
- * @var string
- */
+	/**
+	 * 検索語句
+	 * 
+	 * @var string
+	 */
 	public $searchText = '';
 	
-/**
- * 置換後
- * 
- * @var string
- */
+	/**
+	 * 置換後
+	 * 
+	 * @var string
+	 */
 	public $replaceText = '';
 	
-/**
- * 設定ファイルの設定値
- * 
- * @var array
- */
+	/**
+	 * 設定ファイルの設定値
+	 * 
+	 * @var array
+	 */
 	public static $pluginSetting = array();
 	
-/**
- * constructor
- * 
- * @param \View $View
- * @param array $settings
- */
-	function __construct(\View $View, $settings = array()) {
+	/**
+	 * constructor
+	 * 
+	 * @param \View $View
+	 * @param array $settings
+	 */
+	function __construct(\View $View, $settings = array())
+	{
 		parent::__construct($View, $settings);
 		self::setSelfValue();
 	}
 	
-/**
- * 初期設定
- * 
- */
-	public static function setSelfValue(){
+	/**
+	 * 初期設定
+	 * 
+	 */
+	public static function setSelfValue()
+	{
 		self::$pluginSetting = Configure::read('TextReplace.target');
 	}
 	
-/**
- * 検索語句を置換後で置換する
- * 
- * @param string $data
- * @return string
- */
-	public function getReplaceData($data = '') {
+	/**
+	 * 検索語句を置換後で置換する
+	 * 
+	 * @param string $data
+	 * @return string
+	 */
+	public function getReplaceData($data = '')
+	{
 		return preg_replace('/'. $this->searchText .'/', $this->replaceText, $data);
 	}
 	

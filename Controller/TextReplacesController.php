@@ -7,81 +7,83 @@
  * @package			TextReplace
  * @license			MIT
  */
-class TextReplacesController extends BcPluginAppController {
-/**
- * ControllerName
- * 
- * @var string
- */
+class TextReplacesController extends BcPluginAppController
+{
+	/**
+	 * ControllerName
+	 * 
+	 * @var string
+	 */
 	public $name = 'TextReplaces';
 	
-/**
- * Model
- * 
- * @var array
- */
+	/**
+	 * Model
+	 * 
+	 * @var array
+	 */
 	public $uses = array(
 //		'Page',
 //		'Blog.BlogPost'
 	);
 	
-/**
- * Helpers
- * 
- * @var array
- */
+	/**
+	 * Helpers
+	 * 
+	 * @var array
+	 */
 	public $helpers = array('BcForm');
 	
-/**
- * Components
- * 
- * @var array
- */
+	/**
+	 * Components
+	 * 
+	 * @var array
+	 */
 	public $components = array('BcAuth', 'Cookie', 'BcAuthConfigure');
 	
-/**
- * サブメニューエレメント
- *
- * @var array
- */
+	/**
+	 * サブメニューエレメント
+	 *
+	 * @var array
+	 */
 	public $subMenuElements = array('text_replace');
 	
-/**
- * ぱんくずナビ
- *
- * @var string
- */
+	/**
+	 * ぱんくずナビ
+	 *
+	 * @var string
+	 */
 	public $crumbs = array(
 		array('name' => 'プラグイン管理', 'url' => array('plugin' => '', 'controller' => 'plugins', 'action' => 'index')),
 		array('name' => 'テキスト置換プラグイン', 'url' => array('plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'))
 	);
 	
-/**
- * 管理画面タイトル
- *
- * @var string
- */
+	/**
+	 * 管理画面タイトル
+	 *
+	 * @var string
+	 */
 	public $adminTitle = 'テキスト置換';
 	
-/**
- * 設定ファイルのフィールド指定の誤り判定
- * 
- * @var boolean
- */
+	/**
+	 * 設定ファイルのフィールド指定の誤り判定
+	 * 
+	 * @var boolean
+	 */
 	public $judgeFieldError = false;
 	
-/**
- * 設定ファイルのフィールド指定に誤りがある場合のメッセージ
- * 
- * @var string
- */
+	/**
+	 * 設定ファイルのフィールド指定に誤りがある場合のメッセージ
+	 * 
+	 * @var string
+	 */
 	public $errorFieldInfo = '';
 	
-/**
- * [ADMIN] 検索、置換確認
- * 
- */
-	public function admin_index() {
+	/**
+	 * [ADMIN] 検索、置換確認
+	 * 
+	 */
+	public function admin_index()
+	{
 		$this->help = 'text_replaces_index';
 		$this->pageTitle = 'テキスト置換処理';
 		
@@ -168,12 +170,12 @@ class TextReplacesController extends BcPluginAppController {
 		$this->set('datas', $datas);
 	}
 	
-/**
- * [ADMIN] 検索、置換確認
- * 
- */
-	protected function search_and_replace($data, $searchText = '', $replaceText = '') {
-		
+	/**
+	 * [ADMIN] 検索、置換確認
+	 * 
+	 */
+	protected function search_and_replace($data, $searchText = '', $replaceText = '')
+	{
 		foreach ($data['TextReplace']['replace_target'] as $value) {
 			$exploded = explode('.', $value);
 			$searchTarget = array(
@@ -204,13 +206,14 @@ class TextReplacesController extends BcPluginAppController {
 		
 	}
 	
-/**
- * 検索条件を生成する
- *
- * @param array $data
- * @return array $conditions
- */
-	protected function createSearchConditions($data) {
+	/**
+	 * 検索条件を生成する
+	 *
+	 * @param array $data
+	 * @return array $conditions
+	 */
+	protected function createSearchConditions($data)
+	{
 		$conditions = array();
 		$searchText = '';
 		
@@ -227,13 +230,14 @@ class TextReplacesController extends BcPluginAppController {
 		return $conditions;
 	}
 	
-/**
- * 設定ファイルのフィールド指定にエラーがないかチェックする
- * 
- * @param array $setting
- * @return boolean
- */
-	protected function judgeFieldError($setting = array()) {
+	/**
+	 * 設定ファイルのフィールド指定にエラーがないかチェックする
+	 * 
+	 * @param array $setting
+	 * @return boolean
+	 */
+	protected function judgeFieldError($setting = array())
+	{
 		$error = false;
 		
 		// 実際に利用するモデル名を取得
