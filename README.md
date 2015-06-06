@@ -1,6 +1,6 @@
 # TextReplace プラグイン #
 
-TextReplaceプラグインは、固定ページとブログ記事の任意のキーワードを一括で変更できるbaserCMS専用のプラグインです。
+TextReplaceプラグインは、任意のキーワードを一括で変更できるbaserCMS専用のプラグインです。
 
 - [Summary: Wiki](https://github.com/materializing/TextReplace/wiki)
 
