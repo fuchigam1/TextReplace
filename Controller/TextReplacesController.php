@@ -90,7 +90,8 @@ class TextReplacesController extends BcPluginAppController
 	 * beforeFilter
 	 * 
 	 */
-	public function beforeFilter() {
+	public function beforeFilter()
+	{
 		parent::beforeFilter();
 		$this->pluginSetting = Configure::read('TextReplace.target');
 	}
