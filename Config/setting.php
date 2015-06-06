@@ -77,15 +77,15 @@ $config['TextReplace'] = array(
 				'BlogPost.detail_draft' => '記事詳細下書き',
 			),
 		),
-//		'Content' => array(
-//			'name' => 'Content',
-//			'title' => '検索用データ',
-//			'fields' => array(
-//				'Content.category' => 'カテゴリ',
-//				'Content.title' => 'タイトル',
-//				'Content.detail' => '記事本文',
-//			),
-//		),
+		'Content' => array(
+			'name' => 'Content',
+			'title' => '検索用データ',
+			'fields' => array(
+				'Content.category' => 'カテゴリ',
+				'Content.title' => 'タイトル',
+				'Content.detail' => '記事本文',
+			),
+		),
 	),
 );
 /**
