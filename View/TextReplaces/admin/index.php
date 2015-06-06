@@ -153,17 +153,17 @@ if ($searchType === 'dryrun') {
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tbody>
 		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?></th>
-			<td class="col-input target-check">
-				<?php echo $this->BcForm->input('TextReplace.replace_target', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $replaceTarget)); ?>
-				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
-			</td>
-		</tr>
-		<tr>
 			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_all', '全て選択') ?></th>
 			<td class="col-input">
 				<?php echo $this->BcForm->input('TextReplace.check_all', array('type' => 'checkbox', 'label' => '検索置換対象全てにチェックを入れる')); ?>
 				<?php echo $this->BcForm->error('TextReplace.check_all') ?>
+			</td>
+		</tr>
+		<tr>
+			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?></th>
+			<td class="col-input target-check">
+				<?php echo $this->BcForm->input('TextReplace.replace_target', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $replaceTarget)); ?>
+				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
 			</td>
 		</tr>
 	</tbody>
@@ -250,7 +250,8 @@ if ($searchType === 'dryrun') {
 				<?php foreach ($fieldValue as $num => $result): ?>
 				<tr>
 					<th class="col-head"<?php echo $rowspan; ?>>
-						<?php echo $fieldName; ?>（ID:<?php echo $result[$modelName]['id']; ?>）
+						<?php echo TextReplaceUtil::getFieldTitle($modelName, $fieldName) ?>
+						<?php //echo $fieldName; ?>（ID:<?php echo $result[$modelName]['id']; ?>）
 					</th>
 					<?php if ($judgeReplace): ?>
 					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>

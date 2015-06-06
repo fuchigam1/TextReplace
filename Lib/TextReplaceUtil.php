@@ -79,4 +79,36 @@ class TextReplaceUtil extends Object
 		return $data;
 	}
 	
+	/**
+	 * getFieldTitle
+	 * モデル名とフィールド名から、テキスト置換用設定内のフィールドのタイトルを取得する
+	 * 
+	 * @param string $targetModelName
+	 * @param string $targetFieldName
+	 * @return string
+	 */
+	public static function getFieldTitle($targetModelName = '', $targetFieldName = '')
+	{
+		if (!$targetModelName || !$targetFieldName) {
+			return '';
+		}
+		$setting = Configure::read('TextReplace.target');
+		$fieldTitle = '';
+		
+		foreach ($setting as $model => $fieldData) {
+			if ($targetModelName === $model) {
+				$fieldName = '';
+				foreach ($fieldData['fields'] as $key => $value) {
+					$exploded = explode('.', $key);
+					$fieldName = $exploded[1];
+					if ($targetFieldName === $fieldName) {
+						$fieldTitle = $value;
+						break;
+					}
+				}
+			}
+		}
+		
+		return $fieldTitle;
+	}
 }
