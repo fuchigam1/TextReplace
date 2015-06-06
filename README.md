@@ -13,8 +13,40 @@ TextReplaceプラグインは、任意のキーワードを一括で変更でき
 
 ## Uses ##
 
-* 
+* 検索語句を指定し、検索置換対象で指定したデータを検索することができます。
+* 検索語句を指定し、置換後の指定し、検索置換対象で指定したデータを検索＆置換した結果を確認できます。
+* 検索語句を指定し、置換後の指定し、検索置換対象で指定したデータを検索＆置換した結果の中から、置換＆保存する対象を選択して実行できます。
+* 置換＆保存は、置換確認の実施後に実行できます。
 
+### 検索置換対象の指定
+検索置換対象の指定を任意の内容に調整できます。  
+デフォルトでは 固定ページ（Page）、ブログ記事（Blog.BlogPost）、検索用データ（Content）が選択可能対象となってます。  
+→ /TextReplace/Config/setting.php にて設定
+
+内容を調整する場合、上記ファイル内の $config['TextReplace']['target'] をもとにして php ファイルを作成し、同一ディレクトリ内に配置してください。  
+ファイル配置後、画面内の「検索置換対象の指定」に追加されます。
+
+以下は作成例です。
+
+```
+<?php
+/**
+ * 作成ファイルサンプル: /TextReplace/Config/original.php として保存してください。
+ */
+$config['TextReplace'] = array(
+	'target' => array(
+		'Mail.MailContent' => array(
+			'name' => 'MailContent',
+			'title' => 'メールフォーム設定',
+			'fields' => array(
+				'MailContent.name' => 'メールフォーム名',
+				'MailContent.title' => 'メールフォームタイトル',
+				'MailContent.description' => '説明文',
+			),
+		),
+	),
+);
+```
 
 ## Bug reports, Discuss, Support
 
