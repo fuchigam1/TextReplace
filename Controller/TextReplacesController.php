@@ -169,15 +169,10 @@ class TextReplacesController extends BcPluginAppController
 							$saveResult = true;
 							//$saveResult = $this->{$ModelName}->save($saveData, array('callbacks' => false, 'validate' => false));
 							if($saveResult) {
-								// TODO save したデータのログを取る
-								$saveResultData = array(
-									$targetModel => array(
-										'id' => $saveData[$targetModel]['id'],
-										$targetField => $saveData[$targetModel][$targetField],
-									)
-								);
+								// save したデータのログを取る
+								$this->log($originalData, LOG_TEXT_REPLACE_BEFORE);
+								$this->log($saveResult, LOG_TEXT_REPLACE);
 								
-								//$datas[$targetModel][$targetField][] = $saveResultData;
 								$datas[$targetModel][$targetField][] = $originalData;
 								$countResult++;
 							}
