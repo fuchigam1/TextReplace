@@ -148,47 +148,40 @@ class TextReplacesController extends BcPluginAppController
 				case 'dryrun':
 				default:
 					foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
+						// 例: $value = Page.name
 						$exploded = explode('.', $value);
 						$searchTarget = array(
 							'modelName' => $exploded[0],
 							'field' => $exploded[1],
 						);
 						
-						$conditions = array();
-						// 'conditions' => array($value .' REGEXP' => "^$param$|^$param,"),
-						// $conditions = array($value .' REGEXP' => "$searchText");
-						if (!$useRegex) {
-							$conditions = array($value .' LIKE' => "%{$searchText}%");
-						}
-						
-						$allData = $this->{$searchTarget['modelName']}->find('all', array(
-							'fields' => array('id', $searchTarget['field']),
-							'conditions' => $conditions,
-							'order' => '',
-							'recursive' => -1,
-						));
+						// 検索置換対象指定から、検索語句を含むデータを全て取得する
+						$allData = $this->getSearchResult($searchTarget['modelName'], $searchTarget['field'], $searchText,
+								array('use_regex' => $useRegex)
+						);
 						
 						if ($allData) {
 							if (!$useRegex) {
+								// 正規表現検索を利用しない場合、単純に検索結果データに入れ込む
 								$datas[$searchTarget['modelName']][$searchTarget['field']] = $allData;
 								$countResult = $countResult + count($allData);
 							} else {
 								$result = array();
-								if ($allData) {
-									foreach ($allData as $resultKey => $resultValue) {
-										if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
-											// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
-											$allData[$resultKey][$searchTarget['modelName']][$searchTarget['field']] = preg_replace_callback(
-													$searchText,
-													array($this, 'replaceHitString'),
-													$resultValue[$searchTarget['modelName']][$searchTarget['field']]
-											);
-											$result[] = $allData[$resultKey];
-										}
-//										if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
-//											$result[] = $allData[$resultKey];
-//										}
+								foreach ($allData as $resultKey => $resultValue) {
+									// 正規表現検索を利用する場合、検索にヒットしたデータの文字列内に、パターン(検索語句)にマッチするデータがあるか判定する
+									// ヒットした場合: データ内の、パターン(検索語句)にマッチする文字列をコールバック関数を利用して書き換える
+									if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
+										// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
+										$allData[$resultKey][$searchTarget['modelName']][$searchTarget['field']] = preg_replace_callback(
+												$searchText,
+												array($this, 'replaceHitString'),
+												$resultValue[$searchTarget['modelName']][$searchTarget['field']]
+										);
+										$result[] = $allData[$resultKey];
 									}
+//									if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
+//										$result[] = $allData[$resultKey];
+//									}
 								}
 								if ($result) {
 									$datas[$searchTarget['modelName']][$searchTarget['field']] = $result;
@@ -214,6 +207,39 @@ class TextReplacesController extends BcPluginAppController
 	}
 	
 	/**
+	 * 検索置換対象指定から、検索語句を含むデータを全て取得する
+	 * 
+	 * @param string $modelName
+	 * @param string $field
+	 * @param string $searchText
+	 * @param array $options
+	 * @return array or boolean
+	 */
+	protected function getSearchResult($modelName, $field, $searchText, $options = array())
+	{
+		$_options = array(
+			'use_regex' => false,
+		);
+		$options = Hash::merge($_options, $options);
+		
+		$conditions = array();
+		// 'conditions' => array($value .' REGEXP' => "^$param$|^$param,"),
+		// $conditions = array($value .' REGEXP' => "$searchText");
+		if (!$options['use_regex']) {
+			$target = implode('.', array($modelName, $field));
+			$conditions = array($target .' LIKE' => "%{$searchText}%");
+		}
+
+		$allData = $this->{$modelName}->find('all', array(
+			'fields' => array('id', $field),
+			'conditions' => $conditions,
+			'order' => '',
+			'recursive' => -1,
+		));
+		return $allData;
+	}
+	
+	/**
 	 * callback: preg_replace_callback
 	 * 
 	 * @param array $matches
@@ -228,7 +254,7 @@ class TextReplacesController extends BcPluginAppController
 	}
 	
 	/**
-	 * [ADMIN] 検索、置換確認
+	 * 検索、置換確認
 	 * 
 	 */
 	protected function search_and_replace($data, $searchText = '', $replaceText = '')
