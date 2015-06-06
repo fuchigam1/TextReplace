@@ -143,6 +143,9 @@ if ($searchType === 'search-and-replace') {
 		margin-right: 10px;
 		margin-bottom:14px;
 	}
+	.box-model-result h3 {
+		cursor: pointer;
+	}
 </style>
 
 <div id="BtnTypeSearchAndReplaceDialog" title="置換＆保存" class="display-none">
