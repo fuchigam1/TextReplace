@@ -143,10 +143,6 @@ class TextReplacesController extends BcPluginAppController
 			// 実行ボタン別に処理を行う
 			switch ($this->request->data['TextReplace']['type']) {
 				case 'search-and-replace':
-					// $this->search_and_replace($this->request->data, $searchText, $replaceText);
-					if ($this->request->data['ReplaceTarget']) {
-						$result = array();
-						
 					if (!empty($this->request->data['ReplaceTarget'])) {
 						clearAllCache();
 						foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
@@ -160,14 +156,17 @@ class TextReplacesController extends BcPluginAppController
 								'fields' => array('id', $targetField),
 								'recursive' => -1,
 							));
+
+							$data = $this->getReplaceData($originalData, $searchText, $replaceText,
+									array(
+										'search_regex' => $useRegex,
+										'target_model' => $targetModel,
+										'target_field' => $targetField,
+									)
+							);
 							
-							$saveData = $originalData;
-							$saveData[$targetModel][$targetField] = TextReplaceUtil::getReplaceData(
-									$originalData[$targetModel][$targetField],
-									$searchText, $replaceText, array('search_regex' => $useRegex));
-							
-							$saveResult = true;
-							//$saveResult = $this->{$ModelName}->save($saveData, array('callbacks' => false, 'validate' => false));
+							//$saveResult = true;
+							$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
 							if($saveResult) {
 								// save したデータのログを取る
 								$this->log($originalData, LOG_TEXT_REPLACE_BEFORE);
@@ -295,39 +294,33 @@ class TextReplacesController extends BcPluginAppController
 	}
 	
 	/**
-	 * 検索、置換確認
+	 * 元データ内の検索語句を置換指定語句で変換した内容を取得する
 	 * 
+	 * @param array $originalData
+	 * @param string $searchText
+	 * @param string $replaceText
+	 * @param array $options
+	 * @return array
 	 */
-	protected function search_and_replace($data, $searchText = '', $replaceText = '')
+	protected function getReplaceData($originalData, $searchText = '', $replaceText = '', $options = array())
 	{
-		foreach ($data['TextReplace']['replace_target'] as $value) {
-			$exploded = explode('.', $value);
-			$searchTarget = array(
-				'modelName' => $exploded[0],
-				'field' => $exploded[1],
-			);
-			// $conditions = array($value .' LIKE' => "%{$searchText}%");
-			// 'conditions' => array($value .' REGEXP' => "^$param$|^$param,"),
-			$conditions = array($value .' REGEXP' => "$searchText");
-			// $conditions = $this->createSearchConditions($data);
-			if ($conditions) {
-				$result = $this->{$searchTarget['modelName']}->find('all', array(
-					'fields' => array('id', $searchTarget['field']),
-					'conditions' => $conditions,
-					'order' => '',
-					'recursive' => -1,
-				));
-				if ($result) {
-					// 検索語句を置換後の文字列で置換する処理
-//					foreach ($result as $num => $resultData) {
-//						$result[$num][$searchTarget['modelName']][$searchTarget['field']]
-//						= preg_replace('/'. $searchText .'/', $replaceText, $result[$num][$searchTarget['modelName']][$searchTarget['field']]);
-//					}
-					$datas[$searchTarget['modelName']][$searchTarget['field']] = $result;
-				}
-			}
-		}
+		$_options = array(
+			'search_regex' => false,
+			'target_model' => '',
+			'target_field' => '',
+		);
+		$options = Hash::merge($_options, $options);
 		
+		$useRegex = $options['search_regex'];
+		$targetModel = $options['target_model'];
+		$targetField = $options['target_field'];
+		
+		$saveData = $originalData;
+		$saveData[$targetModel][$targetField] = TextReplaceUtil::getReplaceData(
+				$originalData[$targetModel][$targetField],
+				$searchText, $replaceText, array('search_regex' => $useRegex));
+		
+		return $saveData;
 	}
 	
 	/**
