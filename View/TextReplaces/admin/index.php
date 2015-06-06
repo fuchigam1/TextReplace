@@ -11,10 +11,10 @@ $this->TextReplace->searchText = $searchText;
 $this->TextReplace->replaceText = $replaceText;
 
 $rowspan = '';
-$judgeReplace = false;
+$isReplace = false;
 if ($searchType === 'dryrun') {
 	$rowspan = ' rowspan="2"';
-	$judgeReplace = true;
+	$isReplace = true;
 }
 ?>
 <script type="text/javascript">
@@ -199,7 +199,7 @@ if ($searchType === 'dryrun') {
 					<th class="col-head"<?php echo $rowspan; ?>>
 						フィールド名（ID:モデルID）
 					</th>
-					<?php if ($judgeReplace): ?>
+					<?php if ($isReplace): ?>
 					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
 						置換対象<br />チェック
 					</td>
@@ -219,7 +219,7 @@ if ($searchType === 'dryrun') {
 	</table>
 </div>
 
-<?php if ($judgeReplace): ?>
+<?php if ($isReplace): ?>
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tbody>
 		<tr>
@@ -253,7 +253,7 @@ if ($searchType === 'dryrun') {
 						<?php echo TextReplaceUtil::getFieldTitle($modelName, $fieldName) ?>
 						<?php //echo $fieldName; ?>（ID:<?php echo $result[$modelName]['id']; ?>）
 					</th>
-					<?php if ($judgeReplace): ?>
+					<?php if ($isReplace): ?>
 					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
 						<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id']; ?>">
 							<input type="checkbox" name="data[<?php echo $modelName; ?>][<?php echo $fieldName; ?>][]" value="<?php echo $result[$modelName]['id']; ?>" id="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id']; ?>">
@@ -264,7 +264,7 @@ if ($searchType === 'dryrun') {
 						<?php echo $this->BcBaser->mark($query, h($result[$modelName][$fieldName])) ?>
 					</td>
 				</tr>
-				<?php if ($judgeReplace): ?>
+				<?php if ($isReplace): ?>
 				<tr>
 					<td class="col-input replace-after">
 						<?php echo $this->BcBaser->mark($query, h($this->TextReplace->getReplaceData($result[$modelName][$fieldName]))) ?>
