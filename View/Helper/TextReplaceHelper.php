@@ -58,23 +58,6 @@ class TextReplaceHelper extends AppHelper
 	}
 	
 	/**
-	 * 検索語句を置換後で置換する
-	 * 
-	 * @param string $data
-	 * @return string
-	 */
-	public function getReplaceData($data = '')
-	{
-		$result = '';
-		if ($this->request->data['TextReplace']['search_regex']) {
-			$result = preg_replace($this->searchText, $this->replaceText, $data);
-		} else {
-			$result = str_replace($this->searchText, $this->replaceText, $data);
-		}
-		return $result;
-	}
-	
-	/**
 	 * モデル名とタイトルのリストを取得する
 	 * 
 	 * @return array

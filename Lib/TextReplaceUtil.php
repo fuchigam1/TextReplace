@@ -111,4 +111,27 @@ class TextReplaceUtil extends Object
 		
 		return $fieldTitle;
 	}
+	
+	/**
+	 * 検索語句を置換後で置換する
+	 * 
+	 * @param string $data
+	 * @return string
+	 */
+	public static function getReplaceData($data = '', $searchText = '', $replaceText = '', $options = array())
+	{
+		$_options = array(
+			'search_regex' => false,
+		);
+		$options = Hash::merge($_options, $options);
+		
+		$result = '';
+		if ($options['search_regex']) {
+			$result = preg_replace($searchText, $replaceText, $data);
+		} else {
+			$result = str_replace($searchText, $replaceText, $data);
+		}
+		return $result;
+	}
+	
 }

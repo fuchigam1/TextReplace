@@ -267,7 +267,12 @@ if ($searchType === 'dryrun') {
 				<?php if ($isReplace): ?>
 				<tr>
 					<td class="col-input replace-after">
-						<?php echo $this->BcBaser->mark($query, h($this->TextReplace->getReplaceData($result[$modelName][$fieldName]))) ?>
+						<?php echo $this->BcBaser->mark($query,
+							h(TextReplaceUtil::getReplaceData($result[$modelName][$fieldName],
+								$this->request->data['TextReplace']['search_pattern'],
+								$this->request->data['TextReplace']['replace_pattern'],
+								array('search_regex' => $this->request->data['TextReplace']['search_regex'])
+						))) ?>
 					</td>
 				</tr>
 				<?php endif ?>
