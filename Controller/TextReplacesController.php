@@ -135,7 +135,7 @@ class TextReplacesController extends BcPluginAppController
 			
 			$searchText = $this->request->data['TextReplace']['search_pattern'];	// 検索語句
 			$replaceText = $this->request->data['TextReplace']['replace_pattern'];	// 置換後
-			$useRegex = $this->request->data['TextReplace']['search_regex'];		// 置換後
+			$useRegex = $this->request->data['TextReplace']['search_regex'];		// 正規表現の利用指定
 			$searchType = $this->request->data['TextReplace']['type'];				// 検索タイプ
 			$countResult = 0;	// 検索結果数
 			
@@ -177,6 +177,7 @@ class TextReplacesController extends BcPluginAppController
 								if ($allData) {
 									foreach ($allData as $resultKey => $resultValue) {
 										if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
+											// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
 											$allData[$resultKey][$searchTarget['modelName']][$searchTarget['field']] = preg_replace_callback(
 													$searchText,
 													array($this, 'replaceHitString'),
@@ -213,18 +214,19 @@ class TextReplacesController extends BcPluginAppController
 	}
 	
 	/**
-	 * callback
+	 * callback: preg_replace_callback
 	 * 
 	 * @param array $matches
 	 * @return string
 	 */
-	private function replaceHitString($matches) {
+	private function replaceHitString($matches)
+	{
 		foreach ($matches as $key => $value) {
 			$matches[$key] = str_replace($value, ''. $value .'', $value);
 		}
 		return $matches[$key];
 	}
-
+	
 	/**
 	 * [ADMIN] 検索、置換確認
 	 * 
