@@ -148,7 +148,7 @@ class TextReplacesController extends BcPluginAppController
 						
 						foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
 							$valueKey = key($value);
-							$searchTarget = $this->splitName($valueKey);
+							$searchTarget = TextReplaceUtil::splitName($valueKey);
 							$targetModel = $searchTarget['modelName'];
 							$targetField = $searchTarget['field'];
 							
@@ -187,7 +187,7 @@ class TextReplacesController extends BcPluginAppController
 				case 'dryrun':
 				default:
 					foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
-						$searchTarget = $this->splitName($value);
+						$searchTarget = TextReplaceUtil::splitName($value);
 						
 						// 検索置換対象指定から、モデル別に検索語句を含むデータを全て取得する
 						$allData = $this->getSearchResult($searchTarget['modelName'], $searchTarget['field'], $searchText,
@@ -239,23 +239,6 @@ class TextReplacesController extends BcPluginAppController
 		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
 		$this->set('datas', $datas);
-	}
-	
-	/**
-	 * モデル名.フィールド名の文字列から配列を生成して返す
-	 * 
-	 * @param string $value
-	 * @return array
-	 */
-	private function splitName($value = '')
-	{
-		// 例: $value = Page.name
-		$exploded = explode('.', $value);
-		$searchTarget = array(
-			'modelName' => $exploded[0],
-			'field' => $exploded[1],
-		);
-		return $searchTarget;
 	}
 	
 	/**

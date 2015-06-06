@@ -134,4 +134,21 @@ class TextReplaceUtil extends Object
 		return $result;
 	}
 	
+	/**
+	 * モデル名.フィールド名の文字列から配列を生成して返す
+	 * 
+	 * @param string $value
+	 * @return array
+	 */
+	public static function splitName($value = '')
+	{
+		// 例: $value = Page.name
+		$exploded = explode('.', $value);
+		$searchTarget = array(
+			'modelName' => $exploded[0],
+			'field' => $exploded[1],
+		);
+		return $searchTarget;
+	}
+	
 }
