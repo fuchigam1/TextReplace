@@ -122,6 +122,7 @@ class TextReplacesController extends BcPluginAppController
 		$replaceText = '';
 		$searchTarget = array();
 		$searchType = '';
+		$message = '';
 		
 		if ($this->request->data) {
 			if (!$this->request->data['TextReplace']['search_pattern']) {
@@ -146,6 +147,8 @@ class TextReplacesController extends BcPluginAppController
 					if ($this->request->data['ReplaceTarget']) {
 						$result = array();
 						
+					if (!empty($this->request->data['ReplaceTarget'])) {
+						clearAllCache();
 						foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
 							$valueKey = key($value);
 							$searchTarget = TextReplaceUtil::splitName($valueKey);
@@ -180,12 +183,18 @@ class TextReplacesController extends BcPluginAppController
 							}
 							unset($originalData);
 						}
+						$message = '検索置換を実行しました。';
+						$this->setMessage($message);
+						clearAllCache();
+					} else {
+						$message = '置換対象が選択されていません。';
 					}
 					break;
 					
 				case 'search':
 				case 'dryrun':
 				default:
+					clearAllCache();
 					foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
 						$searchTarget = TextReplaceUtil::splitName($value);
 						
@@ -224,11 +233,13 @@ class TextReplacesController extends BcPluginAppController
 							}
 						}
 					}
+					$message = '該当する検索語句がありませんでした。';
+					clearAllCache();
 					break;
 			}
 			
 			if (!$countResult) {
-				$this->setMessage('該当する検索語句がありませんでした。');
+				$this->setMessage($message, true);
 			}
 		}
 		
