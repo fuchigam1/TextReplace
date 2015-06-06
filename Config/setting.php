@@ -48,14 +48,6 @@ CakeLog::config('log_text_replace_before', array(
 $config['TextReplace'] = array(
 	// フィールドタイプ種別
 	'target' => array(
-//		設定用雛形
-//		'PLUGIN_NAME.MODEL_NAME' => array(
-//			'name' => 'MODEL_NAME',
-//			'title' => 'MODEL_TITLE',
-//			'fields' => array(
-//				'MODEL_NAME.FIELD_NAME' => 'FIELD_TITLE',
-//				),
-//		),
 		'Page' => array(
 			'name' => 'Page',
 			'title' => '固定ページ',
@@ -86,6 +78,24 @@ $config['TextReplace'] = array(
 				'Content.detail' => '記事本文',
 			),
 		),
+//		設定用雛形
+//		'PLUGIN_NAME.MODEL_NAME' => array(
+//			'name' => 'MODEL_NAME',
+//			'title' => 'MODEL_TITLE',
+//			'fields' => array(
+//				'MODEL_NAME.FIELD_NAME' => 'FIELD_TITLE',
+//				),
+//		),
+//		サンプル		
+//		'Mail.MailContent' => array(
+//			'name' => 'MailContent',
+//			'title' => 'メールフォーム設定',
+//			'fields' => array(
+//				'MailContent.name' => 'メールフォーム名',
+//				'MailContent.title' => 'メールフォームタイトル',
+//				'MailContent.description' => '説明文',
+//			),
+//		),
 	),
 );
 /**
