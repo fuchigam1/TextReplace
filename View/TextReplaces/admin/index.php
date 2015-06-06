@@ -145,7 +145,7 @@ if ($searchType === 'search-and-replace') {
 	}
 </style>
 
-<div id="BtnTypeSearchAndReplaceDialog" title="初期データ読込" class="display-none">
+<div id="BtnTypeSearchAndReplaceDialog" title="置換＆保存" class="display-none">
 	<p><strong>置換＆保存を実行します。よろしいですか？</strong></p><br />
 	<p>※ 実行前に必ずDBのバックアップを取ってください。<br />※ 検索語句を置換後の内容で一括変換します。</p>
 </div>
