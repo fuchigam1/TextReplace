@@ -142,15 +142,54 @@ class TextReplacesController extends BcPluginAppController
 			// 実行ボタン別に処理を行う
 			switch ($this->request->data['TextReplace']['type']) {
 				case 'search-and-replace':
-					$this->search_and_replace($this->request->data, $searchText, $replaceText);
+					// $this->search_and_replace($this->request->data, $searchText, $replaceText);
+					if ($this->request->data['ReplaceTarget']) {
+						$result = array();
+						
+						foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
+							$valueKey = key($value);
+							$searchTarget = $this->splitName($valueKey);
+							$targetModel = $searchTarget['modelName'];
+							$targetField = $searchTarget['field'];
+							
+							$originalData = $this->{$targetModel}->find('first', array(
+								'conditions' => array($targetModel .'.id' => $value[$valueKey]),
+								'fields' => array('id', $targetField),
+								'recursive' => -1,
+							));
+							
+							$saveData = $originalData;
+							$saveData[$targetModel][$targetField] = TextReplaceUtil::getReplaceData(
+									$originalData[$targetModel][$targetField],
+									$searchText, $replaceText, array('search_regex' => $useRegex));
+							
+							$saveResult = true;
+							//$saveResult = $this->{$ModelName}->save($saveData, array('callbacks' => false, 'validate' => false));
+							if($saveResult) {
+								// TODO save したデータのログを取る
+								$saveResultData = array(
+									$targetModel => array(
+										'id' => $saveData[$targetModel]['id'],
+										$targetField => $saveData[$targetModel][$targetField],
+									)
+								);
+								
+								//$datas[$targetModel][$targetField][] = $saveResultData;
+								$datas[$targetModel][$targetField][] = $originalData;
+								$countResult++;
+							}
+							unset($originalData);
+						}
+					}
 					break;
+					
 				case 'search':
 				case 'dryrun':
 				default:
 					foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
 						$searchTarget = $this->splitName($value);
 						
-						// 検索置換対象指定から、検索語句を含むデータを全て取得する
+						// 検索置換対象指定から、モデル別に検索語句を含むデータを全て取得する
 						$allData = $this->getSearchResult($searchTarget['modelName'], $searchTarget['field'], $searchText,
 								array('use_regex' => $useRegex)
 						);
@@ -187,6 +226,7 @@ class TextReplacesController extends BcPluginAppController
 					}
 					break;
 			}
+			
 			if (!$countResult) {
 				$this->setMessage('該当する検索語句がありませんでした。');
 			}
