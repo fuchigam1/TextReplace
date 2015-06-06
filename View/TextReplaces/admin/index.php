@@ -55,9 +55,21 @@ if ($searchType === 'dryrun') {
 				$('.target-check input[type=checkbox]').prop('checked', false);
 			}
 		});
-//		$('#TextReplaceCheckAll').children('fieldset legend').on('click', function(){
-//			$('#TextReplaceCheckAll').children('fieldset').children('.checkbox input[type=checkbox]').each();
-//		});
+
+		// 検索置換対象のモデル単位で、チェックボックスを全てチェックする／チェック外す
+		$('.target-check fieldset legend').on('click', function(){
+			$(this).parent().find('.checkbox input[type=checkbox]').each(function(){
+				isChecked = false;
+				if ($(this).prop('checked')) {
+					isChecked = true;
+				}
+			});
+			if (isChecked) {
+				$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', false);
+			} else {
+				$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', true);
+			}
+		});
 
 		// 検索結果一覧の見方を表示する
 		$('#TextReplaceInsight').hide();
