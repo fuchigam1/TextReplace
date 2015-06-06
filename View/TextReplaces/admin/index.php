@@ -119,10 +119,11 @@ if ($searchType === 'dryrun') {
 <style type="text/css">
 	.target-check fieldset legend {
 		font-weight: bold;
+		cursor: pointer;
 	}
 	.target-check .checkbox {
 		margin-right: 10px;
-		margin-bottom: 6px;
+		margin-bottom:14px;
 	}
 </style>
 
@@ -169,6 +170,7 @@ if ($searchType === 'dryrun') {
 			<td class="col-input">
 				<?php echo $this->BcForm->input('TextReplace.check_all', array('type' => 'checkbox', 'label' => '検索置換対象全てにチェックを入れる')); ?>
 				<?php echo $this->BcForm->error('TextReplace.check_all') ?>
+				<small>「モデル名」をクリックすると、クリックしたモデル名の範囲全てに対して チェックを入れる／外す ことができます。</small>
 			</td>
 		</tr>
 		<tr>
