@@ -26,8 +26,3 @@ TextReplaceプラグインは、任意のキーワードを一括で変更でき
 - [http://basercms.net/](http://basercms.net/)
 - [http://wiki.basercms.net/](http://wiki.basercms.net/)
 - [http://cakephp.jp](http://cakephp.jp)
-
-
- * @TODO 置換＆保存は、デフォルトがNOのアラートウィンドウにする
- * @TODO サブメニューを利用して画面遷移する際、アラートを表示する
- * @TODO 置換保存したデータはログに吐き出すようにする
