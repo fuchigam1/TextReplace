@@ -45,12 +45,24 @@ if ($searchType === 'search-and-replace') {
 //			}
 		});
 
-		// 検索＆保存ボタン 実行時
+		// 置換＆保存ボタン 実行時
 		$('#BtnTypeSearchAndReplace').on('click', function(){
 			$('#TextReplaceType').val('search-and-replace');
-			if (!confirm('実行前に必ずDBのバックアップを取ってください。\n検索語句を置換後の内容で一括変換します。\n宜しいですか？')) {
-				return false;
-			}
+			$('#BtnTypeSearchAndReplaceDialog').dialog({
+				modal: true,
+				title: '置換＆保存',
+				width: 400,
+				buttons: {
+					"キャンセル": function() {
+						$(this).dialog("close");
+					},
+					"OK": function() {
+						$(this).dialog("close");
+						$("#TextReplaceAdminIndexForm").submit();
+					}
+				}
+			});
+			return false;
 		});
 
 		// 検索置換対象のチェックボックスを全てチェックする
@@ -132,6 +144,11 @@ if ($searchType === 'search-and-replace') {
 		margin-bottom:14px;
 	}
 </style>
+
+<div id="BtnTypeSearchAndReplaceDialog" title="初期データ読込" class="display-none">
+	<p><strong>置換＆保存を実行します。よろしいですか？</strong></p><br />
+	<p>※ 実行前に必ずDBのバックアップを取ってください。<br />※ 検索語句を置換後の内容で一括変換します。</p>
+</div>
 
 <?php echo $this->BcForm->create('TextReplace', array('url' => array('action' => 'index'))) ?>
 <table cellpadding="0" cellspacing="0" class="form-table section">
@@ -306,12 +323,12 @@ if ($searchType === 'search-and-replace') {
 </div>
 <?php endforeach ?>
 
+<?php if ($isReplace): ?>
 <div class="submit">
-	<?php $confirmMessageSearchAndReplace = '実行前に必ずDBのバックアップを取ってください。\n検索語句を置換後の内容で一括変換します。\n宜しいですか？'; ?>
-	<?php //echo $this->BcForm->submit('置換＆保存', array('div' => false, 'id' => 'BtnTypeSearchAndReplace', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageSearchAndReplace')")) ?>
 	<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'id' => 'BtnTypeSearchAndReplace', 'class' => 'button')) ?>
 </div>
 <?php endif ?>
 
+<?php endif ?>
 
 <?php echo $this->BcForm->end() ?>
