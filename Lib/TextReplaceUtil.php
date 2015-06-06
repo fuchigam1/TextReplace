@@ -36,7 +36,7 @@ class TextReplaceUtil extends Object
 	{
 		$replaceTarget = array();
 		foreach ($setting as $model => $fieldData) {
-			$keyName = $setting[$model]['title'] .'（'. $model. '）';
+			$keyName = 'モデル名：'. $setting[$model]['title'] .'（'. $model. '）';
 			$replaceTarget[$keyName] = $fieldData['fields'];
 		}
 		return $replaceTarget;
@@ -95,8 +95,8 @@ class TextReplaceUtil extends Object
 		$setting = Configure::read('TextReplace.target');
 		$fieldTitle = '';
 		
-		foreach ($setting as $model => $fieldData) {
-			if ($targetModelName === $model) {
+		foreach ($setting as $settingKey => $fieldData) {
+			if ($targetModelName === $fieldData['name']) {
 				$fieldName = '';
 				foreach ($fieldData['fields'] as $key => $value) {
 					$exploded = explode('.', $key);
