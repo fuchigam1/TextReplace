@@ -70,7 +70,7 @@ class TextReplacesController extends BcPluginAppController
 	 * 
 	 * @var boolean
 	 */
-	public $judgeFieldError = false;
+	public $hasFieldError = false;
 	
 	/**
 	 * 設定ファイルのフィールド指定に誤りがある場合のメッセージ
@@ -112,8 +112,8 @@ class TextReplacesController extends BcPluginAppController
 		$replaceTarget = TextReplaceUtil::getReplaceTarget($setting);
 		
 		// 設定ファイルのフィールド指定にエラーがないかチェックする
-		$this->judgeFieldError = $this->judgeFieldError($setting);
-		if ($this->judgeFieldError) {
+		$this->hasFieldError = $this->hasFieldError($setting);
+		if ($this->hasFieldError) {
 			$this->setMessage($this->errorFieldInfo, true);
 		}
 		
@@ -319,7 +319,7 @@ class TextReplacesController extends BcPluginAppController
 	 * @param array $setting
 	 * @return boolean
 	 */
-	protected function judgeFieldError($setting = array())
+	protected function hasFieldError($setting = array())
 	{
 		$error = false;
 		
