@@ -25,6 +25,23 @@ $config['BcApp.adminNavi.text_replace'] = array(
 );
 
 /**
+ * TextReplace専用ログ
+ * 検索置換実行時にログを保存する
+ */
+define('LOG_TEXT_REPLACE', 'log_text_replace');
+CakeLog::config('log_text_replace', array(
+	'engine' => 'FileLog',
+	'types' => array('log_text_replace'),
+	'file' => 'log_text_replace',
+));
+define('LOG_TEXT_REPLACE_BEFORE', 'log_text_replace_before');
+CakeLog::config('log_text_replace_before', array(
+	'engine' => 'FileLog',
+	'types' => array('log_text_replace_before'),
+	'file' => 'log_text_replace_before',
+));
+
+/**
  * テキスト置換用設定
  * 
  */
