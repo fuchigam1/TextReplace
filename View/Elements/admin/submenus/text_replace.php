@@ -14,6 +14,9 @@
 			<li><?php $this->BcBaser->link('テキスト置換処理',
 					array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'),
 					array(), '検索条件は保存されません。よろしいですか？', false); ?></li>
+			<li><?php $this->BcBaser->link('固定ページテンプレート書出',
+					array('admin' => true, 'plugin' => null, 'controller' => 'pages', 'action' => 'write_page_files'),
+					array('confirm' => 'データベース内のページデータを、' . 'テーマ ' . Inflector::camelize($this->BcBaser->siteConfig['theme']) . " のページテンプレートとして全て書出します。\n本当によろしいですか？")) ?></li>
 			<li><?php $this->BcBaser->link('サーバーキャッシュ削除',
 					array('admin' => true, 'plugin' => null, 'controller' => 'site_configs', 'action' => 'del_cache'),
 					array(), '検索条件は保存されません。よろしいですか？', false); ?></li>
