@@ -78,6 +78,32 @@ $config['TextReplace'] = array(
 				'Content.detail' => '記事本文',
 			),
 		),
+//		'Blog.BlogContent' => array(
+//			'name' => 'BlogContent',
+//			'title' => 'ブログ記事',
+//			'fields' => array(
+//				'BlogContent.name' => 'ブログアカウント名',
+//				'BlogContent.title' => 'ブログタイトル',
+//				'BlogContent.description' => 'ブログ説明文',
+//			),
+//		),
+//		'Blog.BlogCategory' => array(
+//			'name' => 'BlogCategory',
+//			'title' => 'ブログカテゴリ',
+//			'fields' => array(
+//				'BlogContent.title' => 'ブログカテゴリタイトル',
+//				'BlogContent.name' => 'ブログカテゴリ名',
+//			),
+//		),
+//		'Mail.MailContent' => array(
+//			'name' => 'MailContent',
+//			'title' => 'メールフォーム設定',
+//			'fields' => array(
+//				'MailContent.name' => 'メールフォームアカウント名',
+//				'MailContent.title' => 'メールフォームタイトル',
+//				'MailContent.description' => 'メールフォーム説明文',
+//			),
+//		),
 //		設定用雛形
 //		'PLUGIN_NAME.MODEL_NAME' => array(
 //			'name' => 'MODEL_NAME',
@@ -85,16 +111,6 @@ $config['TextReplace'] = array(
 //			'fields' => array(
 //				'MODEL_NAME.FIELD_NAME' => 'FIELD_TITLE',
 //				),
-//		),
-//		サンプル		
-//		'Mail.MailContent' => array(
-//			'name' => 'MailContent',
-//			'title' => 'メールフォーム設定',
-//			'fields' => array(
-//				'MailContent.name' => 'メールフォーム名',
-//				'MailContent.title' => 'メールフォームタイトル',
-//				'MailContent.description' => '説明文',
-//			),
 //		),
 	),
 );
