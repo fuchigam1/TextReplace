@@ -36,7 +36,7 @@ class TextReplaceUtil extends Object
 	{
 		$replaceTarget = array();
 		foreach ($setting as $model => $fieldData) {
-			$keyName = 'モデル名：'. $setting[$model]['title'] .'（'. $model. '）';
+			$keyName = '対象：'. $setting[$model]['title'] .'（'. $model. '）';
 			$replaceTarget[$keyName] = $fieldData['fields'];
 		}
 		return $replaceTarget;
