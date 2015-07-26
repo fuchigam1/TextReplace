@@ -7,6 +7,7 @@
  * @package			TextReplace
  * @license			MIT
  */
+$this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 $this->TextReplace->searchText = $searchText;
 $this->TextReplace->replaceText = $replaceText;
 
@@ -133,20 +134,6 @@ if ($searchType === 'search-and-replace') {
 
 	});
 </script>
-
-<style type="text/css">
-	.target-check fieldset legend {
-		font-weight: bold;
-		cursor: pointer;
-	}
-	.target-check .checkbox {
-		margin-right: 10px;
-		margin-bottom:14px;
-	}
-	.box-model-result h3 {
-		cursor: pointer;
-	}
-</style>
 
 <div id="BtnTypeSearchAndReplaceDialog" title="置換＆保存" class="display-none">
 	<p><strong>置換＆保存を実行します。よろしいですか？</strong></p><br />

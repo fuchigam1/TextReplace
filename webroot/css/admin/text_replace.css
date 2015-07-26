@@ -1,0 +1,29 @@
+@charset "utf-8";
+/**
+ * [ADMIN] TextReplace
+ * 
+ */
+/* 検索置換対象の指定
+-------------------------------- */
+.target-check fieldset legend {
+	font-weight: bold;
+	cursor: pointer;
+}
+.target-check .checkbox {
+	margin-right: 10px;
+	margin-bottom:14px;
+}
+.box-model-result h3 {
+	cursor: pointer;
+}
+
+
+/* 検索結果表示
+-------------------------------- */
+.box-field-result table tr td strong {
+	font-weight: bold;
+	color: #c00;
+}
+.box-field-result table tr td.replace-after strong {
+	background-color: #EDF8C9;
+}

@@ -241,6 +241,8 @@ class TextReplacesController extends BcPluginAppController
 		$query = array();
 		if ($replaceText) {
 			$query = array($searchText, $replaceText);
+		} else {
+			$query = array($searchText);
 		}
 		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
