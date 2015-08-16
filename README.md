@@ -67,3 +67,9 @@ $config['TextReplace'] = array(
 - [http://wiki.basercms.net/](http://wiki.basercms.net/)
 - [http://cakephp.jp](http://cakephp.jp)
 - [Semantic Versioning 2.0.0](http://semver.org/lang/ja/)
+
+
+### TODO
+
+* デフォルトで固定ページとブログ記事に、対象チェックが入る
+* デフォルト対象の指定を、設定ファイルで行うことができる
