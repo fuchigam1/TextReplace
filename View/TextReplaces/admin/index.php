@@ -108,15 +108,31 @@ if ($searchType === 'search-and-replace') {
 		<tr>
 			<th class="col-head">
 				<?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?>
-				<?php if (TextReplaceUtil::hasOriginalSetting()): ?>
-					<p class="annotation-text-green"><small>独自のテキスト置換用設定有り</small></p>
-				<?php endif ?>
 			</th>
 			<td class="col-input target-check">
 				<?php echo $this->BcForm->input('TextReplace.replace_target', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $replaceTarget)); ?>
 				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
 			</td>
 		</tr>
+		<?php $settingFiles = TextReplaceUtil::hasOriginalSetting() ?>
+		<?php if ($settingFiles): ?>
+		<tr>
+			<th class="col-head">
+				<p class="annotation-text-green"><small>独自のテキスト置換用設定有り</small></p>
+			</th>
+			<td class="col-input target-check">
+				<?php
+					$pluginPath = App::pluginPath('TextReplace');
+					$path = $pluginPath .'Config'. DS;
+				?>
+				<ul class="size-small">
+				<?php foreach ($settingFiles as $settingFile): ?>
+					<li><?php echo $path . $settingFile ?></li>
+				<?php endforeach ?>
+				</ul>
+			</td>
+		</tr>
+		<?php endif ?>
 	</tbody>
 </table>
 

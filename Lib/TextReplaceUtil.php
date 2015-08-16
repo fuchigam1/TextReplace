@@ -247,12 +247,14 @@ class TextReplaceUtil extends Object
 		$path = $pluginPath .'Config'. DS;
 		$dir = new Folder($path);
 		$files = $dir->find('.*\.php');
+		
+		$settingFiles = array();
 		foreach ($files as $file) {
 			if ($file !== 'setting.php') {
-				return true;
+				$settingFiles[] = $file;
 			}
 		}
-		return false;
+		return $settingFiles;
 	}
 	
 }
