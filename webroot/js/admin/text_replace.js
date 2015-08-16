@@ -1,5 +1,5 @@
 /**
- * [ADMIN] OptionalLink
+ * [ADMIN] TextReplace
  *
  * @link			http://www.materializing.net/
  * @author			arata
