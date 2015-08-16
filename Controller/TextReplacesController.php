@@ -106,7 +106,15 @@ class TextReplacesController extends BcPluginAppController
 		$this->pageTitle = 'テキスト置換処理';
 		
 		$setting = $this->pluginSetting;
-		$useModel = TextReplaceUtil::getUseModel($setting);
+		TextReplaceUtil::init($setting);	// 設定ファイルのモデル指定から、利用可能なモデルと不可のモデルを設定する
+		
+		$disabledModelList = TextReplaceUtil::getDisabledModel();
+		if ($disabledModelList) {
+			$disabledModel = implode('、', $disabledModelList);
+			$this->setMessage('設定ファイルに利用できないモデルの指定があります。<br>（'. $disabledModel .'）', true);
+		}
+		
+		$useModel = TextReplaceUtil::getEnabledModel();
 		$this->uses = Hash::merge($this->uses, $useModel);
 		
 		// 検索置換対象の指定内容を作成

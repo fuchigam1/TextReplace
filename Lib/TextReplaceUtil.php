@@ -10,6 +10,29 @@
 class TextReplaceUtil extends Object
 {
 	/**
+	 * 検索置換利用可能なモデル一覧
+	 * 
+	 * @var array
+	 */
+	private static $enabledModelList = array();
+	
+	/**
+	 * 検索置換利用不可のモデル一覧
+	 * 
+	 * @var array
+	 */
+	private static $disabledModelList = array();
+	
+	/**
+	 * 初期化処理
+	 * 
+	 * @param array $setting
+	 */
+	public static function init($setting = array()) {
+		self::getUseModel($setting);
+	}
+	
+	/**
 	 * getUseModel
 	 * 設定ファイルから利用モデル一覧を取得する
 	 * 
@@ -22,9 +45,63 @@ class TextReplaceUtil extends Object
 		foreach ($setting as $model => $fieldData) {
 			$useModel[] = $model;
 		}
-		return $useModel;
+		self::setHandleModel($useModel);
 	}
 	
+	/**
+	 * 検索置換取扱い可能なモデルと不可のモデルを設定する
+	 * 
+	 * @param array $useModel
+	 * @return boolean
+	 */
+	public static function setHandleModel($useModel) {
+		if (!is_array($useModel)) {
+			return false;
+		}
+		
+		if (ClassRegistry::isKeySet('Plugin')) {
+			$PluginModel = ClassRegistry::getObject('Plugin');
+		} else {
+			$PluginModel = ClassRegistry::init('Plugin');
+		}
+		
+		foreach ($useModel as $model) {
+			if (strpos($model, '.') === false) {
+				self::$enabledModelList[] = $model;
+				continue;
+			}
+			
+			list($pluginName, $pluginModelName) = explode('.', $model);
+			$conditions = array(
+				'name' => $pluginName,
+				'status' => true,
+			);
+			if ($PluginModel->hasAny($conditions)) {
+				self::$enabledModelList[] = $model;
+			} else {
+				self::$disabledModelList[] = $model;
+			}
+		}
+	}
+	
+	/**
+	 * 検索置換利用可能なモデル一覧を取得する
+	 * 
+	 * @return array
+	 */
+	public static function getEnabledModel() {
+		return self::$enabledModelList;
+	}
+	
+	/**
+	 * 検索置換利用不可のモデル一覧を取得する
+	 * 
+	 * @return array
+	 */
+	public static function getDisabledModel() {
+		return self::$disabledModelList;
+	}
+
 	/**
 	 * getReplaceTarget
 	 * 設定ファイルから検索置換対象の指定一覧を取得する
@@ -49,12 +126,20 @@ class TextReplaceUtil extends Object
 	 * @param array $setting
 	 * @return array
 	 */
-	public static function getUseModelName($setting = array())
+	public static function getUseModelName()
 	{
 		$useModel = array();
-		foreach ($setting as $model => $fieldData) {
-			$useModel[] = $fieldData['name'];
+		$enabledModel = self::$enabledModelList;
+		foreach ($enabledModel as $model) {
+			if (strpos($model, '.') === false) {
+				$useModel[] = $model;
+				continue;
+			}
+			
+			list($pluginName, $pluginModelName) = explode('.', $model);
+			$useModel[] = $pluginModelName;
 		}
+		
 		return $useModel;
 	}
 	
