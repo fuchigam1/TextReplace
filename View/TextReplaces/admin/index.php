@@ -73,6 +73,26 @@ if ($searchType === 'search-and-replace') {
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tbody>
 		<tr>
+			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_all', '全て選択') ?></th>
+			<td class="col-input">
+				<?php echo $this->BcForm->input('TextReplace.check_all', array('type' => 'checkbox', 'label' => '検索置換対象全てにチェックを入れる')); ?>
+				<?php echo $this->BcForm->error('TextReplace.check_all') ?>
+				<small>「対象」はクリックした対象名の範囲全てに対して チェックを入れる／外す ことができます。</small>
+			</td>
+		</tr>
+		<tr>
+			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?></th>
+			<td class="col-input target-check">
+				<?php echo $this->BcForm->input('TextReplace.replace_target', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $replaceTarget)); ?>
+				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<table cellpadding="0" cellspacing="0" class="form-table section">
+	<tbody>
+		<tr>
 			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.search_pattern', '検索語句') ?></th>
 			<td class="col-input">
 				<?php echo $this->BcForm->input('TextReplace.search_pattern', array('type' => 'text', 'size' => '76')) ?>
@@ -104,27 +124,6 @@ if ($searchType === 'search-and-replace') {
 		</tr>
 	</tbody>
 </table>
-
-<table cellpadding="0" cellspacing="0" class="form-table section">
-	<tbody>
-		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_all', '全て選択') ?></th>
-			<td class="col-input">
-				<?php echo $this->BcForm->input('TextReplace.check_all', array('type' => 'checkbox', 'label' => '検索置換対象全てにチェックを入れる')); ?>
-				<?php echo $this->BcForm->error('TextReplace.check_all') ?>
-				<small>「モデル名」をクリックすると、クリックしたモデル名の範囲全てに対して チェックを入れる／外す ことができます。</small>
-			</td>
-		</tr>
-		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?></th>
-			<td class="col-input target-check">
-				<?php echo $this->BcForm->input('TextReplace.replace_target', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $replaceTarget)); ?>
-				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
 
 <?php echo $this->BcForm->input('TextReplace.type', array('type' => 'hidden', 'value' => '')) ?>
 <div class="submit">
