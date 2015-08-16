@@ -125,7 +125,7 @@ if ($searchType === 'search-and-replace') {
 					$pluginPath = App::pluginPath('TextReplace');
 					$path = $pluginPath .'Config'. DS;
 				?>
-				<ul class="size-small">
+				<ul>
 				<?php foreach ($settingFiles as $settingFile): ?>
 					<li><?php echo $path . $settingFile ?></li>
 				<?php endforeach ?>
