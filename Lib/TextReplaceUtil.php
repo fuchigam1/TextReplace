@@ -236,4 +236,23 @@ class TextReplaceUtil extends Object
 		return $searchTarget;
 	}
 	
+	/**
+	 * 独自の設定ファイルが存在するかチェックする
+	 * - /Plugin/TextReplace/Config 内に置いたphpファイルの存在をチェックする
+	 * 
+	 * @return boolean
+	 */
+	public static function hasOriginalSetting() {
+		$pluginPath = App::pluginPath('TextReplace');
+		$path = $pluginPath .'Config'. DS;
+		$dir = new Folder($path);
+		$files = $dir->find('.*\.php');
+		foreach ($files as $file) {
+			if ($file !== 'setting.php') {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

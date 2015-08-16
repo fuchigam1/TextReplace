@@ -106,7 +106,12 @@ if ($searchType === 'search-and-replace') {
 			</td>
 		</tr>
 		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?></th>
+			<th class="col-head">
+				<?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?>
+				<?php if (TextReplaceUtil::hasOriginalSetting()): ?>
+					<p class="annotation-text-green"><small>独自のテキスト置換用設定有り</small></p>
+				<?php endif ?>
+			</th>
 			<td class="col-input target-check">
 				<?php echo $this->BcForm->input('TextReplace.replace_target', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $replaceTarget)); ?>
 				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
