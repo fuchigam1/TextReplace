@@ -70,21 +70,21 @@ class TextReplacesController extends BcPluginAppController
 	 * 
 	 * @var boolean
 	 */
-	public $hasFieldError = false;
+	private $hasFieldError = false;
 	
 	/**
 	 * 設定ファイルのフィールド指定に誤りがある場合のメッセージ
 	 * 
 	 * @var string
 	 */
-	public $errorFieldInfo = '';
+	private $errorFieldInfo = '';
 	
 	/**
 	 * 設定ファイルの設定値
 	 * 
 	 * @var array
 	 */
-	public $pluginSetting = array();
+	protected $pluginSetting = array();
 	
 	/**
 	 * beforeFilter
