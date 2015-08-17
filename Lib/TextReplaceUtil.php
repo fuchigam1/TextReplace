@@ -243,8 +243,7 @@ class TextReplaceUtil extends Object
 	 * @return boolean
 	 */
 	public static function hasOriginalSetting() {
-		$pluginPath = App::pluginPath('TextReplace');
-		$path = $pluginPath .'Config'. DS;
+		$path = self::getPluginPath() .'Config'. DS;
 		$dir = new Folder($path);
 		$files = $dir->find('.*\.php');
 		
@@ -255,6 +254,15 @@ class TextReplaceUtil extends Object
 			}
 		}
 		return $settingFiles;
+	}
+	
+	/**
+	 * TextReplaceプラグインのパスを取得する
+	 * 
+	 * @return string
+	 */
+	public static function getPluginPath() {
+		return App::pluginPath('TextReplace');
 	}
 	
 }

@@ -118,14 +118,10 @@ if ($searchType === 'search-and-replace') {
 		<?php if ($settingFiles): ?>
 		<tr>
 			<th class="col-head">
-				<p class="annotation-text-green"><small>独自のテキスト置換用設定有り</small></p>
+				<p class="annotation-text-green"><small>追加設定ファイル有り</small></p>
 			</th>
 			<td class="col-input target-check">
-				<?php
-					$pluginPath = App::pluginPath('TextReplace');
-					$path = $pluginPath .'Config'. DS;
-				?>
-				<ul>
+				<ul><?php $path = TextReplaceUtil::getPluginPath() .'Config'. DS ?>
 				<?php foreach ($settingFiles as $settingFile): ?>
 					<li><?php echo $path . $settingFile ?></li>
 				<?php endforeach ?>
