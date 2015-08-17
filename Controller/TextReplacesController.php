@@ -97,16 +97,14 @@ class TextReplacesController extends BcPluginAppController
 	}
 	
 	/**
-	 * [ADMIN] 検索、置換確認
+	 * 初期化処理
+	 * - 設定不備をチェックする
 	 * 
 	 */
-	public function admin_index()
+	private function init()
 	{
-		$this->help = 'text_replaces_index';
-		$this->pageTitle = 'テキスト置換処理';
-		
-		$setting = $this->pluginSetting;
-		TextReplaceUtil::init($setting);	// 設定ファイルのモデル指定から、利用可能なモデルと不可のモデルを設定する
+		// 設定ファイルのモデル指定から、利用可能なモデルと不可のモデルを設定する
+		TextReplaceUtil::init($this->pluginSetting);
 		
 		$disabledModelList = TextReplaceUtil::getDisabledModel();
 		if ($disabledModelList) {
@@ -117,14 +115,23 @@ class TextReplacesController extends BcPluginAppController
 		$useModel = TextReplaceUtil::getEnabledModel();
 		$this->uses = Hash::merge($this->uses, $useModel);
 		
-		// 検索置換対象の指定内容を作成
-		$replaceTarget = TextReplaceUtil::getReplaceTarget($setting);
-		
 		// 設定ファイルのフィールド指定にエラーがないかチェックする
-		$this->hasFieldError = $this->hasFieldError($setting);
+		$this->hasFieldError = $this->hasFieldError($this->pluginSetting);
 		if ($this->hasFieldError) {
 			$this->setMessage($this->errorFieldInfo, true);
 		}
+	}
+	
+	/**
+	 * [ADMIN] 検索、置換確認
+	 * 
+	 */
+	public function admin_index()
+	{
+		$this->help = 'text_replaces_index';
+		$this->pageTitle = 'テキスト置換処理';
+		
+		$this->init();
 		
 		$datas = array();	// 検索結果一覧のデータ
 		$searchText = '';
@@ -134,115 +141,104 @@ class TextReplacesController extends BcPluginAppController
 		$message = '';
 		
 		if ($this->request->data) {
-			if (!$this->request->data['TextReplace']['search_pattern']) {
-				$this->setMessage('検索語句を指定してください。', true);
-				$this->redirect(array('action' => 'index'));
-			}
-			if (!$this->request->data['TextReplace']['replace_target']) {
-				$this->setMessage('検索置換対象を指定してください。', true);
-				$this->redirect(array('action' => 'index'));
-			}
-			
-			$searchText = $this->request->data['TextReplace']['search_pattern'];	// 検索語句
-			$replaceText = $this->request->data['TextReplace']['replace_pattern'];	// 置換後
-			$useRegex = $this->request->data['TextReplace']['search_regex'];		// 正規表現の利用指定
-			$searchType = $this->request->data['TextReplace']['type'];				// 検索タイプ
-			$countResult = 0;	// 検索結果数
-			
-			// 実行ボタン別に処理を行う
-			switch ($this->request->data['TextReplace']['type']) {
-				case 'search-and-replace':
-					if (!empty($this->request->data['ReplaceTarget'])) {
-						clearAllCache();
-						foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
-							$valueKey = key($value);
-							$searchTarget = TextReplaceUtil::splitName($valueKey);
-							$targetModel = $searchTarget['modelName'];
-							$targetField = $searchTarget['field'];
-							
-							$originalData = $this->{$targetModel}->find('first', array(
-								'conditions' => array($targetModel .'.id' => $value[$valueKey]),
-								'fields' => array('id', $targetField),
-								'recursive' => -1,
-							));
+			if (!$this->isNoinputSearchReplace($this->request->data)) {
+				
+				$searchText = $this->request->data['TextReplace']['search_pattern'];	// 検索語句
+				$replaceText = $this->request->data['TextReplace']['replace_pattern'];	// 置換後
+				$useRegex = $this->request->data['TextReplace']['search_regex'];		// 正規表現の利用指定
+				$searchType = $this->request->data['TextReplace']['type'];				// 検索タイプ
+				$countResult = 0;	// 検索結果数
+				
+				// 実行ボタン別に処理を行う
+				switch ($this->request->data['TextReplace']['type']) {
+					case 'search-and-replace':
+						if (!empty($this->request->data['ReplaceTarget'])) {
+							clearAllCache();
+							foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
+								$valueKey = key($value);
+								$searchTarget = TextReplaceUtil::splitName($valueKey);
+								$targetModel = $searchTarget['modelName'];
+								$targetField = $searchTarget['field'];
 
-							$data = $this->getReplaceData($originalData, $searchText, $replaceText,
-									array(
-										'search_regex' => $useRegex,
-										'target_model' => $targetModel,
-										'target_field' => $targetField,
-									)
-							);
-							
-							//$saveResult = true;
-							$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
-							if($saveResult) {
-								// save したデータのログを取る
-								$this->log($originalData, LOG_TEXT_REPLACE_BEFORE);
-								$this->log($saveResult, LOG_TEXT_REPLACE);
-								
-								$datas[$targetModel][$targetField][] = $originalData;
-								$countResult++;
+								$originalData = $this->{$targetModel}->find('first', array(
+									'conditions' => array($targetModel .'.id' => $value[$valueKey]),
+									'fields' => array('id', $targetField),
+									'recursive' => -1,
+								));
+
+								$data = $this->getReplaceData($originalData, $searchText, $replaceText,
+										array(
+											'search_regex' => $useRegex,
+											'target_model' => $targetModel,
+											'target_field' => $targetField,
+										)
+								);
+
+								//$saveResult = true;
+								$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
+								if($saveResult) {
+									// save したデータのログを取る
+									$this->log($originalData, LOG_TEXT_REPLACE_BEFORE);
+									$this->log($saveResult, LOG_TEXT_REPLACE);
+
+									$datas[$targetModel][$targetField][] = $originalData;
+									$countResult++;
+								}
+								unset($originalData);
 							}
-							unset($originalData);
+							$message = '検索置換を実行しました。';
+							$this->setMessage($message);
+						} else {
+							$message = '置換対象が選択されていません。';
 						}
-						$message = '検索置換を実行しました。';
-						$this->setMessage($message);
+						break;
+
+					case 'search':
+					case 'dryrun':
+					default:
 						clearAllCache();
-					} else {
-						$message = '置換対象が選択されていません。';
-					}
-					break;
-					
-				case 'search':
-				case 'dryrun':
-				default:
-					clearAllCache();
-					foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
-						$searchTarget = TextReplaceUtil::splitName($value);
-						
-						// 検索置換対象指定から、モデル別に検索語句を含むデータを全て取得する
-						$allData = $this->getSearchResult($searchTarget['modelName'], $searchTarget['field'], $searchText,
-								array('use_regex' => $useRegex)
-						);
-						
-						if ($allData) {
-							if (!$useRegex) {
-								// 正規表現検索を利用しない場合、単純に検索結果データに入れ込む
-								$datas[$searchTarget['modelName']][$searchTarget['field']] = $allData;
-								$countResult = $countResult + count($allData);
-							} else {
-								$result = array();
-								foreach ($allData as $resultKey => $resultValue) {
-									// 正規表現検索を利用する場合、検索にヒットしたデータの文字列内に、パターン(検索語句)にマッチするデータがあるか判定する
-									// ヒットした場合: データ内の、パターン(検索語句)にマッチする文字列をコールバック関数を利用して書き換える
-									if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
-										// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
-										$allData[$resultKey][$searchTarget['modelName']][$searchTarget['field']] = preg_replace_callback(
-												$searchText,
-												array($this, 'replaceHitString'),
-												$resultValue[$searchTarget['modelName']][$searchTarget['field']]
-										);
-										$result[] = $allData[$resultKey];
+						foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
+							$searchTarget = TextReplaceUtil::splitName($value);
+
+							// 検索置換対象指定から、モデル別に検索語句を含むデータを全て取得する
+							$allData = $this->getSearchResult($searchTarget['modelName'], $searchTarget['field'], $searchText,
+									array('use_regex' => $useRegex)
+							);
+
+							if ($allData) {
+								if (!$useRegex) {
+									// 正規表現検索を利用しない場合、単純に検索結果データに入れ込む
+									$datas[$searchTarget['modelName']][$searchTarget['field']] = $allData;
+									$countResult = $countResult + count($allData);
+								} else {
+									$result = array();
+									foreach ($allData as $resultKey => $resultValue) {
+										// 正規表現検索を利用する場合、検索にヒットしたデータの文字列内に、パターン(検索語句)にマッチするデータがあるか判定する
+										// ヒットした場合: データ内の、パターン(検索語句)にマッチする文字列をコールバック関数を利用して書き換える
+										if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
+											// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
+											$allData[$resultKey][$searchTarget['modelName']][$searchTarget['field']] = preg_replace_callback(
+													$searchText,
+													array($this, 'replaceHitString'),
+													$resultValue[$searchTarget['modelName']][$searchTarget['field']]
+											);
+											$result[] = $allData[$resultKey];
+										}
 									}
-//									if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
-//										$result[] = $allData[$resultKey];
-//									}
-								}
-								if ($result) {
-									$datas[$searchTarget['modelName']][$searchTarget['field']] = $result;
-									$countResult = $countResult + count($result);
+									if ($result) {
+										$datas[$searchTarget['modelName']][$searchTarget['field']] = $result;
+										$countResult = $countResult + count($result);
+									}
 								}
 							}
 						}
-					}
-					$message = '該当する検索語句がありませんでした。';
-					clearAllCache();
-					break;
-			}
-			
-			if (!$countResult) {
-				$this->setMessage($message, true);
+						$message = '該当する検索語句がありませんでした。';
+						break;
+				}
+
+				if (!$countResult) {
+					$this->setMessage($message, true);
+				}
 			}
 		}
 		
@@ -253,8 +249,30 @@ class TextReplacesController extends BcPluginAppController
 			$query = array($searchText);
 		}
 		
+		// 検索置換対象の指定内容を作成
+		$replaceTarget = TextReplaceUtil::getReplaceTarget($this->pluginSetting);
+		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
 		$this->set('datas', $datas);
+	}
+	
+	/**
+	 * 検索語句に指定があるかチェックする
+	 * 
+	 * @param array $data
+	 * @return boolean
+	 */
+	private function isNoinputSearchReplace($data)
+	{
+		if (!$data['TextReplace']['search_pattern']) {
+			$this->setMessage('検索語句を指定してください。', true);
+			return true;
+		}
+		if (!$data['TextReplace']['replace_target']) {
+			$this->setMessage('検索置換対象を指定してください。', true);
+			return true;
+		}
+		return false;
 	}
 	
 	/**
