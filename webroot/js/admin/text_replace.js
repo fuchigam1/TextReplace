@@ -14,17 +14,11 @@ $(function () {
 	// 検索ボタン 実行時
 	$('#BtnTypeSearch').on('click', function(){
 		$('#TextReplaceType').val('search');
-//			if (!confirm('検索置換対象の指定内容で、検索語句を一括検索します。\n宜しいですか？')) {
-//				return false;
-//			}
 	});
 
 	// 置換確認ボタン 実行時
 	$('#BtnTypeDryrun').on('click', function(){
 		$('#TextReplaceType').val('dryrun');
-//			if (!confirm('検索置換対象の指定内容で、検索語句を一括検索し、置換後の状態を表示します。\n宜しいですか？')) {
-//				return false;
-//			}
 	});
 
 	// 置換＆保存ボタン 実行時
@@ -58,7 +52,6 @@ $(function () {
 
 	// モデル別の検索結果を開閉する
 	$('.box-model-result h3').on('click', function(){
-		console.log($(this).next());
 		$(this).next().slideToggle();
 	});
 
@@ -80,7 +73,7 @@ $(function () {
 		$(this).parent().children('h3').append(count + '件');
 	});
 
-	// 検索フィールドの結果テキストの検索語句にマークを付ける
+	// @TODO 検索フィールドの結果テキストの検索語句にマークを付ける
 	$('.box-field-result-all').each(function(){
 		$(this).find('.box-field-result').find('.replace-before').each(function(){
 			var text = $(this).html();
