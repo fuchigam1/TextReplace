@@ -6,6 +6,10 @@
  * @package			TextReplace
  * @license			MIT
  */
+$(window).load(function() {
+	$("#TextReplaceCheckAll").focus();
+});
+
 $(function () {
 
 	/**
@@ -23,6 +27,63 @@ $(function () {
 			$('#SearchRegexChecked').animate({opacity: 'hide'}, 'fast');
 		}
 	}
+
+	/**
+	 * 検索置換対象の指定の操作
+	 */
+	// 「対象」にチェックボックスを備える
+	$('.target-check legend').each(function(){
+		var $input = $('<input type="checkbox" class="model-range" />').attr("checked", false);
+		// legend の対象テキスト: console.log($(this).html());
+		$(this).prepend($input);
+	});
+
+	// 「対象」配下全てにチェックボックスが入ってる場合は、その「対象」にチェックを入れる（検索・置換実行後のための制御）
+	$('.target-check fieldset legend').each(function(){
+		$(this).parent().find('.checkbox input[type=checkbox]').each(function(){
+			isChecked = false;
+			if ($(this).prop('checked')) {
+				isChecked = true;
+			}
+		});
+		if (isChecked) {
+			// 動的に付与した「対象」チェックボックスを操作する
+			$(this).parent().find('input.model-range').prop('checked', true);
+		} else {
+			// 動的に付与した「対象」チェックボックスを操作する
+			$(this).parent().find('input.model-range').prop('checked', false);
+		}
+	});		
+
+
+	// 検索置換対象のチェックボックスを全てチェックする
+	$('#TextReplaceCheckAll').on('click', function(){
+		if ($(this).prop('checked')) {
+			$('.target-check input[type=checkbox]').prop('checked', true);
+		} else {
+			$('.target-check input[type=checkbox]').prop('checked', false);
+		}
+	});
+
+	// 検索置換対象のモデル単位で、チェックボックスを全てチェックする／チェック外す
+	$('.target-check fieldset legend').on('click', function(){
+		$(this).parent().find('.checkbox input[type=checkbox]').each(function(){
+			isChecked = false;
+			if ($(this).prop('checked')) {
+				isChecked = true;
+			}
+		});
+		if (isChecked) {
+			$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', false);
+			// 動的に付与した「対象」チェックボックスを操作する
+			$(this).parent().find('input.model-range').prop('checked', false);
+		} else {
+			$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', true);
+			// 動的に付与した「対象」チェックボックスを操作する
+			$(this).parent().find('input.model-range').prop('checked', true);
+		}
+	});
+
 
 	/**
 	 * 検索・置換ボタン実行時の操作

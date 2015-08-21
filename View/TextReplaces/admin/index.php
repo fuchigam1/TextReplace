@@ -26,68 +26,6 @@ if ($searchType === 'search-and-replace') {
 	$isSearchAndReplace = true;
 }
 ?>
-<script type="text/javascript">
-	$(window).load(function() {
-		$("#TextReplaceSearchPattern").focus();
-	});
-
-	$(function () {
-
-		// 「対象」にチェックボックスを備える
-		$('.target-check legend').each(function(){
-			var $input = $('<input type="checkbox" class="model-range" />').attr("checked", false);
-			// legend の対象テキスト: console.log($(this).html());
-			$(this).prepend($input);
-		});
-		
-		// 「対象」配下全てにチェックボックスが入ってる場合は、その「対象」にチェックを入れる（検索・置換実行後のための制御）
-		$('.target-check fieldset legend').each(function(){
-			$(this).parent().find('.checkbox input[type=checkbox]').each(function(){
-				isChecked = false;
-				if ($(this).prop('checked')) {
-					isChecked = true;
-				}
-			});
-			if (isChecked) {
-				// 動的に付与した「対象」チェックボックスを操作する
-				$(this).parent().find('input.model-range').prop('checked', true);
-			} else {
-				// 動的に付与した「対象」チェックボックスを操作する
-				$(this).parent().find('input.model-range').prop('checked', false);
-			}
-		});		
-		
-
-		// 検索置換対象のチェックボックスを全てチェックする
-		$('#TextReplaceCheckAll').on('click', function(){
-			if ($(this).prop('checked')) {
-				$('.target-check input[type=checkbox]').prop('checked', true);
-			} else {
-				$('.target-check input[type=checkbox]').prop('checked', false);
-			}
-		});
-
-		// 検索置換対象のモデル単位で、チェックボックスを全てチェックする／チェック外す
-		$('.target-check fieldset legend').on('click', function(){
-			$(this).parent().find('.checkbox input[type=checkbox]').each(function(){
-				isChecked = false;
-				if ($(this).prop('checked')) {
-					isChecked = true;
-				}
-			});
-			if (isChecked) {
-				$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', false);
-				// 動的に付与した「対象」チェックボックスを操作する
-				$(this).parent().find('input.model-range').prop('checked', false);
-			} else {
-				$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', true);
-				// 動的に付与した「対象」チェックボックスを操作する
-				$(this).parent().find('input.model-range').prop('checked', true);
-			}
-		});
-
-	});
-</script>
 
 <div id="BtnTypeSearchAndReplaceDialog" title="置換＆保存" class="display-none">
 	<p><strong>置換＆保存を実行します。よろしいですか？</strong></p><br />
