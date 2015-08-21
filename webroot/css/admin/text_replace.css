@@ -5,6 +5,10 @@
  */
 /* 検索置換対象の指定
 -------------------------------- */
+label[for=TextReplaceCheckAll] {
+	cursor: pointer;
+}
+
 .target-check fieldset legend {
 	font-weight: bold;
 	cursor: pointer;
@@ -18,14 +22,34 @@
 }
 
 
+/* 検索指定欄
+-------------------------------- */
+label[for=TextReplaceSearchRegex] {
+	cursor: pointer;
+	line-height: 2.5em;
+}
+
+
 /* 検索結果表示
 -------------------------------- */
+#helpTextReplaceInsight {
+	cursor: pointer;
+}
+
+label[for=TextReplaceCheckBoxModelResult] {
+	cursor: pointer;
+}
+
 .box-field-result table tr td strong {
 	font-weight: bold;
 	color: #c00;
 }
 .box-field-result table tr td.replace-after strong {
 	background-color: #EDF8C9;
+}
+
+.box-field-result-all label {
+	cursor: pointer;
 }
 
 
