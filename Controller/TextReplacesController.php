@@ -105,11 +105,14 @@ class TextReplacesController extends BcPluginAppController
 	{
 		// 設定ファイルのモデル指定から、利用可能なモデルと不可のモデルを設定する
 		TextReplaceUtil::init($this->pluginSetting);
+		$isEnableSearch = true;		// 検索実行可能判定
+	
 		
 		$disabledModelList = TextReplaceUtil::getDisabledModel();
 		if ($disabledModelList) {
 			$disabledModel = implode('、', $disabledModelList);
 			$this->setMessage('設定ファイルに利用できないモデルの指定があります。<br>（'. $disabledModel .'）', true);
+			$isEnableSearch = false;
 		}
 		
 		$useModel = TextReplaceUtil::getEnabledModel();
@@ -119,7 +122,10 @@ class TextReplacesController extends BcPluginAppController
 		$this->hasFieldError = $this->hasFieldError($this->pluginSetting);
 		if ($this->hasFieldError) {
 			$this->setMessage($this->errorFieldInfo, true);
+			$isEnableSearch = false;
 		}
+		
+		$this->set('isEnableSearch', $isEnableSearch);
 	}
 	
 	/**

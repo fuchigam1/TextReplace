@@ -167,6 +167,7 @@ if ($searchType === 'search-and-replace') {
 	</tbody>
 </table>
 
+<?php if ($isEnableSearch): ?>
 <?php echo $this->BcForm->input('TextReplace.type', array('type' => 'hidden', 'value' => '')) ?>
 <div class="submit">
 	<?php $confirmMessageSearch = '検索置換対象の指定内容で、検索語句を一括検索します。\n宜しいですか？' ?>
@@ -178,6 +179,7 @@ if ($searchType === 'search-and-replace') {
 	<?php echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button')) ?>
 </div>
 <?php //echo $this->BcForm->end() ?>
+<?php endif ?>
 
 
 
