@@ -160,6 +160,7 @@ class TextReplacesController extends BcPluginAppController
 					case 'search-and-replace':
 						if (!empty($this->request->data['ReplaceTarget'])) {
 							clearAllCache();
+							$hasPageSaveResult = false;		// 固定ページのデータ置換の有無
 							foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
 								$valueKey = key($value);
 								$searchTarget = TextReplaceUtil::splitName($valueKey);
@@ -186,10 +187,16 @@ class TextReplacesController extends BcPluginAppController
 									$this->saveLogging(array('original' => $originalData, 'save_result' => $saveResult));
 									$datas[$targetModel][$targetField][] = $originalData;
 									$countResult++;
+									if ($targetModel === 'Page') {
+										$hasPageSaveResult = true;
+									}
 								}
 								unset($originalData);
 							}
 							$message = '検索置換を実行しました。';
+							if ($hasPageSaveResult) {
+								$message .= '「固定ページテンプレート書出」を実行してください。';
+							}
 							$this->setMessage($message);
 						} else {
 							$message = '置換対象が選択されていません。';
