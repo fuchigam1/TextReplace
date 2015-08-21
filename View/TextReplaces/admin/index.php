@@ -147,7 +147,8 @@ if ($searchType === 'search-and-replace') {
 				</div>
 				<?php echo $this->BcForm->error('TextReplace.search') ?>
 				<br />
-				<?php echo $this->BcForm->input('TextReplace.search_regex', array('type' => 'checkbox', 'label' => '正規表現を利用する（デリミタ「/〜/」を付けてください）')); ?>
+				<?php echo $this->BcForm->input('TextReplace.search_regex', array('type' => 'checkbox', 'label' => '正規表現を利用する')); ?>
+				<small id="SearchRegexChecked">（デリミタ「/〜/」を付けてください）</small>
 				<?php echo $this->BcForm->error('TextReplace.search_regex') ?>
 			</td>
 		</tr>

@@ -9,6 +9,22 @@
 $(function () {
 
 	/**
+	 * 検索時の正規表現利用チェック時の操作
+	 */
+	searchRegexCheckHandler();
+	$('#TextReplaceSearchRegex').parent('label').on('click', function(){
+		searchRegexCheckHandler();
+	});
+
+	function searchRegexCheckHandler() {
+		if ($('#TextReplaceSearchRegex').prop('checked')) {
+			$('#SearchRegexChecked').animate({opacity: 'show'}, 'slow');
+		} else {
+			$('#SearchRegexChecked').animate({opacity: 'hide'}, 'fast');
+		}
+	}
+
+	/**
 	 * 検索・置換ボタン実行時の操作
 	 */
 	// 検索ボタン 実行時
