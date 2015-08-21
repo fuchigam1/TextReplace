@@ -183,10 +183,7 @@ class TextReplacesController extends BcPluginAppController
 								//$saveResult = true;
 								$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
 								if($saveResult) {
-									// save したデータのログを取る
-									$this->log($originalData, LOG_TEXT_REPLACE_BEFORE);
-									$this->log($saveResult, LOG_TEXT_REPLACE);
-
+									$this->saveLogging(array('original' => $originalData, 'save_result' => $saveResult));
 									$datas[$targetModel][$targetField][] = $originalData;
 									$countResult++;
 								}
@@ -260,6 +257,28 @@ class TextReplacesController extends BcPluginAppController
 		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
 		$this->set('datas', $datas);
+	}
+	
+	/**
+	 * 実行結果をログファイルに保存する
+	 * 
+	 * @param array $options
+	 */
+	private function saveLogging($options = array())
+	{
+		$_options = array(
+			'original' => array(),
+			'save_result' => array(),
+		);
+		$options = Hash::merge($_options, $options);
+		
+		// save したデータのログを取る
+		if ($options['original']) {
+			$this->log($options['original'], LOG_TEXT_REPLACE_BEFORE);
+		}
+		if ($options['save_result']) {
+			$this->log($options['save_result'], LOG_TEXT_REPLACE);
+		}
 	}
 	
 	/**
