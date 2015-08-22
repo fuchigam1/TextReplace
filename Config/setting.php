@@ -79,6 +79,14 @@ $config['TextReplace'] = array(
 				'Content.detail' => '記事本文',
 			),
 		),
+//		'PageCategory' => array(
+//			'name' => 'PageCategory',
+//			'title' => '固定ページカテゴリ',
+//			'fields' => array(
+//				'PageCategory.name' => 'ページカテゴリ名',
+//				'PageCategory.title' => 'ページカテゴリタイトル',
+//			),
+//		),
 //		'Blog.BlogContent' => array(
 //			'name' => 'BlogContent',
 //			'title' => 'ブログ記事',
