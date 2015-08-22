@@ -159,39 +159,34 @@ class TextReplacesController extends BcPluginAppController
 				switch ($this->request->data['TextReplace']['type']) {
 					case 'search-and-replace':
 						if (!empty($this->request->data['ReplaceTarget'])) {
-							clearAllCache();
 							$hasPageSaveResult = false;		// 固定ページのデータ置換の有無
+							clearAllCache();
 							foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
-								$valueKey = key($value);
-								$searchTarget = TextReplaceUtil::splitName($valueKey);
-								$targetModel = $searchTarget['modelName'];
-								$targetField = $searchTarget['field'];
+								$target = $this->getTargetModelField($value);
+								$targetModel = $target['modelName'];
+								$targetField = $target['field'];
+								
+								$originalData = $this->getModelData($value);
+								if ($originalData) {
+									$data = $this->getReplaceData($originalData, $searchText, $replaceText,
+											array(
+												'search_regex' => $useRegex,
+												'target_model' => $targetModel,
+												'target_field' => $targetField,
+											)
+									);
 
-								$originalData = $this->{$targetModel}->find('first', array(
-									'conditions' => array($targetModel .'.id' => $value[$valueKey]),
-									'fields' => array('id', $targetField),
-									'recursive' => -1,
-								));
-
-								$data = $this->getReplaceData($originalData, $searchText, $replaceText,
-										array(
-											'search_regex' => $useRegex,
-											'target_model' => $targetModel,
-											'target_field' => $targetField,
-										)
-								);
-
-								//$saveResult = true;
-								$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
-								if($saveResult) {
-									$this->saveLogging(array('original' => $originalData, 'save_result' => $saveResult));
-									$datas[$targetModel][$targetField][] = $originalData;
-									$countResult++;
-									if ($targetModel === 'Page') {
-										$hasPageSaveResult = true;
+									//$saveResult = true;
+									$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
+									if ($saveResult) {
+										$this->saveLogging(array('original' => $originalData, 'save_result' => $saveResult));
+										$datas[$targetModel][$targetField][] = $originalData;
+										$countResult++;
+										if ($targetModel === 'Page') {
+											$hasPageSaveResult = true;
+										}
 									}
 								}
-								unset($originalData);
 							}
 							$message = '検索置換を実行しました。';
 							if ($hasPageSaveResult) {
@@ -266,6 +261,40 @@ class TextReplacesController extends BcPluginAppController
 		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
 		$this->set('datas', $datas);
+	}
+	
+	/**
+	 * 検索・置換対象のモデル名とフィールド名と取得する
+	 * 
+	 * @param array $modelField array(Model.field => id値)
+	 * @return array
+	 */
+	private function getTargetModelField($modelField)
+	{
+		$valueKey = key($modelField);
+		$searchTarget = TextReplaceUtil::splitName($valueKey);
+		return $searchTarget;
+	}
+	
+	/**
+	 * モデル名.フィールド名 と id値 からデータを取得する
+	 * 
+	 * @param array $modelField array(Model.field => id値)
+	 */
+	private function getModelData($modelField)
+	{
+		$valueKey = key($modelField);
+		$searchTarget = $this->getTargetModelField($modelField);
+		$targetModel = $searchTarget['modelName'];
+		$targetField = $searchTarget['field'];
+		
+		$originalData = $this->{$targetModel}->find('first', array(
+			'conditions' => array($targetModel .'.id' => $modelField[$valueKey]),
+			'fields' => array('id', $targetField),
+			'recursive' => -1,
+		));
+		
+		return $originalData;
 	}
 	
 	/**
