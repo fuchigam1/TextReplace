@@ -16,7 +16,7 @@ $(function () {
 	 * 検索時の正規表現利用チェック時の操作
 	 */
 	searchRegexCheckHandler();
-	$('#TextReplaceSearchRegex').parent('label').on('click', function(){
+	$('#SearchRegexChecked, label[for=TextReplaceSearchRegex], #TextReplaceSearchRegex').on('click', function(){
 		searchRegexCheckHandler();
 	});
 
