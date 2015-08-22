@@ -8,7 +8,7 @@
  * @license			MIT
  */
 $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
-$this->BcBaser->js(array('TextReplace.admin/text_replace'), array('inline' => false));
+$this->BcBaser->js(array('TextReplace.admin/text_replace'), false);
 
 $this->TextReplace->searchText = $searchText;
 $this->TextReplace->replaceText = $replaceText;
