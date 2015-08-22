@@ -209,34 +209,36 @@ class TextReplacesController extends BcPluginAppController
 						clearAllCache();
 						foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
 							$searchTarget = TextReplaceUtil::splitName($value);
-
+							$targetModel = $searchTarget['modelName'];
+							$targetField = $searchTarget['field'];
+							
 							// 検索置換対象指定から、モデル別に検索語句を含むデータを全て取得する
-							$allData = $this->getSearchResult($searchTarget['modelName'], $searchTarget['field'], $searchText,
+							$allData = $this->getSearchResult($targetModel, $targetField, $searchText,
 									array('use_regex' => $useRegex)
 							);
 
 							if ($allData) {
 								if (!$useRegex) {
 									// 正規表現検索を利用しない場合、単純に検索結果データに入れ込む
-									$datas[$searchTarget['modelName']][$searchTarget['field']] = $allData;
+									$datas[$targetModel][$targetField] = $allData;
 									$countResult = $countResult + count($allData);
 								} else {
 									$result = array();
 									foreach ($allData as $resultKey => $resultValue) {
 										// 正規表現検索を利用する場合、検索にヒットしたデータの文字列内に、パターン(検索語句)にマッチするデータがあるか判定する
 										// ヒットした場合: データ内の、パターン(検索語句)にマッチする文字列をコールバック関数を利用して書き換える
-										if (preg_match($searchText, $resultValue[$searchTarget['modelName']][$searchTarget['field']])) {
+										if (preg_match($searchText, $resultValue[$targetModel][$targetField])) {
 											// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
-											$allData[$resultKey][$searchTarget['modelName']][$searchTarget['field']] = preg_replace_callback(
+											$allData[$resultKey][$targetModel][$targetField] = preg_replace_callback(
 													$searchText,
 													array($this, 'replaceHitString'),
-													$resultValue[$searchTarget['modelName']][$searchTarget['field']]
+													$resultValue[$targetModel][$targetField]
 											);
 											$result[] = $allData[$resultKey];
 										}
 									}
 									if ($result) {
-										$datas[$searchTarget['modelName']][$searchTarget['field']] = $result;
+										$datas[$targetModel][$targetField] = $result;
 										$countResult = $countResult + count($result);
 									}
 								}
