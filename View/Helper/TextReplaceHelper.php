@@ -54,7 +54,7 @@ class TextReplaceHelper extends AppHelper
 	 */
 	public static function setSelfValue()
 	{
-		self::$pluginSetting = Configure::read('TextReplace.target');
+		self::$pluginSetting = Configure::read('TextReplace');
 	}
 	
 	/**
@@ -64,7 +64,7 @@ class TextReplaceHelper extends AppHelper
 	 */
 	public function getModelList()
 	{
-		$setting = self::$pluginSetting;
+		$setting = self::$pluginSetting['target'];
 		$list = array();
 		foreach ($setting as $model => $fieldData) {
 			$list[$fieldData['name']] = $fieldData['title'];

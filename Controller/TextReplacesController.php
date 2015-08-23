@@ -93,7 +93,7 @@ class TextReplacesController extends BcPluginAppController
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
-		$this->pluginSetting = Configure::read('TextReplace.target');
+		$this->pluginSetting = Configure::read('TextReplace');
 	}
 	
 	/**
@@ -104,9 +104,8 @@ class TextReplacesController extends BcPluginAppController
 	private function init()
 	{
 		// 設定ファイルのモデル指定から、利用可能なモデルと不可のモデルを設定する
-		TextReplaceUtil::init($this->pluginSetting);
+		TextReplaceUtil::init($this->pluginSetting['target']);
 		$isEnableSearch = true;		// 検索実行可能判定
-	
 		
 		$disabledModelList = TextReplaceUtil::getDisabledModel();
 		if ($disabledModelList) {
@@ -119,7 +118,7 @@ class TextReplacesController extends BcPluginAppController
 		$this->uses = Hash::merge($this->uses, $useModel);
 		
 		// 設定ファイルのフィールド指定にエラーがないかチェックする
-		$this->hasFieldError = $this->hasFieldError($this->pluginSetting);
+		$this->hasFieldError = $this->hasFieldError($this->pluginSetting['target']);
 		if ($this->hasFieldError) {
 			$this->setMessage($this->errorFieldInfo, true);
 			$isEnableSearch = false;
@@ -247,6 +246,8 @@ class TextReplacesController extends BcPluginAppController
 					$this->setMessage($message, true);
 				}
 			}
+		} else {
+			$this->setDefaultSearchTarget();
 		}
 		
 		$query = array();
@@ -257,10 +258,22 @@ class TextReplacesController extends BcPluginAppController
 		}
 		
 		// 検索置換対象の指定内容を作成
-		$replaceTarget = TextReplaceUtil::getReplaceTarget($this->pluginSetting);
+		$replaceTarget = TextReplaceUtil::getReplaceTarget($this->pluginSetting['target']);
 		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
 		$this->set('datas', $datas);
+	}
+	
+	/**
+	 * 検索置換対象の指定 の初期値を設定する
+	 * 
+	 */
+	private function setDefaultSearchTarget()
+	{
+		$defaultTarget = $this->pluginSetting['default_replace_target'];
+		if ($defaultTarget) {
+			$this->request->data['TextReplace']['replace_target'] = $defaultTarget;
+		}
 	}
 	
 	/**

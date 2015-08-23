@@ -122,7 +122,21 @@ $config['TextReplace'] = array(
 //				),
 //		),
 	),
+	// 「検索置換対象の指定」のデフォルト値
+	'default_replace_target' => array(
+		'Page.name',
+		'Page.title',
+		'Page.description',
+		'Page.contents',
+		'Page.draft',
+		'BlogPost.name',
+		'BlogPost.content',
+		'BlogPost.detail',
+		'BlogPost.content_draft',
+		'BlogPost.detail_draft',
+	),
 );
+
 /**
  * /Plugin/TextReplace/Config 内に置いたphpファイルの設定内容を読み込む
  * 
@@ -134,6 +148,12 @@ foreach ($files as $file) {
 	if ($file !== 'setting.php') {
 		$original = $config;
 		include $dir->pwd() . DS . $file;	// $config に内容が格納される
+		
+		// 追加した設定ファイル内の独自の「検索置換対象の指定」のデフォルト値を優先する
+		if (isset($config['TextReplace']['default_replace_target']) && !empty($config['TextReplace']['default_replace_target'])) {
+			$original['TextReplace']['default_replace_target'] = $config['TextReplace']['default_replace_target'];
+		}
+		
 		$config = Hash::merge($original, $config);	// デフォルト設定とマージする
 	}
 }
