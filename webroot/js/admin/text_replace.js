@@ -150,16 +150,32 @@ $(function () {
 		$(this).parent().children('h3').append(count + '件');
 	});
 
-	// @TODO 検索フィールドの結果テキストの検索語句にマークを付ける
-	$('.box-field-result-all').each(function(){
-		$(this).find('.box-field-result').find('.replace-before').each(function(){
-			var text = $(this).html();
-			var patternVal = $('#TextReplaceSearchPattern').val();
-			//console.log(patternVal);
-			var pattern = new RegExp(patternVal);
-			//console.log(pattern);
-			//$(this).html(text.replace(pattern, "<strong>$1</strong>"));
+	// 置換確認の結果一覧で、モデル別の一括チェックを入れる
+	if ($('.select-this-model').length) {
+		$('.select-this-model').each(function(){
+			if ($(this).prop('checked')) {
+				$(this).parents('.box-model-result').find('input[type=checkbox]').prop('checked', true);
+			}
 		});
-	});
+		$('.select-this-model').on('click', function(){
+			if ($(this).prop('checked')) {
+				$(this).parents('.box-model-result').find('input[type=checkbox]').prop('checked', true);
+			} else {
+				$(this).parents('.box-model-result').find('input[type=checkbox]').prop('checked', false);
+			}
+		});
+	}
+
+//	 @TODO 検索フィールドの結果テキストの検索語句にマークを付ける
+//	$('.box-field-result-all').each(function(){
+//		$(this).find('.box-field-result').find('.replace-before').each(function(){
+//			var text = $(this).html();
+//			var patternVal = $('#TextReplaceSearchPattern').val();
+//			console.log(patternVal);
+//			var pattern = new RegExp(patternVal);
+//			console.log(pattern);
+//			$(this).html(text.replace(pattern, "<strong>$1</strong>"));
+//		});
+//	});
 
 });

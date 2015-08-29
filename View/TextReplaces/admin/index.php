@@ -178,6 +178,7 @@ if ($searchType === 'search-and-replace') {
 <h3><?php echo $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) ?>（<?php echo $modelName; ?>）</h3>
 	<?php $fieldCount = 0; ?>
 	<div class="box-field-result-all">
+	<p><?php echo $this->BcForm->input('TextReplace.select_this_'. $modelName, array('type' => 'checkbox', 'class' => 'select-this-model', 'label' => $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) .' を全て選択する')); ?></p>
 	<?php // フィールド毎のループ ?>
 	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
 		<?php $fieldCount = $fieldCount + count($fieldValue); ?>

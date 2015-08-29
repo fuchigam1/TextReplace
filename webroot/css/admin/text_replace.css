@@ -17,9 +17,6 @@ label[for=TextReplaceCheckAll] {
 	margin-right: 10px;
 	margin-bottom:14px;
 }
-.box-model-result h3 {
-	cursor: pointer;
-}
 
 
 /* 検索指定欄
@@ -40,6 +37,10 @@ label[for=TextReplaceCheckBoxModelResult] {
 	cursor: pointer;
 }
 
+.box-model-result h3 {
+	cursor: pointer;
+}
+
 .box-field-result table tr td strong {
 	font-weight: bold;
 	color: #c00;
@@ -51,7 +52,9 @@ label[for=TextReplaceCheckBoxModelResult] {
 .box-field-result-all label {
 	cursor: pointer;
 }
-
+.box-field-result-all > p {
+	margin-left: 20.7%;
+}
 
 /* テキスト装飾
 -------------------------------- */
