@@ -248,19 +248,51 @@ class TextReplacesController extends BcPluginAppController
 		} else {
 			$this->setDefaultSearchTarget();
 		}
-		
-		$query = array();
-		if ($replaceText) {
-			$query = array($searchText, $replaceText);
-		} else {
-			$query = array($searchText);
-		}
+		$query = $this->getSearchReplaceText($searchType, array('search_text' => $searchText, 'replace_text' => $replaceText));
 		
 		// 検索置換対象の指定内容を作成
 		$replaceTarget = TextReplaceUtil::getReplaceTarget($this->pluginSetting['target']);
 		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
 		$this->set('datas', $datas);
+	}
+	
+	/**
+	 * callback: preg_replace_callback
+	 * 
+	 * @param array $matches
+	 * @return string
+	 */
+	private function replaceHitString($matches)
+	{
+		foreach ($matches as $key => $value) {
+			$matches[$key] = str_replace($value, ''. $value .'', $value);
+		}
+		return $matches[$key];
+	}
+	
+	/**
+	 * 検索文字列、置換後文字列を取得する
+	 * 
+	 * @param string $searchType
+	 * @param array $options
+	 * @return array
+	 */
+	private function getSearchReplaceText($searchType, $options = array())
+	{
+		$_options = array(
+			'search_text' => '',
+			'replace_text' => '',
+		);
+		$options = Hash::merge($_options, $options);
+		
+		$query[] = $options['search_text'];
+		if ($options['replace_text']) {
+			if ($searchType == 'dryrun') {
+				$query[] = $options['replace_text'];
+			}
+		}
+		return $query;
 	}
 	
 	/**
@@ -381,20 +413,6 @@ class TextReplacesController extends BcPluginAppController
 			'recursive' => -1,
 		));
 		return $allData;
-	}
-	
-	/**
-	 * callback: preg_replace_callback
-	 * 
-	 * @param array $matches
-	 * @return string
-	 */
-	private function replaceHitString($matches)
-	{
-		foreach ($matches as $key => $value) {
-			$matches[$key] = str_replace($value, ''. $value .'', $value);
-		}
-		return $matches[$key];
 	}
 	
 	/**
