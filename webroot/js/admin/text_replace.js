@@ -13,6 +13,11 @@ $(window).load(function() {
 $(function () {
 
 	/**
+	 * ボタン間移動
+	 */
+	$('#MoveToBtn a').mScroll({du:300});
+
+	/**
 	 * 検索時の正規表現利用チェック時の操作
 	 */
 	searchRegexCheckHandler();

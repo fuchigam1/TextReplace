@@ -116,6 +116,10 @@ if ($searchType === 'search-and-replace') {
 	<?php $confirmMessageDryrun = '検索置換対象の指定内容で、検索語句を一括検索し、置換後の状態を表示します。\n宜しいですか？' ?>
 	<?php //echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageDryrun')")) ?>
 	<?php echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button')) ?>
+	
+	<?php if ($isReplace): ?>
+		<span id="MoveToBtn"><?php $this->BcBaser->link('▼ 置換＆保存 実行ボタンへ', '#BtnTypeSearchAndReplace') ?></span>
+	<?php endif ?>
 </div>
 <?php //echo $this->BcForm->end() ?>
 <?php endif ?>
@@ -178,7 +182,9 @@ if ($searchType === 'search-and-replace') {
 <h3><?php echo $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) ?>（<?php echo $modelName; ?>）</h3>
 	<?php $fieldCount = 0; ?>
 	<div class="box-field-result-all">
+	<?php if ($isReplace): ?>
 	<p><?php echo $this->BcForm->input('TextReplace.select_this_'. $modelName, array('type' => 'checkbox', 'class' => 'select-this-model', 'label' => $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) .' を全て選択する')); ?></p>
+	<?php endif ?>
 	<?php // フィールド毎のループ ?>
 	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
 		<?php $fieldCount = $fieldCount + count($fieldValue); ?>
@@ -230,6 +236,7 @@ if ($searchType === 'search-and-replace') {
 <?php if ($isReplace): ?>
 <div class="submit">
 	<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'id' => 'BtnTypeSearchAndReplace', 'class' => 'button')) ?>
+	<span id="MoveToBtn"><?php $this->BcBaser->link('▲ 検索、置換確認 実行ボタンへ', '#TextReplaceReplacePattern') ?></span>
 </div>
 <?php endif ?>
 
