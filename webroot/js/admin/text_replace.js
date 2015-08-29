@@ -122,33 +122,39 @@ $(function () {
 	 * 検索・置換一覧を操作する
 	 */
 	// 検索結果一覧の見方を表示する
-	$('#TextReplaceInsight').hide();
-	$('#helpTextReplaceInsight').on('click', function(){
-		$('#TextReplaceInsight').slideToggle();
-	});
-
-	// モデル別の検索結果を開閉する
-	$('.box-model-result h3').on('click', function(){
-		$(this).next().slideToggle();
-	});
-
-	// 置換対象指定チェックボックスを全てチェックする
-	if ($('#TextReplaceCheckBoxModelResult').prop('checked')) {
-		$('.box-model-result input[type=checkbox]').prop('checked', true);
+	if ($('#TextReplaceInsight').length) {
+		$('#TextReplaceInsight').hide();
+		$('#helpTextReplaceInsight').on('click', function(){
+			$('#TextReplaceInsight').slideToggle();
+		});
 	}
-	$('#TextReplaceCheckBoxModelResult').on('click', function(){
-		if ($(this).prop('checked')) {
-			$('.box-model-result input[type=checkbox]').prop('checked', true);
-		} else {
-			$('.box-model-result input[type=checkbox]').prop('checked', false);
-		}
-	});
 
 	// モデル別の検索結果数を表示する
-	$('.box-field-result-all').each(function(){
-		var count = $(this).find('.field-count').html();
-		$(this).parent().children('h3').append(count + '件');
-	});
+	if ($('.box-field-result-all').length) {
+		$('.box-field-result-all').each(function(){
+			var count = $(this).find('.field-count').html();
+			$(this).parent().children('h3').append(count + '件');
+		});
+	}
+
+	if ($('.box-model-result').length) {
+		// 置換対象指定チェックボックスを全てチェックする
+		if ($('#TextReplaceCheckBoxModelResult').prop('checked')) {
+			$('.box-model-result input[type=checkbox]').prop('checked', true);
+		}
+		$('#TextReplaceCheckBoxModelResult').on('click', function(){
+			if ($(this).prop('checked')) {
+				$('.box-model-result input[type=checkbox]').prop('checked', true);
+			} else {
+				$('.box-model-result input[type=checkbox]').prop('checked', false);
+			}
+		});
+
+		// モデル別の検索結果を開閉する
+		$('.box-model-result h3').on('click', function(){
+			$(this).next().slideToggle();
+		});
+	}
 
 	// 置換確認の結果一覧で、モデル別の一括チェックを入れる
 	if ($('.select-this-model').length) {
