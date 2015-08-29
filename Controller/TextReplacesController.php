@@ -135,7 +135,6 @@ class TextReplacesController extends BcPluginAppController
 	{
 		$this->help = 'text_replaces_index';
 		$this->pageTitle = 'テキスト置換処理';
-		
 		$this->init();
 		
 		$datas = array();	// 検索結果一覧のデータ
@@ -155,7 +154,7 @@ class TextReplacesController extends BcPluginAppController
 				$countResult = 0;	// 検索結果数
 				
 				// 実行ボタン別に処理を行う
-				switch ($this->request->data['TextReplace']['type']) {
+				switch ($searchType) {
 					case 'search-and-replace':
 						if (!empty($this->request->data['ReplaceTarget'])) {
 							$hasPageSaveResult = false;		// 固定ページのデータ置換の有無
