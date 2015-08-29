@@ -189,8 +189,10 @@ if ($searchType === 'search-and-replace') {
 				<?php foreach ($fieldValue as $num => $result): ?>
 				<tr>
 					<th class="col-head"<?php echo $rowspan; ?>>
-						<?php echo TextReplaceUtil::getFieldTitle($modelName, $fieldName) ?>
-						<?php //echo $fieldName; ?>（ID:<?php echo $result[$modelName]['id']; ?>）
+						<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
+							<?php echo TextReplaceUtil::getFieldTitle($modelName, $fieldName) ?>
+							<?php //echo $fieldName; ?>（ID: <?php echo $result[$modelName]['id'] ?>）
+						</label>
 					</th>
 					<?php if ($isReplace): ?>
 					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
