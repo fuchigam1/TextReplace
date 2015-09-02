@@ -208,18 +208,19 @@ if ($searchType === 'search-and-replace') {
 					</td>
 					<?php endif ?>
 					<td class="col-input replace-before" style="width: 100%;">
-						<?php echo $this->BcBaser->mark($query, h($result[$modelName][$fieldName])) ?>
+						<?php echo $this->BcBaser->mark($query, nl2br(h($result[$modelName][$fieldName]))) ?>
 					</td>
 				</tr>
 				<?php if ($isReplace || $isSearchAndReplace): ?>
 				<tr>
 					<td class="col-input replace-after">
 						<?php echo $this->BcBaser->mark($query,
-							h(TextReplaceUtil::getReplaceData($result[$modelName][$fieldName],
+							nl2br(h(TextReplaceUtil::getReplaceData($result[$modelName][$fieldName],
 								$this->request->data['TextReplace']['search_pattern'],
 								$this->request->data['TextReplace']['replace_pattern'],
 								array('search_regex' => $this->request->data['TextReplace']['search_regex'])
-						))) ?>
+							)))
+						) ?>
 					</td>
 				</tr>
 				<?php endif ?>
