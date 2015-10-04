@@ -72,6 +72,10 @@ if ($searchType === 'search-and-replace') {
 	</tbody>
 </table>
 
+<?php if ($isReplace): ?>
+	<p id="SearchReplaceInputTable" style="visibility: hidden;">▼検索置換入力テーブル</p>
+<?php endif ?>
+
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tbody>
 		<tr>
@@ -118,9 +122,9 @@ if ($searchType === 'search-and-replace') {
 	<?php $confirmMessageDryrun = '検索置換対象の指定内容で、検索語句を一括検索し、置換後の状態を表示します。\n宜しいですか？' ?>
 	<?php //echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageDryrun')")) ?>
 	<?php echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button')) ?>
-	
+
 	<?php if ($isReplace): ?>
-		<span id="MoveToBtn"><?php $this->BcBaser->link('▼ 置換＆保存 実行ボタンへ', '#BtnTypeSearchAndReplace') ?></span>
+		<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'class' => 'button btn-type-search-and-replace')) ?>
 	<?php endif ?>
 </div>
 <?php //echo $this->BcForm->end() ?>
@@ -242,8 +246,8 @@ if ($searchType === 'search-and-replace') {
 
 <?php if ($isReplace): ?>
 <div class="submit">
-	<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'id' => 'BtnTypeSearchAndReplace', 'class' => 'button')) ?>
-	<span id="MoveToBtn"><?php $this->BcBaser->link('▲ 検索、置換確認 実行ボタンへ', '#TextReplaceReplacePattern') ?></span>
+	<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'class' => 'button btn-type-search-and-replace')) ?>
+	<span id="MoveToBtn"><?php $this->BcBaser->link('▲ 検索、置換確認 実行ボタンへ', '#SearchReplaceInputTable') ?></span>
 </div>
 <?php endif ?>
 

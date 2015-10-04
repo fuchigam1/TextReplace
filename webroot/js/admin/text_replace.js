@@ -104,7 +104,7 @@ $(function () {
 	});
 
 	// 置換＆保存ボタン 実行時
-	$('#BtnTypeSearchAndReplace').on('click', function(){
+	$('.btn-type-search-and-replace').on('click', function(){
 		$('#TextReplaceType').val('search-and-replace');
 		$('#BtnTypeSearchAndReplaceDialog').dialog({
 			modal: true,
