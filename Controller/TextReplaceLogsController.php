@@ -189,6 +189,21 @@ class TextReplaceLogsController extends BcPluginAppController
 	}
 
 	/**
+	 * 一括削除
+	 * 
+	 * @param array $ids
+	 * @return boolean
+	 */
+	protected function _batch_del($ids) {
+		if ($ids) {
+			foreach ($ids as $id) {
+				$this->_delete($id);
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * 一覧用の検索条件を生成する
 	 *
 	 * @param array $data
