@@ -82,15 +82,16 @@ $config['TextReplace'] = array(
 				'pass' => array('blog_content_id', 'id'),
 			),
 		),
-		'Content' => array(
-			'name' => 'Content',
-			'title' => '検索用データ',
-			'fields' => array(
-				'Content.category' => 'カテゴリ',
-				'Content.title' => 'タイトル',
-				'Content.detail' => '記事本文',
-			),
-		),
+//		サイト内検索を利用している場合の、検索用データ保存モデル
+//		'Content' => array(
+//			'name' => 'Content',
+//			'title' => '検索用データ',
+//			'fields' => array(
+//				'Content.category' => 'カテゴリ',
+//				'Content.title' => 'タイトル',
+//				'Content.detail' => '記事本文',
+//			),
+//		),
 //		'PageCategory' => array(
 //			'name' => 'PageCategory',
 //			'title' => '固定ページカテゴリ',
