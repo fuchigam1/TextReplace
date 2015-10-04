@@ -118,7 +118,7 @@ class TextReplaceLogsController extends BcPluginAppController
 	 */
 	public function admin_view($id = null)
 	{
-		$this->pageTitle = $this->adminTitle . '編集';
+		$this->pageTitle = $this->adminTitle . '確認';
 		$this->help = 'text_replaces_index';
 
 		if (!$id) {
