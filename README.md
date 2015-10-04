@@ -33,8 +33,10 @@ TextReplaceプラグインは、任意のキーワードを一括で変更でき
 「検索置換対象の指定」とは「検索語句、置換後」の入力内容で検索・置換するデータを指定することです。
 
 検索置換対象の指定は、任意の内容に調整できます。  
-デフォルトでは 固定ページ（Page）、ブログ記事（Blog.BlogPost）、検索用データ（Content）が選択可能対象となってます。  
+デフォルトは 固定ページ（Page）、ブログ記事（Blog.BlogPost）が選択可能対象です。  
 → /TextReplace/Config/setting.php にて設定
+
+※サイト内検索を利用している場合、検索用データ（Content）を設定に追加して利用してください。  
 
 内容を調整する場合、上記ファイル内の $config['TextReplace']['target'] をもとにして php ファイルを作成し、同一ディレクトリ内に配置してください。  
 ファイル配置後、画面内の「検索置換対象の指定」に追加されます。
@@ -57,6 +59,13 @@ $config['TextReplace'] = array(
 				'MailContent.name' => 'メールフォーム名',
 				'MailContent.title' => 'メールフォームタイトル',
 				'MailContent.description' => '説明文',
+			),
+			// 編集画面へのリンク定義
+			'edit_url' => array(
+				'plugin' => 'mail',
+				'controller' => 'mail_contents',
+				'action' => 'edit',
+				'pass' => array('id'),
 			),
 		),
 	),
