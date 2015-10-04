@@ -58,6 +58,12 @@ $config['TextReplace'] = array(
 				'Page.contents' => '記事本文',
 				'Page.draft' => '記事本文下書き',
 				),
+			'edit_url' => array(
+				'plugin' => null,
+				'controller' => 'pages',
+				'action' => 'edit',
+				'pass' => array('id'),
+			),
 		),
 		'Blog.BlogPost' => array(
 			'name' => 'BlogPost',
@@ -68,6 +74,12 @@ $config['TextReplace'] = array(
 				'BlogPost.detail' => '記事詳細',
 				'BlogPost.content_draft' => '記事概要下書き',
 				'BlogPost.detail_draft' => '記事詳細下書き',
+			),
+			'edit_url' => array(
+				'plugin' => 'blog',
+				'controller' => 'blog_posts',
+				'action' => 'edit',
+				'pass' => array('blog_content_id', 'id'),
 			),
 		),
 		'Content' => array(
@@ -86,6 +98,12 @@ $config['TextReplace'] = array(
 //				'PageCategory.name' => 'ページカテゴリ名',
 //				'PageCategory.title' => 'ページカテゴリタイトル',
 //			),
+//			'edit_url' => array(
+//				'plugin' => null,
+//				'controller' => 'page_categories',
+//				'action' => 'edit',
+//				'pass' => array('id'),
+//			),
 //		),
 //		'Blog.BlogContent' => array(
 //			'name' => 'BlogContent',
@@ -95,6 +113,12 @@ $config['TextReplace'] = array(
 //				'BlogContent.title' => 'ブログタイトル',
 //				'BlogContent.description' => 'ブログ説明文',
 //			),
+//			'edit_url' => array(
+//				'plugin' => 'blog',
+//				'controller' => 'blog_contents',
+//				'action' => 'edit',
+//				'pass' => array('id'),
+//			),
 //		),
 //		'Blog.BlogCategory' => array(
 //			'name' => 'BlogCategory',
@@ -102,6 +126,12 @@ $config['TextReplace'] = array(
 //			'fields' => array(
 //				'BlogContent.title' => 'ブログカテゴリタイトル',
 //				'BlogContent.name' => 'ブログカテゴリ名',
+//			),
+//			'edit_url' => array(
+//				'plugin' => 'blog',
+//				'controller' => 'blog_categories',
+//				'action' => 'edit',
+//				'pass' => array('blog_content_id', 'id'),
 //			),
 //		),
 //		'Mail.MailContent' => array(
@@ -112,6 +142,12 @@ $config['TextReplace'] = array(
 //				'MailContent.title' => 'メールフォームタイトル',
 //				'MailContent.description' => 'メールフォーム説明文',
 //			),
+//			'edit_url' => array(
+//				'plugin' => 'mail',
+//				'controller' => 'mail_contents',
+//				'action' => 'edit',
+//				'pass' => array('id'),
+//			),
 //		),
 //		設定用雛形
 //		'PLUGIN_NAME.MODEL_NAME' => array(
@@ -120,6 +156,13 @@ $config['TextReplace'] = array(
 //			'fields' => array(
 //				'MODEL_NAME.FIELD_NAME' => 'FIELD_TITLE',
 //				),
+//			編集画面へのリンク定義
+//			'edit_url' => array(
+//				'plugin' => 'plugin_name',
+//				'controller' => 'controller_name',
+//				'action' => 'action_name',
+//				'pass' => array('paramater'),
+//			),
 //		),
 	),
 	// 「検索置換対象の指定」のデフォルト値

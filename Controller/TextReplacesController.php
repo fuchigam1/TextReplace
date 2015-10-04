@@ -334,7 +334,6 @@ class TextReplacesController extends BcPluginAppController
 		
 		$originalData = $this->{$targetModel}->find('first', array(
 			'conditions' => array($targetModel .'.id' => $modelField[$valueKey]),
-			'fields' => array('id', $targetField),
 			'recursive' => -1,
 		));
 		
@@ -407,7 +406,6 @@ class TextReplacesController extends BcPluginAppController
 		}
 
 		$allData = $this->{$modelName}->find('all', array(
-			'fields' => array('id', $field),
 			'conditions' => $conditions,
 			'order' => '',
 			'recursive' => -1,

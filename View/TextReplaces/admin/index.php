@@ -6,6 +6,8 @@
  * @author			arata
  * @package			TextReplace
  * @license			MIT
+ * 
+ * @property TextReplaceHelper $TextReplace Description
  */
 $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 $this->BcBaser->js(array('TextReplace.admin/text_replace'), false);
@@ -199,6 +201,10 @@ if ($searchType === 'search-and-replace') {
 							<?php echo TextReplaceUtil::getFieldTitle($modelName, $fieldName) ?>
 							<?php //echo $fieldName; ?>（ID: <?php echo $result[$modelName]['id'] ?>）
 						</label>
+						<?php $editLink = $this->TextReplace->getEditUrl($modelName, $result) ?>
+						<?php if ($editLink): ?>
+							<?php echo $this->BcBaser->getLink('≫ 編集画面', $editLink) ?>
+						<?php endif ?>
 					</th>
 					<?php if ($isReplace): ?>
 					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>

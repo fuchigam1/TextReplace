@@ -71,5 +71,46 @@ class TextReplaceHelper extends AppHelper
 		}
 		return $list;
 	}
-	
+
+	/**
+	 * 設定ファイルのモデル別編集リンク設定をもとに、編集画面へのリンクを生成する
+	 * 
+	 * @param string $modelName
+	 * @param array $data
+	 * @return array
+	 */
+	public function getEditUrl($modelName, $data)
+	{
+		$setting = self::$pluginSetting['target'];
+		$editUrlSetting = array();
+		foreach ($setting as $model => $fieldData) {
+			if ($fieldData['name'] == $modelName) {
+				if (!empty($fieldData['edit_url'])) {
+					$editUrlSetting = $fieldData['edit_url'];
+					break;
+				}
+			}
+		}
+
+		$editUrl = array();
+		$replacedPass = array();
+
+		if ($editUrlSetting) {
+			foreach ($editUrlSetting['pass'] as $key => $args) {
+				$replacedPass[$key] = str_replace($args, $data[$modelName][$args], $editUrlSetting['pass'][$key]);
+			}
+		} else {
+			return;
+		}
+
+		if ($replacedPass) {
+			$editUrl = $editUrlSetting;
+			unset($editUrl['pass']);
+			foreach ($replacedPass as $pass) {
+				$editUrl[] = $pass;
+			}
+		}
+		return $editUrl;
+	}
+
 }
