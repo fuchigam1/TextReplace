@@ -39,7 +39,8 @@ class TextReplaceLog extends BcPluginAppModel
 	 * @param array $options
 	 * @return mixed $controlSource コントロールソース
 	 */
-	public function getControlSource($field, $options = array()) {
+	public function getControlSource($field, $options = array())
+	{
 		$controlSources = array();
 
 		switch ($field) {

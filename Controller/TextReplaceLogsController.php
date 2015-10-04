@@ -74,7 +74,8 @@ class TextReplaceLogsController extends BcPluginAppController
 	 * [ADMIN] 一覧表示
 	 * 
 	 */
-	public function admin_index() {
+	public function admin_index()
+	{
 		$this->pageTitle = $this->adminTitle . '一覧';
 		$this->search = 'text_replace_logs_index';
 		$this->help = 'text_replaces_index';
@@ -138,7 +139,8 @@ class TextReplaceLogsController extends BcPluginAppController
 	 *
 	 * @param int $id
 	 */
-	public function admin_delete($id = null) {
+	public function admin_delete($id = null)
+	{
 		if (!$id) {
 			$this->setMessage('無効な処理です。', true);
 			$this->redirect(array('action' => 'index'));
@@ -158,7 +160,8 @@ class TextReplaceLogsController extends BcPluginAppController
 	 *
 	 * @param int $id
 	 */
-	public function admin_ajax_delete($id = null) {
+	public function admin_ajax_delete($id = null)
+	{
 		if (!$id) {
 			$this->ajaxError(500, '無効な処理です。');
 		}
@@ -176,7 +179,8 @@ class TextReplaceLogsController extends BcPluginAppController
 	 * @param int $id
 	 * @return boolean 
 	 */
-	protected function _delete($id) {
+	protected function _delete($id)
+	{
 		// メッセージ用にデータを取得
 		$data = $this->{$this->modelClass}->read(null, $id);
 		// 削除実行
@@ -194,7 +198,8 @@ class TextReplaceLogsController extends BcPluginAppController
 	 * @param array $ids
 	 * @return boolean
 	 */
-	protected function _batch_del($ids) {
+	protected function _batch_del($ids)
+	{
 		if ($ids) {
 			foreach ($ids as $id) {
 				$this->_delete($id);
@@ -209,7 +214,8 @@ class TextReplaceLogsController extends BcPluginAppController
 	 * @param array $data
 	 * @return array $conditions
 	 */
-	public function _createAdminIndexConditions($data) {
+	public function _createAdminIndexConditions($data)
+	{
 		$conditions = array();
 		$modelId = '';
 		$modelName = '';
