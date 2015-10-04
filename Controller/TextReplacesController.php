@@ -177,7 +177,15 @@ class TextReplacesController extends BcPluginAppController
 									//$saveResult = true;
 									$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
 									if ($saveResult) {
-										$this->saveLogging(array('original' => $originalData, 'save_result' => $saveResult));
+										$this->saveLogging(array(
+											'original' => $originalData,
+											'save_result' => $saveResult,
+											'search_pattern' => $searchText,
+											'replace_pattern' => $replaceText,
+											'search_regex' => $useRegex,
+											'model' => $targetModel,
+											'target_field' => $targetField,
+										));
 										$datas[$targetModel][$targetField][] = $originalData;
 										$countResult++;
 										if ($targetModel === 'Page') {
@@ -355,10 +363,36 @@ class TextReplacesController extends BcPluginAppController
 		
 		// save したデータのログを取る
 		if ($options['original']) {
-			$this->log($options['original'], LOG_TEXT_REPLACE_BEFORE);
+			//$this->log($options['original'], LOG_TEXT_REPLACE_BEFORE);
 		}
 		if ($options['save_result']) {
-			$this->log($options['save_result'], LOG_TEXT_REPLACE);
+			//$this->log($options['save_result'], LOG_TEXT_REPLACE);
+		}
+
+		$modelId = $options['original'][$options['model']]['id'];
+
+		if (ClassRegistry::isKeySet('TextReplace.TextReplaceLog')) {
+			$TextReplceLogModel = ClassRegistry::getObject('TextReplace.TextReplaceLog');
+		} else {
+			$TextReplceLogModel = ClassRegistry::init('TextReplace.TextReplaceLog');
+		}
+
+		$saveData = array(
+			'TextReplaceLog' => array(
+				'search_pattern' => $options['search_pattern'],
+				'replace_pattern' => $options['replace_pattern'],
+				'search_regex' => $options['search_regex'],
+				'model_id' => $modelId,
+				'model' => $options['model'],
+				'target_field' => $options['target_field'],
+				'before_contents' => $options['original'][$options['model']][$options['target_field']],
+				'after_contents' => $options['save_result'][$options['model']][$options['target_field']],
+			)
+		);
+		$TextReplceLogModel->create($saveData);
+		$result = $TextReplceLogModel->save($saveData, array('callbacks' => false));
+		if (!$result) {
+			$this->log($saveData, LOG_DEBUG);
 		}
 	}
 	
