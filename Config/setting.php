@@ -188,8 +188,9 @@ $config['TextReplace'] = array(
 $path = dirname(__FILE__);
 $dir = new Folder($path);
 $files = $dir->find('.*\.php');
+$excludeFile = array('setting.php', 'init.php');
 foreach ($files as $file) {
-	if ($file !== 'setting.php') {
+	if (!in_array($file, $excludeFile)) {
 		$original = $config;
 		include $dir->pwd() . DS . $file;	// $config に内容が格納される
 		

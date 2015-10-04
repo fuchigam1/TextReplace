@@ -246,10 +246,10 @@ class TextReplaceUtil extends Object
 		$path = self::getPluginPath() .'Config'. DS;
 		$dir = new Folder($path);
 		$files = $dir->find('.*\.php');
-		
+		$excludeFile = array('setting.php', 'init.php');
 		$settingFiles = array();
 		foreach ($files as $file) {
-			if ($file !== 'setting.php') {
+			if (!in_array($file, $excludeFile)) {
 				$settingFiles[] = $file;
 			}
 		}
