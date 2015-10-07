@@ -54,7 +54,9 @@
 	</tr>
 </table>
 
-<p class="submit">
+<?php if (BcUtil::isAdminUser()): ?>
+<div class="submit">
 	<?php $this->BcBaser->link('削除', array('action' => 'delete', $data['TextReplaceLog']['id']), array('class' => 'btn-gray button'),
 		sprintf('ログ NO「%s」を削除してもいいですか？', $data['TextReplaceLog']['id']), false); ?>
-</p>
+</div>
+<?php endif ?>
