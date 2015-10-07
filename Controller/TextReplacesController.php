@@ -136,7 +136,8 @@ class TextReplacesController extends BcPluginAppController
 		$this->help = 'text_replaces_index';
 		$this->pageTitle = 'テキスト置換処理';
 		$this->init();
-		
+
+		$user = $this->BcAuth->user();
 		$datas = array();	// 検索結果一覧のデータ
 		$searchText = '';
 		$replaceText = '';
@@ -185,6 +186,7 @@ class TextReplacesController extends BcPluginAppController
 											'search_regex' => $useRegex,
 											'model' => $targetModel,
 											'target_field' => $targetField,
+											'user_id' => $user['id'],
 										));
 										$datas[$targetModel][$targetField][] = $originalData;
 										$countResult++;
@@ -379,14 +381,15 @@ class TextReplacesController extends BcPluginAppController
 
 		$saveData = array(
 			'TextReplaceLog' => array(
-				'search_pattern' => $options['search_pattern'],
-				'replace_pattern' => $options['replace_pattern'],
-				'search_regex' => $options['search_regex'],
-				'model_id' => $modelId,
-				'model' => $options['model'],
-				'target_field' => $options['target_field'],
-				'before_contents' => $options['original'][$options['model']][$options['target_field']],
-				'after_contents' => $options['save_result'][$options['model']][$options['target_field']],
+				'search_pattern'	 => $options['search_pattern'],
+				'replace_pattern'	 => $options['replace_pattern'],
+				'search_regex'		 => $options['search_regex'],
+				'model_id'			 => $modelId,
+				'model'				 => $options['model'],
+				'target_field'		 => $options['target_field'],
+				'before_contents'	 => $options['original'][$options['model']][$options['target_field']],
+				'after_contents'	 => $options['save_result'][$options['model']][$options['target_field']],
+				'user_id'			 => $options['user_id'],
 			)
 		);
 		$TextReplceLogModel->create($saveData);

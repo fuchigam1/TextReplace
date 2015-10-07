@@ -12,8 +12,11 @@
 	<tr>
 		<th>NO</th>
 		<td><?php echo $data['TextReplaceLog']['id'] ?></td>
-		<th>実施日時</th>
-		<td><?php echo $this->BcTime->format('Y/m/d H:i:s', $data['TextReplaceLog']['created']) ?></td>
+		<th>実施日時（実施ユーザー）</th>
+		<td>
+			<?php echo $this->BcTime->format('Y/m/d H:i:s', $data['TextReplaceLog']['created']) ?>
+			（<?php echo $userList[$data['TextReplaceLog']['user_id']] ?>）
+		</td>
 	</tr>
 	<tr>
 		<th>検索置換時の対象モデル名</th>

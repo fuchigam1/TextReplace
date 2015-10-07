@@ -101,8 +101,10 @@ class TextReplaceLogsController extends BcPluginAppController
 		$modelNameList = $this->{$this->modelClass}->getControlSource('model');
 		// 対象フィールド名一覧
 		$targetFieldList = $this->{$this->modelClass}->getControlSource('target_field');
+		// ユーザー一覧
+		$userList = $this->User->getUserList();
 
-		$this->set(compact('modelIdList', 'modelNameList', 'targetFieldList'));
+		$this->set(compact('modelIdList', 'modelNameList', 'targetFieldList', 'userList'));
 
 		if ($this->RequestHandler->isAjax() || !empty($this->request->query['ajax'])) {
 			Configure::write('debug', 0);
@@ -129,8 +131,10 @@ class TextReplaceLogsController extends BcPluginAppController
 			$this->{$this->modelClass}->id = $id;
 			$data = $this->{$this->modelClass}->read();
 		}
+		// ユーザー一覧
+		$userList = $this->User->getUserList();
 
-		$this->set('data', $data);
+		$this->set(compact('data', 'userList'));
 		$this->render('view');
 	}
 
