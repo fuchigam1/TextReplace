@@ -23,12 +23,19 @@ $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 		<th>検索置換時の対象モデル名</th>
 		<td><?php echo $data['TextReplaceLog']['model'] ?></td>
 		<th>検索置換時の対象フィールド名</th>
-		<td><?php echo $data['TextReplaceLog']['target_field'] ?></td>
+		<td>
+			<?php echo $data['TextReplaceLog']['target_field'] ?>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<?php $editLink = $this->TextReplace->getEditUrl($data['TextReplaceLog']['model'], $originalData) ?>
+			<?php if ($editLink): ?>
+				<?php echo $this->BcBaser->getLink('≫ 編集画面', $editLink) ?>
+			<?php endif ?>
+		</td>
 	</tr>
 	<tr>
 		<th>検索語句
 			<small>
-			&nbsp;&nbsp;検索置換時の正規表現利用
+			&nbsp;&nbsp;&nbsp;&nbsp;正規表現の利用
 			（<?php echo $this->BcText->booleanMark($data['TextReplaceLog']['search_regex']); ?>）
 			</small>
 		</th>
