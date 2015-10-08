@@ -7,6 +7,7 @@
  * @package			TextReplace
  * @license			MIT
  */
+$this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 ?>
 <table cellpadding="0" cellspacing="0" class="form-table" id="ListTable">
 	<tr>
@@ -43,16 +44,22 @@
 	</tr>
 </table>
 
+<div class="box-field-result">
 <table cellpadding="0" cellspacing="0" class="form-table">
 	<tr>
 		<th>検索置換前の内容</th>
 		<th>検索置換後の内容</th>
 	</tr>
 	<tr>
-		<td><?php echo nl2br(h($data['TextReplaceLog']['before_contents'])) ?></td>
-		<td><?php echo nl2br(h($data['TextReplaceLog']['after_contents'])) ?></td>
+		<td>
+			<?php echo $this->BcBaser->mark($data['TextReplaceLog']['search_pattern'], nl2br(h($data['TextReplaceLog']['before_contents']))) ?>
+		</td>
+		<td>
+			<?php echo $this->BcBaser->mark($data['TextReplaceLog']['replace_pattern'], nl2br(h($data['TextReplaceLog']['after_contents']))) ?>
+		</td>
 	</tr>
 </table>
+</div>
 
 <?php if (BcUtil::isAdminUser()): ?>
 <div class="submit">
