@@ -167,6 +167,28 @@ class TextReplaceLogsController extends BcPluginAppController
 	}
 
 	/**
+	 * [ADMIN] CSVファイルをダウンロードする
+	 * 
+	 */
+	public function admin_download_csv()
+	{
+		$default = array();
+		$this->setViewConditions($this->modelClass, array(
+			'default' => $default,
+			'group' => $this->Session->read('Auth.User.id'),
+			'action' => 'admin_index',
+		));
+		$conditions = $this->_createAdminIndexConditions($this->request->data);
+		$datas = $this->{$this->modelClass}->find('all', array(
+			'conditions' => $conditions,
+			'recursive' => 0
+		));
+
+		$this->set('datas', $datas);
+		$this->set('csvFileName', date('YmdHis') .'_'. Inflector::underscore($this->modelClass));
+	}
+
+	/**
 	 * [ADMIN] 編集
 	 * 
 	 * @param int $id

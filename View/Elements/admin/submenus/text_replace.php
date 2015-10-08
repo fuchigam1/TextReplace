@@ -21,6 +21,12 @@
 			<?php endif ?>
 			<li><?php $this->BcBaser->link('テキスト置換ログ',
 					array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'index')); ?></li>
+
+			<?php if ($this->request->params['controller'] == 'text_replace_logs'): ?>
+			<li><?php $this->BcBaser->link('テキスト置換ログCSVダウンロード',
+					array('plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'download_csv')) ?></li>
+			<?php endif ?>
+
 			<?php if ($this->request->params['controller'] == 'text_replaces'): ?>
 				<li><?php $this->BcBaser->link('固定ページテンプレート書出',
 						array('admin' => true, 'plugin' => null, 'controller' => 'pages', 'action' => 'write_page_files'),
