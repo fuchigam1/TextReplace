@@ -11,6 +11,14 @@
 <?php echo $this->BcForm->create('TextReplaceLog', array('url' => array('action' => 'index'))) ?>
 <p>
 	<span>
+	<?php echo $this->BcForm->label('TextReplaceLog.created', '実施日時') ?></span>
+	<?php echo $this->BcForm->dateTimePicker('TextReplaceLog.created_begin', array('size' => 12)) ?>
+	〜
+	<?php echo $this->BcForm->dateTimePicker('TextReplaceLog.created_end', array('size' => 12)) ?>
+	</span>
+</p>
+<p>
+	<span>
 		<?php echo $this->BcForm->label('TextReplaceLog.model_id', 'モデルID') ?>
 		&nbsp;<?php echo $this->BcForm->input('TextReplaceLog.model_id', array('type' => 'select', 'options' => $modelIdList, 'empty' => '指定なし')) ?>
 	</span>

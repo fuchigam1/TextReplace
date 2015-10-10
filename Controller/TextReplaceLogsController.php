@@ -310,6 +310,8 @@ class TextReplaceLogsController extends BcPluginAppController
 		$targetField = '';
 		$beforeContents = '';
 		$afterContents = '';
+		$created_begin = '';
+		$created_end = '';
 
 		if (isset($data[$this->modelClass]['model_id'])) {
 			$modelId = $data[$this->modelClass]['model_id'];
@@ -327,18 +329,44 @@ class TextReplaceLogsController extends BcPluginAppController
 			$afterContents = $data[$this->modelClass]['after_contents'];
 		}
 
+		if (isset($data[$this->modelClass]['created_begin_date'])) {
+			$created_begin = $data[$this->modelClass]['created_begin_date'];
+		}
+		if (!empty($data[$this->modelClass]['created_begin_time'])) {
+			$created_begin .= ' '. $data[$this->modelClass]['created_begin_time'];
+		}
+
+		if (isset($data[$this->modelClass]['created_end_date'])) {
+			$created_end = $data[$this->modelClass]['created_end_date'];
+		}
+		if (!empty($data[$this->modelClass]['created_end_time'])) {
+			$created_end .= ' '. $data[$this->modelClass]['created_end_time'];
+		}
+
 		unset($data['_Token']);
 		unset($data[$this->modelClass]['model_id']);
 		unset($data[$this->modelClass]['model']);
 		unset($data[$this->modelClass]['target_field']);
 		unset($data[$this->modelClass]['before_contents']);
 		unset($data[$this->modelClass]['after_contents']);
+		unset($data[$this->modelClass]['after_contents']);
+		unset($data[$this->modelClass]['created_begin_date']);
+		unset($data[$this->modelClass]['created_begin_time']);
+		unset($data[$this->modelClass]['created_end_date']);
+		unset($data[$this->modelClass]['created_end_time']);
 
 		// 条件指定のないフィールドを解除
 		foreach($data[$this->modelClass] as $key => $value) {
 			if ($value === '') {
 				unset($data[$this->modelClass][$key]);
 			}
+		}
+
+		if (!empty($created_begin)) {
+			$conditions[$this->modelClass .'.created >='] = $created_begin;
+		}
+		if (!empty($created_end)) {
+			$conditions[$this->modelClass .'.created <='] = $created_end;
 		}
 
 		if ($modelId) {
