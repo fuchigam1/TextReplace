@@ -218,7 +218,11 @@ if ($searchType === 'search-and-replace') {
 					</td>
 					<?php endif ?>
 					<td class="col-input replace-before" style="width: 100%;">
-						<?php echo $this->BcBaser->mark($query, nl2br(h($result[$modelName][$fieldName]))) ?>
+						<?php echo $this->TextReplace->getBeforeSearchReplaceData(
+								$result[$modelName][$fieldName],
+								$this->TextReplace->searchText,
+								$this->request->data['TextReplace']['search_regex']) ?>
+						<?php //echo $this->BcBaser->mark($query, nl2br(h($result[$modelName][$fieldName]))) ?>
 					</td>
 				</tr>
 				<?php if ($isReplace || $isSearchAndReplace): ?>

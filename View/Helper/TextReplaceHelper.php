@@ -113,4 +113,29 @@ class TextReplaceHelper extends AppHelper
 		return $editUrl;
 	}
 
+	/**
+	 * コンテンツ内で検索語句が該当した箇所にマークを付ける
+	 * 
+	 * @param string $data
+	 * @param string $searchText
+	 * @param boolean $regexFlg
+	 * @return string
+	 */
+	public function getBeforeSearchReplaceData($data, $searchText, $regexFlg = false)
+	{
+		$contents = '';
+		if (!$regexFlg) {
+			$contents = $this->BcBaser->mark($searchText, nl2br(h($data)));
+		} else {
+			$hitCount = preg_match_all($searchText, $data, $matches);
+			$contents = $data;
+			if ($hitCount) {
+				foreach ($matches as $matche) {
+					$contents = $this->BcBaser->mark($matche, nl2br(h($contents)));
+				}
+			}
+		}
+		return $contents;
+	}
+
 }

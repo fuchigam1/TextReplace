@@ -59,7 +59,10 @@ $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 	</tr>
 	<tr>
 		<td>
-			<?php echo $this->BcBaser->mark($data['TextReplaceLog']['search_pattern'], nl2br(h($data['TextReplaceLog']['before_contents']))) ?>
+			<?php echo $this->TextReplace->getBeforeSearchReplaceData(
+					$data['TextReplaceLog']['before_contents'],
+					$data['TextReplaceLog']['search_pattern'],
+					$data['TextReplaceLog']['search_regex']) ?>
 		</td>
 		<td>
 			<?php echo $this->BcBaser->mark($data['TextReplaceLog']['replace_pattern'], nl2br(h($data['TextReplaceLog']['after_contents']))) ?>
