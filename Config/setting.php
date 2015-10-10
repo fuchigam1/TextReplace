@@ -25,7 +25,7 @@ $config['BcApp.adminNavi.text_replace'] = array(
 );
 
 /**
- * TextReplace専用ログ
+ * TextReplace専用ログ ※検索ログ保存機能の追加により未使用
  * 検索置換実行時にログを保存する
  */
 define('LOG_TEXT_REPLACE', 'log_text_replace');
@@ -48,6 +48,21 @@ CakeLog::config('log_text_replace_before', array(
 $config['TextReplace'] = array(
 	// フィールドタイプ種別
 	'target' => array(
+//		設定用雛形
+//		'PLUGIN_NAME.MODEL_NAME' => array(
+//			'name' => 'MODEL_NAME',
+//			'title' => 'MODEL_TITLE',
+//			'fields' => array(
+//				'MODEL_NAME.FIELD_NAME' => 'FIELD_TITLE',
+//				),
+//			編集画面へのリンク定義
+//			'edit_url' => array(
+//				'plugin' => 'plugin_name',
+//				'controller' => 'controller_name',
+//				'action' => 'action_name',
+//				'pass' => array('paramater'),
+//			),
+//		),
 		'Page' => array(
 			'name' => 'Page',
 			'title' => '固定ページ',
@@ -150,24 +165,10 @@ $config['TextReplace'] = array(
 //				'pass' => array('id'),
 //			),
 //		),
-//		設定用雛形
-//		'PLUGIN_NAME.MODEL_NAME' => array(
-//			'name' => 'MODEL_NAME',
-//			'title' => 'MODEL_TITLE',
-//			'fields' => array(
-//				'MODEL_NAME.FIELD_NAME' => 'FIELD_TITLE',
-//				),
-//			編集画面へのリンク定義
-//			'edit_url' => array(
-//				'plugin' => 'plugin_name',
-//				'controller' => 'controller_name',
-//				'action' => 'action_name',
-//				'pass' => array('paramater'),
-//			),
-//		),
 	),
 	// 「検索置換対象の指定」のデフォルト値
 	'default_replace_target' => array(
+//		'MODEL_NAME.FIELD_NAME',
 		'Page.name',
 		'Page.title',
 		'Page.description',
