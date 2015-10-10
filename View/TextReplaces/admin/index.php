@@ -93,7 +93,7 @@ if ($searchType === 'search-and-replace') {
 		<tr>
 			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.search_pattern', '検索語句') ?></th>
 			<td class="col-input">
-				<?php echo $this->BcForm->input('TextReplace.search_pattern', array('type' => 'text', 'size' => '76')) ?>
+				<?php echo $this->BcForm->input('TextReplace.search_pattern', array('type' => 'text', 'size' => '76', 'maxlength' => '255', 'counter' => true)) ?>
 				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpSearchPattern', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
 				<div id="helptextSearchPattern" class="helptext">
 					<ul>
@@ -101,17 +101,17 @@ if ($searchType === 'search-and-replace') {
 						<li>正規表現を利用する際には、文字列両端にデリミタ「/〜/」を付けてください。</li>
 					</ul>
 				</div>
-				<?php echo $this->BcForm->error('TextReplace.search') ?>
 				<br />
 				<?php echo $this->BcForm->input('TextReplace.search_regex', array('type' => 'checkbox', 'label' => '正規表現を利用する')); ?>
 				<small id="SearchRegexChecked">（デリミタ「/〜/」を付けてください）</small>
 				<?php echo $this->BcForm->error('TextReplace.search_regex') ?>
+				<?php echo $this->BcForm->error('TextReplace.search_pattern') ?>
 			</td>
 		</tr>
 		<tr>
 			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.replace_pattern', '置換後') ?></th>
 			<td class="col-input">
-				<?php echo $this->BcForm->input('TextReplace.replace_pattern', array('type' => 'text', 'size' => '76')) ?>
+				<?php echo $this->BcForm->input('TextReplace.replace_pattern', array('type' => 'text', 'size' => '76', 'maxlength' => '255', 'counter' => true)) ?>
 				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpReplacePattern', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
 				<div id="helptextReplacePattern" class="helptext">
 					<ul>

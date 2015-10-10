@@ -22,7 +22,7 @@ class TextReplacesController extends BcPluginAppController
 	 * @var array
 	 */
 	public $uses = array(
-//		'TextReplace',
+		'TextReplace.TextReplace',
 //		'Page',
 //		'Blog.BlogPost'
 	);
@@ -162,7 +162,15 @@ class TextReplacesController extends BcPluginAppController
 		}
 		
 		if ($this->request->data) {
-			if (!$this->isNoinputSearchReplace($this->request->data)) {
+
+			$this->TextReplace->set($this->request->data);
+			$errors = array();
+			if (!$this->TextReplace->validates()) {
+				$errors = $this->TextReplace->validationErrors;
+				$message .= '入力エラーです。内容を修正してください。';
+			}
+
+			if (!$this->isNoinputSearchReplace($this->request->data) && !$errors) {
 				
 				$searchText = $this->request->data['TextReplace']['search_pattern'];	// 検索語句
 				$replaceText = $this->request->data['TextReplace']['replace_pattern'];	// 置換後

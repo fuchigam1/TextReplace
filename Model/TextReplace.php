@@ -29,7 +29,23 @@ class TextReplace extends BcPluginAppModel
 	 * @var string or boolean
 	 */
 	public $useTable = false;
-	
+
+	/**
+	 * DB（Tableを未使用で、モデルのバリデーションを実行するため、スキーマを定義する
+	 * 
+	 * @var array
+	 */
+	public $_schema = array(
+		'search_pattern' => array(
+			'type' => 'string',
+			'length' => 255,
+		),
+		'replace_pattern' => array(
+			'type' => 'string',
+			'length' => 255,
+		),
+	);
+
 	/**
 	 * Validation
 	 *
@@ -41,7 +57,17 @@ class TextReplace extends BcPluginAppModel
 				'rule' => array('notEmpty'),
 				'message' => '検索語句を入力してください。'
 			),
-		)
+			'maxLength' => array(
+				'rule' => array('maxLength', 255),
+				'message' => '検索語句は255文字以内で入力してください。'
+			),
+		),
+		'replace_pattern' => array(
+			'maxLength' => array(
+				'rule' => array('maxLength', 255),
+				'message' => '置換後文字列は255文字以内で入力してください。'
+			),
+		),
 	);
 	
 	/**
