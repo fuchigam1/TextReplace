@@ -201,7 +201,7 @@ if ($searchType === 'search-and-replace') {
 				<?php foreach ($fieldValue as $num => $result): ?>
 				<tr>
 					<th class="col-head"<?php echo $rowspan; ?>>
-						<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id'] ?>">
+						<label for="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id'] ?>">
 							<?php echo TextReplaceUtil::getFieldTitle($modelName, $fieldName) ?>
 							<?php //echo $fieldName; ?>（ID: <?php echo $result[$modelName]['id'] ?>）
 						</label>
@@ -212,8 +212,8 @@ if ($searchType === 'search-and-replace') {
 					</th>
 					<?php if ($isReplace): ?>
 					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
-						<label for="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id']; ?>">
-							<input type="checkbox" name="data[ReplaceTarget][][<?php echo $modelName; ?>.<?php echo $fieldName; ?>]" value="<?php echo $result[$modelName]['id']; ?>" id="TextReplaceTarget<?php echo $modelName . $result[$modelName]['id']; ?>">
+						<label for="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>">
+							<input type="checkbox" name="data[ReplaceTarget][][<?php echo $modelName; ?>.<?php echo $fieldName; ?>]" value="<?php echo $result[$modelName]['id']; ?>" id="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>">
 						</label>
 					</td>
 					<?php endif ?>
