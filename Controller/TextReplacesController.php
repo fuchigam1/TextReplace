@@ -144,6 +144,22 @@ class TextReplacesController extends BcPluginAppController
 		$searchTarget = array();
 		$searchType = '';
 		$message = '';
+		$linkContainingQueryParameter = '';	// 検索クエリーを含むURL
+
+		if ($this->request->query) {
+			$this->request->data['TextReplace'] = $this->request->query;
+			if (!empty($this->request->query['data'])) {
+				$this->request->data['ReplaceTarget'] = $this->request->query['data']['ReplaceTarget'];
+			}
+
+			$baseUrl = array(
+				'admin' => $this->request->params['admin'],
+				'plugin' => $this->request->params['plugin'],
+				'controller' => $this->request->params['controller'],
+				'action' => $this->request->params['action'],
+			);
+			$linkContainingQueryParameter = Router::url(Hash::merge($baseUrl, array('?' => $this->request->query)), true);
+		}
 		
 		if ($this->request->data) {
 			if (!$this->isNoinputSearchReplace($this->request->data)) {
@@ -285,7 +301,7 @@ class TextReplacesController extends BcPluginAppController
 		// 検索置換対象の指定内容を作成
 		$replaceTarget = TextReplaceUtil::getReplaceTarget($this->pluginSetting['target']);
 		
-		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult'));
+		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult', 'linkContainingQueryParameter'));
 		$this->set('datas', $datas);
 	}
 	

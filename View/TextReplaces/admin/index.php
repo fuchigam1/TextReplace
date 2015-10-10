@@ -34,7 +34,7 @@ if ($searchType === 'search-and-replace') {
 	<p>※ 実行前に必ずDBのバックアップを取ってください。<br />※ 検索語句を置換後の内容で一括変換します。</p>
 </div>
 
-<?php echo $this->BcForm->create('TextReplace', array('url' => array('action' => 'index'))) ?>
+<?php echo $this->BcForm->create('TextReplace', array('type' => 'get', 'url' => array('action' => 'index'))) ?>
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tbody>
 		<tr>
@@ -54,6 +54,18 @@ if ($searchType === 'search-and-replace') {
 				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
 			</td>
 		</tr>
+		<?php if ($linkContainingQueryParameter): ?>
+		<tr>
+			<th class="col-head">
+				検索条件のURL
+			</th>
+			<td class="col-input" style="word-break: break-all; word-wrap: break-word;">
+				<small>
+					<?php echo $this->BcBaser->link($linkContainingQueryParameter, $linkContainingQueryParameter) ?>
+				</small>
+			</td>
+		</tr>
+		<?php endif ?>
 		<?php $settingFiles = TextReplaceUtil::hasOriginalSetting() ?>
 		<?php if ($settingFiles): ?>
 		<tr>

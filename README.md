@@ -112,8 +112,3 @@ $config['TextReplace'] = array(
 - [http://wiki.basercms.net/](http://wiki.basercms.net/)
 - [http://cakephp.jp](http://cakephp.jp)
 - [Semantic Versioning 2.0.0](http://semver.org/lang/ja/)
-
-
-### TODO
-
-- 検索結果をURLで引き渡せる仕組みができるか考える（post → get への変更）
