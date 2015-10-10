@@ -210,6 +210,17 @@ class TextReplacesController extends BcPluginAppController
 					case 'dryrun':
 					default:
 						clearAllCache();
+
+						// 正規表現検索時、バックスラッシュで検索語句を指定していない場合のErrorをキャッチするための ErrorHandler
+						set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
+							// error was suppressed with the @-operator
+							if (0 === error_reporting()) {
+								return false;
+							}
+							throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+						});
+						$hasSearchReplaceError = false;
+
 						foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
 							$searchTarget = TextReplaceUtil::splitName($value);
 							$targetModel = $searchTarget['modelName'];
@@ -230,24 +241,34 @@ class TextReplacesController extends BcPluginAppController
 									foreach ($allData as $resultKey => $resultValue) {
 										// 正規表現検索を利用する場合、検索にヒットしたデータの文字列内に、パターン(検索語句)にマッチするデータがあるか判定する
 										// ヒットした場合: データ内の、パターン(検索語句)にマッチする文字列をコールバック関数を利用して書き換える
-										if (preg_match($searchText, $resultValue[$targetModel][$targetField])) {
-											// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
-											$allData[$resultKey][$targetModel][$targetField] = preg_replace_callback(
-													$searchText,
-													array($this, 'replaceHitString'),
-													$resultValue[$targetModel][$targetField]
-											);
-											$result[] = $allData[$resultKey];
+										try {
+											if (preg_match($searchText, $resultValue[$targetModel][$targetField])) {
+												// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
+												$allData[$resultKey][$targetModel][$targetField] = preg_replace_callback(
+														$searchText,
+														array($this, 'replaceHitString'),
+														$resultValue[$targetModel][$targetField]
+												);
+												$result[] = $allData[$resultKey];
+											}
+										} catch (Exception $exc) {
+											$message .= $exc->getMessage();
+											$hasSearchReplaceError = true;
+											break;
 										}
 									}
+
 									if ($result) {
 										$datas[$targetModel][$targetField] = $result;
 										$countResult = $countResult + count($result);
 									}
 								}
 							}
+							if ($hasSearchReplaceError) {
+								break;
+							}
 						}
-						$message = '該当する検索語句がありませんでした。';
+						$message .= '該当する検索語句がありませんでした。';
 						break;
 				}
 
