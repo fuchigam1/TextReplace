@@ -212,6 +212,7 @@ class TextReplacesController extends BcPluginAppController
 						clearAllCache();
 
 						// 正規表現検索時、バックスラッシュで検索語句を指定していない場合のErrorをキャッチするための ErrorHandler
+						// http://stackoverflow.com/questions/30005616/can-missing-delimiter-errors-in-a-preg-php-regexp-be-read-programmatically
 						set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
 							// error was suppressed with the @-operator
 							if (0 === error_reporting()) {
