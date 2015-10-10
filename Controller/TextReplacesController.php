@@ -198,7 +198,7 @@ class TextReplacesController extends BcPluginAppController
 							}
 							$message = '検索置換を実行しました。['. $countResult .'件]';
 							if ($hasPageSaveResult) {
-								$message .= '「固定ページテンプレート書出」を実行してください。';
+								$message .= '　「固定ページテンプレート書出」を実行してください。';
 							}
 							$this->setMessage($message, false, true);
 						} else {

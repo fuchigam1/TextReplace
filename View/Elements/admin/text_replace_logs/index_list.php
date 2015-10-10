@@ -46,8 +46,8 @@
 			<th>検索置換前の内容</th>
 			<th>検索置換後の内容</th>
 			<th><?php echo $this->Paginator->sort('created', array(
-					'asc' => $this->BcBaser->getImg('admin/blt_list_down.png', array('alt' => '昇順', 'title' => '昇順')).' 登録日時',
-					'desc' => $this->BcBaser->getImg('admin/blt_list_up.png', array('alt' => '降順', 'title' => '降順')).' 登録日時'),
+					'asc' => $this->BcBaser->getImg('admin/blt_list_down.png', array('alt' => '昇順', 'title' => '昇順')).' 実施日時',
+					'desc' => $this->BcBaser->getImg('admin/blt_list_up.png', array('alt' => '降順', 'title' => '降順')).' 実施日時'),
 					array('escape' => false, 'class' => 'btn-direction')) ?>
 			</th>
 		</tr>
