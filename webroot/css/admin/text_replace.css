@@ -39,14 +39,22 @@ label[for=TextReplaceCheckBoxModelResult] {
 
 .box-model-result h3 {
 	cursor: pointer;
+	margin-bottom: 5px;
 }
 
+.box-field-result table {
+	margin-bottom: 40px;
+}
 .box-field-result table tr td strong {
-	font-weight: bold;
+	font-weight: normal;
 	color: #c00;
 }
+.box-field-result table tr td.replace-before strong {
+	background-color: #ffecec;
+}
 .box-field-result table tr td.replace-after strong {
-	background-color: #EDF8C9;
+	color: #333;
+	background-color: #a6f3a6;
 }
 
 .box-field-result-all label {
