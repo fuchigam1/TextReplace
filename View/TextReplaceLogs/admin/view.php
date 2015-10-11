@@ -73,7 +73,26 @@ $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 
 <?php if (BcUtil::isAdminUser()): ?>
 <div class="submit">
-	<?php $this->BcBaser->link('削除', array('action' => 'delete', $data['TextReplaceLog']['id']), array('class' => 'btn-gray button'),
-		sprintf('ログ NO「%s」を削除してもいいですか？', $data['TextReplaceLog']['id']), false); ?>
+	<?php $this->BcBaser->link('削除', array('action' => 'delete', $data['TextReplaceLog']['id']),
+		array('class' => 'btn-gray button', 'id' => 'BtnDeleteTextReplaceLogs')); ?>
 </div>
+
+<script>
+$(function(){
+	/**
+	 * 削除ボタン押下時
+	 */
+	$("#BtnDeleteTextReplaceLogs").click(function() {
+		$.bcConfirm.show({
+			'title': '検索置換ログ削除',
+			'message':'<p><strong><?php echo sprintf('ログ NO「%s」を削除します。', $data['TextReplaceLog']['id']) ?></strong></p>' +
+						'<p>よろしいですか？</p>',
+			'ok':function(){
+				location.href = $("#BtnDeleteTextReplaceLogs").attr('href');
+			}
+		});
+		return false;
+	});
+});
+</script>
 <?php endif ?>
