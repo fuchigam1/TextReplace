@@ -58,13 +58,13 @@ $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 		<th class="col-head">検索置換後の内容</th>
 	</tr>
 	<tr>
-		<td class="col-input" class="replace-before">
+		<td class="col-input replace-before">
 			<?php echo $this->TextReplace->getBeforeSearchReplaceData(
 					$data['TextReplaceLog']['before_contents'],
 					$data['TextReplaceLog']['search_pattern'],
 					$data['TextReplaceLog']['search_regex']) ?>
 		</td>
-		<td class="col-input" class="replace-after">
+		<td class="col-input replace-after">
 			<?php echo $this->BcBaser->mark($data['TextReplaceLog']['replace_pattern'], nl2br(h($data['TextReplaceLog']['after_contents']))) ?>
 		</td>
 	</tr>
