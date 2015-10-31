@@ -21,11 +21,7 @@ class TextReplacesController extends BcPluginAppController
 	 * 
 	 * @var array
 	 */
-	public $uses = array(
-		'TextReplace.TextReplace',
-//		'Page',
-//		'Blog.BlogPost'
-	);
+	public $uses = array('TextReplace.TextReplace');
 	
 	/**
 	 * Helpers
