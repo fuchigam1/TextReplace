@@ -184,7 +184,6 @@ class TextReplacesController extends BcPluginAppController
 					case 'search-and-replace':
 						if (!empty($this->request->data['ReplaceTarget'])) {
 							$hasPageSaveResult = false;		// 固定ページのデータ置換の有無
-							clearAllCache();
 							foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
 								$target = $this->getTargetModelField($value);
 								$targetModel = $target['modelName'];
@@ -234,8 +233,6 @@ class TextReplacesController extends BcPluginAppController
 					case 'search':
 					case 'dryrun':
 					default:
-						clearAllCache();
-
 						// 正規表現検索時、バックスラッシュで検索語句を指定していない場合のErrorをキャッチするための ErrorHandler
 						// http://stackoverflow.com/questions/30005616/can-missing-delimiter-errors-in-a-preg-php-regexp-be-read-programmatically
 						set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
