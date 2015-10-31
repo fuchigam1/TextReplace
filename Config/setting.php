@@ -20,6 +20,13 @@ $config['BcApp.adminNavi.text_replace'] = array(
 					'plugin' => 'text_replace',
 					'controller' => 'text_replaces',
 					'action' => 'index')
+			),
+			array('name' => 'テキスト置換ログ',
+				'url' => array(
+					'admin' => true,
+					'plugin' => 'text_replace',
+					'controller' => 'text_replace_logs',
+					'action' => 'index')
 			)
 	)
 );
