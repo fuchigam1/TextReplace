@@ -131,7 +131,7 @@ class TextReplaceLogsController extends BcPluginAppController
 	{
 		$this->pageTitle = $this->adminTitle . '一覧';
 		$this->search = 'text_replace_logs_index';
-		$this->help = 'text_replaces_index';
+		$this->help = 'text_replace_logs_index';
 
 		$default = array('named' => array(
 			'num' => $this->siteConfigs['admin_list_num'],
@@ -196,7 +196,7 @@ class TextReplaceLogsController extends BcPluginAppController
 	public function admin_view($id = null)
 	{
 		$this->pageTitle = $this->adminTitle . '確認';
-		$this->help = 'text_replaces_index';
+		$this->help = 'text_replace_logs_index';
 		$this->init();
 		$originalData = array();
 
