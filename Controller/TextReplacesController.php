@@ -74,7 +74,14 @@ class TextReplacesController extends BcPluginAppController
 	 * @var string
 	 */
 	private $errorFieldInfo = '';
-	
+
+	/**
+	 * 置換＆保存が可能かどうかの判定値
+	 * 
+	 * @var boolean
+	 */
+	private $isEnableSearchAndReplace = false;
+
 	/**
 	 * 設定ファイルの設定値
 	 * 
@@ -130,6 +137,7 @@ class TextReplacesController extends BcPluginAppController
 	/**
 	 * [ADMIN] 検索、置換確認
 	 * 
+	 * - 検索置換実行時は post 送信とする（414 Request-URI too large が発生する点を考慮）
 	 */
 	public function admin_index()
 	{
@@ -146,11 +154,36 @@ class TextReplacesController extends BcPluginAppController
 		$message = '';
 		$linkContainingQueryParameter = '';	// 検索クエリーを含むURL
 
-		if ($this->request->query) {
-			$this->request->data['TextReplace'] = $this->request->query;
-			if (!empty($this->request->query['data'])) {
-				$this->request->data['ReplaceTarget'] = $this->request->query['data']['ReplaceTarget'];
+		// 検索、置換確認時
+		if ($this->request->is('get')) {
+			if ($this->request->query) {
+				$this->request->data['TextReplace'] = $this->request->query;
+				if (!empty($this->request->query['data'])) {
+					$this->request->data['ReplaceTarget'] = $this->request->query['data']['ReplaceTarget'];
+				}
+
+				$baseUrl = array(
+					'admin' => $this->request->params['admin'],
+					'plugin' => $this->request->params['plugin'],
+					'controller' => $this->request->params['controller'],
+					'action' => $this->request->params['action'],
+				);
+				$linkContainingQueryParameter = Router::url(Hash::merge($baseUrl, array('?' => $this->request->query)), true);
 			}
+		}
+
+		// 検索置換実行時: View側で、検索置換実行時、jQuery で form::method を post に切替えている
+		if ($this->request->is('post')) {
+			$this->isEnableSearchAndReplace = true;
+
+			if (isset($this->request->data['ReplaceTarget'])) {
+				$replaceTargetData = $this->request->data['ReplaceTarget'];
+				unset($this->request->data['ReplaceTarget']);
+				$requestQuery = $this->request->data;
+				$this->request->data['ReplaceTarget'] = $replaceTargetData;
+				unset($replaceTargetData);
+			}
+			$this->request->data['TextReplace'] = $this->request->data;
 
 			$baseUrl = array(
 				'admin' => $this->request->params['admin'],
@@ -158,9 +191,11 @@ class TextReplacesController extends BcPluginAppController
 				'controller' => $this->request->params['controller'],
 				'action' => $this->request->params['action'],
 			);
-			$linkContainingQueryParameter = Router::url(Hash::merge($baseUrl, array('?' => $this->request->query)), true);
+			// 検索置換実行記録のタイプを dryrun として変換し、置換ログデータに dryrun として記録し、リンクから呼び出せるようにする
+			$requestQuery['type'] = 'dryrun';
+			$linkContainingQueryParameter = Router::url(Hash::merge($baseUrl, array('?' => $requestQuery)), true);
 		}
-		
+
 		if ($this->request->data) {
 			clearAllCache();
 
@@ -182,51 +217,56 @@ class TextReplacesController extends BcPluginAppController
 				// 実行ボタン別に処理を行う
 				switch ($searchType) {
 					case 'search-and-replace':
-						if (!empty($this->request->data['ReplaceTarget'])) {
-							$hasPageSaveResult = false;		// 固定ページのデータ置換の有無
-							foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
-								$target = $this->getTargetModelField($value);
-								$targetModel = $target['modelName'];
-								$targetField = $target['field'];
-								
-								$originalData = $this->getModelData($value);
-								if ($originalData) {
-									$data = $this->getReplaceData($originalData, $searchText, $replaceText,
-											array(
-												'search_regex' => $useRegex,
-												'target_model' => $targetModel,
-												'target_field' => $targetField,
-											)
-									);
+						if ($this->isEnableSearchAndReplace) {
+							if (!empty($this->request->data['ReplaceTarget'])) {
+								$hasPageSaveResult = false;		// 固定ページのデータ置換の有無
+								foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
+									$target = $this->getTargetModelField($value);
+									$targetModel = $target['modelName'];
+									$targetField = $target['field'];
 
-									//$saveResult = true;
-									$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
-									if ($saveResult) {
-										$this->saveLogging(array(
-											'original' => $originalData,
-											'save_result' => $saveResult,
-											'search_pattern' => $searchText,
-											'replace_pattern' => $replaceText,
-											'search_regex' => $useRegex,
-											'model' => $targetModel,
-											'target_field' => $targetField,
-											'user_id' => $user['id'],
-										));
-										$datas[$targetModel][$targetField][] = $originalData;
-										$countResult++;
-										if ($targetModel === 'Page') {
-											$hasPageSaveResult = true;
+									$originalData = $this->getModelData($value);
+									if ($originalData) {
+										$data = $this->getReplaceData($originalData, $searchText, $replaceText,
+												array(
+													'search_regex' => $useRegex,
+													'target_model' => $targetModel,
+													'target_field' => $targetField,
+												)
+										);
+
+										//$saveResult = true;
+										$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
+										if ($saveResult) {
+											$this->saveLogging(array(
+												'original' => $originalData,
+												'save_result' => $saveResult,
+												'search_pattern' => $searchText,
+												'replace_pattern' => $replaceText,
+												'search_regex' => $useRegex,
+												'model' => $targetModel,
+												'target_field' => $targetField,
+												'user_id' => $user['id'],
+												'query_url' => $linkContainingQueryParameter,
+											));
+											$datas[$targetModel][$targetField][] = $originalData;
+											$countResult++;
+											if ($targetModel === 'Page') {
+												$hasPageSaveResult = true;
+											}
 										}
 									}
 								}
+								$message = '検索置換を実行しました。['. $countResult .'件]';
+								if ($hasPageSaveResult) {
+									$message .= '　「固定ページテンプレート書出」を実行してください。';
+								}
+								$this->setMessage($message, false, true);
+							} else {
+								$message = '置換対象が選択されていません。';
 							}
-							$message = '検索置換を実行しました。['. $countResult .'件]';
-							if ($hasPageSaveResult) {
-								$message .= '　「固定ページテンプレート書出」を実行してください。';
-							}
-							$this->setMessage($message, false, true);
 						} else {
-							$message = '置換対象が選択されていません。';
+							$message = '検索置換は、URLアクセスからの実行はできません。置換確認実行後に利用してください。';
 						}
 						break;
 
@@ -434,6 +474,7 @@ class TextReplacesController extends BcPluginAppController
 				'before_contents'	 => $options['original'][$options['model']][$options['target_field']],
 				'after_contents'	 => $options['save_result'][$options['model']][$options['target_field']],
 				'user_id'			 => $options['user_id'],
+				'query_url'			 => trim($options['query_url']),
 			)
 		);
 		$TextReplceLogModel->create($saveData);

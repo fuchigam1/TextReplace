@@ -116,6 +116,8 @@ $(function () {
 				},
 				"OK": function() {
 					$(this).dialog("close");
+					// 検索置換時、414 Request-URI too large が出る可能性が高いため post 送信に切替える
+					$('#TextReplaceAdminIndexForm').attr({'method': 'post'});
 					$("#TextReplaceAdminIndexForm").submit();
 				}
 			}

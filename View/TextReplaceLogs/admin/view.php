@@ -49,6 +49,24 @@ $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 			<?php echo $data['TextReplaceLog']['replace_pattern'] ?>
 		</td>
 	</tr>
+	<tr>
+		<th class="col-head">置換確認用URL
+			<?php echo $this->BcBaser->getImg('admin/icn_help.png', array('id' => 'helpTextReplaceLogQueryUrl', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+			<div id="helptextTextReplaceLogQueryUrl" class="helptext">
+				置換＆保存実行時の条件で置換確認を再現できます。
+			</div>
+		</th>
+		<td class="col-input" colspan="3" style="word-break: break-all; word-wrap: break-word;">
+			<?php
+				if ($data['TextReplaceLog']['query_url']) {
+					$data['TextReplaceLog']['query_url'] = trim($data['TextReplaceLog']['query_url']);
+				}
+			?>
+			<small>
+				<?php $this->BcBaser->link($data['TextReplaceLog']['query_url'], $data['TextReplaceLog']['query_url']) ?>
+			</small>
+		</td>
+	</tr>
 </table>
 
 <div class="box-field-result">
