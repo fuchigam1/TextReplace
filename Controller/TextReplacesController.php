@@ -103,6 +103,10 @@ class TextReplacesController extends BcPluginAppController
 	 */
 	private function init()
 	{
+		ini_set('memory_limit', '126M');
+		ini_set('max_execution_time', 180);
+		set_time_limit(180);
+
 		// 設定ファイルのモデル指定から、利用可能なモデルと不可のモデルを設定する
 		TextReplaceUtil::init($this->pluginSetting['target']);
 		$isEnableSearch = true;		// 検索実行可能判定
@@ -162,6 +166,7 @@ class TextReplacesController extends BcPluginAppController
 		}
 		
 		if ($this->request->data) {
+			clearAllCache();
 
 			$this->TextReplace->set($this->request->data);
 			$errors = array();
