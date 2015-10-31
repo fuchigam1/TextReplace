@@ -138,4 +138,44 @@ class TextReplaceHelper extends AppHelper
 		return $contents;
 	}
 
+	/**
+	 * アクセス元がテキスト置換ログ画面からのURLかを確認する
+	 * 
+	 * @return boolean
+	 */
+	public function isAccessFromTextReplaceLogs() {
+		$refererUrl = $this->request->referer();
+		if (!$refererUrl) {
+			return false;
+		}
+
+		$parseUrl = parse_url($refererUrl);
+		if (!isset($parseUrl['path'])) {
+			return false;
+		}
+
+		$parsedUrl = Router::parse($parseUrl['path']);
+		if (!isset($parsedUrl['admin']) || !isset($parsedUrl['plugin']) || !isset($parsedUrl['controller']) || !isset($parsedUrl['action']) || !isset($parsedUrl['pass'][0])) {
+			return false;
+		}
+
+		if ($parsedUrl['admin'] != 'admin') {
+			return false;
+		}
+		if ($parsedUrl['plugin'] != 'text_replace') {
+			return false;
+		}
+		if ($parsedUrl['controller'] != 'text_replace_logs') {
+			return false;
+		}
+		if ($parsedUrl['action'] != 'admin_view') {
+			return false;
+		}
+		if (count($parsedUrl['pass']) != 1) {
+			return false;
+		}
+
+		return true;
+	}
+
 }

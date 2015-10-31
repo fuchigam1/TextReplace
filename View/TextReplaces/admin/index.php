@@ -66,6 +66,19 @@ if ($searchType === 'search-and-replace') {
 			</td>
 		</tr>
 		<?php endif ?>
+		<?php if ($this->TextReplace->isAccessFromTextReplaceLogs()): ?>
+		<tr>
+			<th class="col-head">
+				確認元のログ画面
+			</th>
+			<td class="col-input" style="word-break: break-all; word-wrap: break-word;">
+				<span id="IsAccessFromTextReplaceLogs" style="display: none;">
+					<?php $refererUrl = $this->request->referer(); ?>
+					<?php echo $this->BcBaser->link($refererUrl, $refererUrl) ?>
+				</span>
+			</td>
+		</tr>
+		<?php endif ?>
 		<?php $settingFiles = TextReplaceUtil::hasOriginalSetting() ?>
 		<?php if ($settingFiles): ?>
 		<tr>
@@ -106,6 +119,10 @@ if ($searchType === 'search-and-replace') {
 				<small id="SearchRegexChecked">（デリミタ「/〜/」を付けてください）</small>
 				<?php echo $this->BcForm->error('TextReplace.search_regex') ?>
 				<?php echo $this->BcForm->error('TextReplace.search_pattern') ?>
+
+				<?php if ($this->TextReplace->isAccessFromTextReplaceLogs()): ?>
+					<span style="margin-left: 30px;"><a href="#" id="ReplaceInputSearchReplace">検索語句と置換後の内容を入れ替える</a></span>
+				<?php endif ?>
 			</td>
 		</tr>
 		<tr>

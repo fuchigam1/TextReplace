@@ -177,16 +177,23 @@ $(function () {
 		});
 	}
 
-//	 @TODO 検索フィールドの結果テキストの検索語句にマークを付ける
-//	$('.box-field-result-all').each(function(){
-//		$(this).find('.box-field-result').find('.replace-before').each(function(){
-//			var text = $(this).html();
-//			var patternVal = $('#TextReplaceSearchPattern').val();
-//			console.log(patternVal);
-//			var pattern = new RegExp(patternVal);
-//			console.log(pattern);
-//			$(this).html(text.replace(pattern, "<strong>$1</strong>"));
-//		});
-//	});
+	// アクセス元URLがテキスト置換ログ画面の場合は、URLを表示する
+	if ($('#IsAccessFromTextReplaceLogs').length) {
+		$('#IsAccessFromTextReplaceLogs').show(3000);
+	}
 
+	if ($('#ReplaceInputSearchReplace').length) {
+		$('#ReplaceInputSearchReplace').on('click', function(event) {
+			event.preventDefault();
+			var textReplaceSearchPattern = $('#TextReplaceSearchPattern').val();
+			var TextReplaceReplacePattern = $('#TextReplaceReplacePattern').val();
+
+			$('#TextReplaceSearchPattern').val();
+			$('#TextReplaceReplacePattern').val();
+
+			$('#TextReplaceSearchPattern').val(TextReplaceReplacePattern);
+			$('#TextReplaceReplacePattern').val(textReplaceSearchPattern);
+			return false;
+		});
+	}
 });
