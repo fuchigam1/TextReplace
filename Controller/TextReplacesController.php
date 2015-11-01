@@ -7,7 +7,8 @@
  * @package			TextReplace
  * @license			MIT
  */
-class TextReplacesController extends BcPluginAppController
+App::uses('TextReplaceAppController', 'TextReplace.Controller');
+class TextReplacesController extends TextReplaceAppController
 {
 	/**
 	 * ControllerName
@@ -15,35 +16,28 @@ class TextReplacesController extends BcPluginAppController
 	 * @var string
 	 */
 	public $name = 'TextReplaces';
-	
+
 	/**
 	 * Model
 	 * 
 	 * @var array
 	 */
 	public $uses = array('TextReplace.TextReplace');
-	
-	/**
-	 * Helpers
-	 * 
-	 * @var array
-	 */
-	public $helpers = array('BcForm');
-	
+
 	/**
 	 * Components
 	 * 
 	 * @var array
 	 */
 	public $components = array('BcAuth', 'Cookie', 'BcAuthConfigure');
-	
+
 	/**
 	 * サブメニューエレメント
 	 *
 	 * @var array
 	 */
 	public $subMenuElements = array('text_replace');
-	
+
 	/**
 	 * ぱんくずナビ
 	 *
@@ -53,87 +47,14 @@ class TextReplacesController extends BcPluginAppController
 		array('name' => 'プラグイン管理', 'url' => array('plugin' => '', 'controller' => 'plugins', 'action' => 'index')),
 		array('name' => 'テキスト置換プラグイン', 'url' => array('plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'))
 	);
-	
+
 	/**
 	 * 管理画面タイトル
 	 *
 	 * @var string
 	 */
 	public $adminTitle = 'テキスト置換';
-	
-	/**
-	 * 設定ファイルのフィールド指定の誤り判定
-	 * 
-	 * @var boolean
-	 */
-	private $hasFieldError = false;
-	
-	/**
-	 * 設定ファイルのフィールド指定に誤りがある場合のメッセージ
-	 * 
-	 * @var string
-	 */
-	private $errorFieldInfo = '';
 
-	/**
-	 * 置換＆保存が可能かどうかの判定値
-	 * 
-	 * @var boolean
-	 */
-	private $isEnableSearchAndReplace = false;
-
-	/**
-	 * 設定ファイルの設定値
-	 * 
-	 * @var array
-	 */
-	protected $pluginSetting = array();
-	
-	/**
-	 * beforeFilter
-	 * 
-	 */
-	public function beforeFilter()
-	{
-		parent::beforeFilter();
-		$this->pluginSetting = Configure::read('TextReplace');
-	}
-	
-	/**
-	 * 初期化処理
-	 * - 設定不備をチェックする
-	 * 
-	 */
-	private function init()
-	{
-		ini_set('memory_limit', '126M');
-		ini_set('max_execution_time', 180);
-		set_time_limit(180);
-
-		// 設定ファイルのモデル指定から、利用可能なモデルと不可のモデルを設定する
-		TextReplaceUtil::init($this->pluginSetting['target']);
-		$isEnableSearch = true;		// 検索実行可能判定
-		
-		$disabledModelList = TextReplaceUtil::getDisabledModel();
-		if ($disabledModelList) {
-			$disabledModel = implode('、', $disabledModelList);
-			$this->setMessage('設定ファイルに利用できないモデルの指定があります。<br>（'. $disabledModel .'）', true);
-			$isEnableSearch = false;
-		}
-		
-		$useModel = TextReplaceUtil::getEnabledModel();
-		$this->uses = Hash::merge($this->uses, $useModel);
-		
-		// 設定ファイルのフィールド指定にエラーがないかチェックする
-		$this->hasFieldError = $this->hasFieldError($this->pluginSetting['target']);
-		if ($this->hasFieldError) {
-			$this->setMessage($this->errorFieldInfo, true);
-			$isEnableSearch = false;
-		}
-		
-		$this->set('isEnableSearch', $isEnableSearch);
-	}
-	
 	/**
 	 * [ADMIN] 検索、置換確認
 	 * 
@@ -350,7 +271,7 @@ class TextReplacesController extends BcPluginAppController
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult', 'linkContainingQueryParameter'));
 		$this->set('datas', $datas);
 	}
-	
+
 	/**
 	 * callback: preg_replace_callback
 	 * 
@@ -364,7 +285,7 @@ class TextReplacesController extends BcPluginAppController
 		}
 		return $matches[$key];
 	}
-	
+
 	/**
 	 * 検索文字列、置換後文字列を取得する
 	 * 
@@ -388,7 +309,7 @@ class TextReplacesController extends BcPluginAppController
 		}
 		return $query;
 	}
-	
+
 	/**
 	 * 検索置換対象の指定 の初期値を設定する
 	 * 
@@ -400,40 +321,7 @@ class TextReplacesController extends BcPluginAppController
 			$this->request->data['TextReplace']['replace_target'] = $defaultTarget;
 		}
 	}
-	
-	/**
-	 * 検索・置換対象のモデル名とフィールド名と取得する
-	 * 
-	 * @param array $modelField array(Model.field => id値)
-	 * @return array
-	 */
-	private function getTargetModelField($modelField)
-	{
-		$valueKey = key($modelField);
-		$searchTarget = TextReplaceUtil::splitName($valueKey);
-		return $searchTarget;
-	}
-	
-	/**
-	 * モデル名.フィールド名 と id値 からデータを取得する
-	 * 
-	 * @param array $modelField array(Model.field => id値)
-	 */
-	private function getModelData($modelField)
-	{
-		$valueKey = key($modelField);
-		$searchTarget = $this->getTargetModelField($modelField);
-		$targetModel = $searchTarget['modelName'];
-		$targetField = $searchTarget['field'];
-		
-		$originalData = $this->{$targetModel}->find('first', array(
-			'conditions' => array($targetModel .'.id' => $modelField[$valueKey]),
-			'recursive' => -1,
-		));
-		
-		return $originalData;
-	}
-	
+
 	/**
 	 * 実行結果をログファイルに保存する
 	 * 
@@ -483,7 +371,7 @@ class TextReplacesController extends BcPluginAppController
 			$this->log($saveData, LOG_DEBUG);
 		}
 	}
-	
+
 	/**
 	 * 検索語句に指定があるかチェックする
 	 * 
@@ -502,7 +390,7 @@ class TextReplacesController extends BcPluginAppController
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 検索置換対象指定から、検索語句を含むデータを全て取得する
 	 * 
@@ -534,7 +422,7 @@ class TextReplacesController extends BcPluginAppController
 		));
 		return $allData;
 	}
-	
+
 	/**
 	 * 元データ内の検索語句を置換指定語句で変換した内容を取得する
 	 * 
@@ -564,7 +452,7 @@ class TextReplacesController extends BcPluginAppController
 		
 		return $saveData;
 	}
-	
+
 	/**
 	 * 検索条件を生成する
 	 *
@@ -588,37 +476,5 @@ class TextReplacesController extends BcPluginAppController
 		
 		return $conditions;
 	}
-	
-	/**
-	 * 設定ファイルのフィールド指定にエラーがないかチェックする
-	 * 
-	 * @param array $setting
-	 * @return boolean
-	 */
-	protected function hasFieldError($setting = array())
-	{
-		$error = false;
-		
-		// 実際に利用するモデル名を取得
-		$useModelName = TextReplaceUtil::getUseModelName($setting);
-		// 検索置換対象となるモデルとフィールドの一覧を取得
-		$modelAndField = TextReplaceUtil::getModelField($setting);
-		foreach ($useModelName as $value) {
-			$modelFields = $this->{$value}->getColumnTypes();
-			//var_dump($useModelName);
-			foreach ($modelAndField as $key => $field) {
-				if ($value === $key) {
-					foreach ($field as $check) {
-						if (!array_key_exists($check, $modelFields)) {
-							$error = true;
-							$this->errorFieldInfo = $value .'モデル内に'. $check .'フィールドは存在しません。TextReplaceの設定ファイルを修正してください。';
-							break;
-						}
-					}
-				}
-			}
-		}
-		return $error;
-	}
-	
+
 }
