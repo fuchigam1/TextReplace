@@ -82,14 +82,7 @@ class TextReplacesController extends TextReplaceAppController
 				if (!empty($this->request->query['data'])) {
 					$this->request->data['ReplaceTarget'] = $this->request->query['data']['ReplaceTarget'];
 				}
-
-				$baseUrl = array(
-					'admin' => $this->request->params['admin'],
-					'plugin' => $this->request->params['plugin'],
-					'controller' => $this->request->params['controller'],
-					'action' => $this->request->params['action'],
-				);
-				$linkContainingQueryParameter = Router::url(Hash::merge($baseUrl, array('?' => $this->request->query)), true);
+				$linkContainingQueryParameter = $this->getLinkContainingQueryParameter($this->request->query);
 			}
 		}
 
@@ -106,15 +99,9 @@ class TextReplacesController extends TextReplaceAppController
 			}
 			$this->request->data['TextReplace'] = $this->request->data;
 
-			$baseUrl = array(
-				'admin' => $this->request->params['admin'],
-				'plugin' => $this->request->params['plugin'],
-				'controller' => $this->request->params['controller'],
-				'action' => $this->request->params['action'],
-			);
 			// 検索置換実行記録のタイプを dryrun として変換し、置換ログデータに dryrun として記録し、リンクから呼び出せるようにする
 			$requestQuery['type'] = 'dryrun';
-			$linkContainingQueryParameter = Router::url(Hash::merge($baseUrl, array('?' => $requestQuery)), true);
+			$linkContainingQueryParameter = $this->getLinkContainingQueryParameter($requestQuery);
 		}
 
 		if ($this->request->data) {
@@ -270,6 +257,23 @@ class TextReplacesController extends TextReplaceAppController
 		
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult', 'linkContainingQueryParameter'));
 		$this->set('datas', $datas);
+	}
+
+	/**
+	 * 検索、置換確認時時のURLを取得する
+	 * 
+	 * @param array $requestQuery
+	 * @return string
+	 */
+	private function getLinkContainingQueryParameter($requestQuery) {
+		$baseUrl = array(
+			'admin' => $this->request->params['admin'],
+			'plugin' => $this->request->params['plugin'],
+			'controller' => $this->request->params['controller'],
+			'action' => $this->request->params['action'],
+		);
+
+		return Router::url(Hash::merge($baseUrl, array('?' => $requestQuery)), true);
 	}
 
 	/**
