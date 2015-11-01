@@ -187,7 +187,7 @@ class TextReplacesController extends TextReplaceAppController
 								$message = '置換対象が選択されていません。';
 							}
 						} else {
-							$message = '検索置換は、URLアクセスからの実行はできません。置換確認実行後に利用してください。';
+							$message = '置換＆保存はURLアクセスからの実行はできません。置換確認実行後に利用してください。';
 						}
 						break;
 
