@@ -45,13 +45,14 @@ $(function () {
 
 	// 「対象」配下全てにチェックボックスが入ってる場合は、その「対象」にチェックを入れる（検索・置換実行後のための制御）
 	$('.target-check fieldset legend').each(function () {
-		$(this).parent().find('.checkbox input[type=checkbox]').each(function () {
-			isChecked = false;
-			if ($(this).prop('checked')) {
-				isChecked = true;
+		var isAllChecked = true;
+		$(this).parent().find('label input[type=checkbox]').each(function () {
+			if (!$(this).prop('checked')) {
+				isAllChecked = false;
+				return false;
 			}
 		});
-		if (isChecked) {
+		if (isAllChecked) {
 			// 動的に付与した「対象」チェックボックスを操作する
 			$(this).parent().find('input.model-range').prop('checked', true);
 		} else {
@@ -72,20 +73,15 @@ $(function () {
 
 	// 検索置換対象のモデル単位で、チェックボックスを全てチェックする／チェック外す
 	$('.target-check fieldset legend').on('click', function () {
-		$(this).parent().find('.checkbox input[type=checkbox]').each(function () {
-			isChecked = false;
-			if ($(this).prop('checked')) {
-				isChecked = true;
-			}
-		});
+		var isChecked = $(this).find('input[type=checkbox]').prop('checked');
 		if (isChecked) {
-			$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', false);
-			// 動的に付与した「対象」チェックボックスを操作する
-			$(this).parent().find('input.model-range').prop('checked', false);
+			// 動的に付与した「対象」チェックチェックがついてるときは、配下の対象チェックをオフにする
+			$(this).find('input.model-range').prop('checked', false);
+			$(this).parent().find('label input[type=checkbox]').prop('checked', false);
 		} else {
-			$(this).parent().find('.checkbox input[type=checkbox]').prop('checked', true);
-			// 動的に付与した「対象」チェックボックスを操作する
-			$(this).parent().find('input.model-range').prop('checked', true);
+			// 動的に付与した「対象」チェックがついてないときは、配下の対象チェックをオンにする
+			$(this).find('input.model-range').prop('checked', true);
+			$(this).parent().find('label input[type=checkbox]').prop('checked', true);
 		}
 	});
 
