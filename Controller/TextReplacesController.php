@@ -1,4 +1,5 @@
 <?php
+
 /**
  * [Controller] TextReplace
  *
@@ -8,8 +9,10 @@
  * @license			MIT
  */
 App::uses('TextReplaceAppController', 'TextReplace.Controller');
+
 class TextReplacesController extends TextReplaceAppController
 {
+
 	/**
 	 * ControllerName
 	 * 
@@ -62,19 +65,18 @@ class TextReplacesController extends TextReplaceAppController
 	 */
 	public function admin_index()
 	{
-		$this->help = 'text_replaces_index';
+		$this->help		 = 'text_replaces_index';
 		$this->pageTitle = 'テキスト置換処理';
 		$this->init();
 
-		$user = $this->BcAuth->user();
-		$datas = array();	// 検索結果一覧のデータ
-		$searchText = '';
-		$replaceText = '';
-		$searchTarget = array();
-		$searchType = '';
-		$message = '';
-		$linkContainingQueryParameter = '';	// 検索クエリーを含むURL
-
+		$user							 = $this->BcAuth->user();
+		$datas							 = array(); // 検索結果一覧のデータ
+		$searchText						 = '';
+		$replaceText					 = '';
+		$searchTarget					 = array();
+		$searchType						 = '';
+		$message						 = '';
+		$linkContainingQueryParameter	 = ''; // 検索クエリーを含むURL
 		// 検索、置換確認時
 		if ($this->request->is('get')) {
 			if ($this->request->query) {
@@ -91,17 +93,17 @@ class TextReplacesController extends TextReplaceAppController
 			$this->isEnableSearchAndReplace = true;
 
 			if (isset($this->request->data['ReplaceTarget'])) {
-				$replaceTargetData = $this->request->data['ReplaceTarget'];
+				$replaceTargetData						 = $this->request->data['ReplaceTarget'];
 				unset($this->request->data['ReplaceTarget']);
-				$requestQuery = $this->request->data;
-				$this->request->data['ReplaceTarget'] = $replaceTargetData;
+				$requestQuery							 = $this->request->data;
+				$this->request->data['ReplaceTarget']	 = $replaceTargetData;
 				unset($replaceTargetData);
 			}
 			$this->request->data['TextReplace'] = $this->request->data;
 
 			// 検索置換実行記録のタイプを dryrun として変換し、置換ログデータに dryrun として記録し、リンクから呼び出せるようにする
-			$requestQuery['type'] = 'dryrun';
-			$linkContainingQueryParameter = $this->getLinkContainingQueryParameter($requestQuery);
+			$requestQuery['type']			 = 'dryrun';
+			$linkContainingQueryParameter	 = $this->getLinkContainingQueryParameter($requestQuery);
 		}
 
 		if ($this->request->data) {
@@ -115,31 +117,29 @@ class TextReplacesController extends TextReplaceAppController
 			}
 
 			if (!$this->isNoinputSearchReplace($this->request->data) && !$errors) {
-				
-				$searchText = $this->request->data['TextReplace']['search_pattern'];	// 検索語句
-				$replaceText = $this->request->data['TextReplace']['replace_pattern'];	// 置換後
-				$useRegex = $this->request->data['TextReplace']['search_regex'];		// 正規表現の利用指定
-				$searchType = $this->request->data['TextReplace']['type'];				// 検索タイプ
-				$countResult = 0;	// 検索結果数
-				
+
+				$searchText	 = $this->request->data['TextReplace']['search_pattern']; // 検索語句
+				$replaceText = $this->request->data['TextReplace']['replace_pattern']; // 置換後
+				$useRegex	 = $this->request->data['TextReplace']['search_regex'];  // 正規表現の利用指定
+				$searchType	 = $this->request->data['TextReplace']['type'];	// 検索タイプ
+				$countResult = 0; // 検索結果数
 				// 実行ボタン別に処理を行う
 				switch ($searchType) {
 					case 'search-and-replace':
 						if ($this->isEnableSearchAndReplace) {
 							if (!empty($this->request->data['ReplaceTarget'])) {
-								$hasPageSaveResult = false;		// 固定ページのデータ置換の有無
+								$hasPageSaveResult = false;  // 固定ページのデータ置換の有無
 								foreach ($this->request->data['ReplaceTarget'] as $resultKey => $value) {
-									$target = $this->getTargetModelField($value);
+									$target		 = $this->getTargetModelField($value);
 									$targetModel = $target['modelName'];
 									$targetField = $target['field'];
 
 									$originalData = $this->getModelData($value);
 									if ($originalData) {
-										$data = $this->getReplaceData($originalData, $searchText, $replaceText,
-												array(
-													'search_regex' => $useRegex,
-													'target_model' => $targetModel,
-													'target_field' => $targetField,
+										$data = $this->getReplaceData($originalData, $searchText, $replaceText, array(
+											'search_regex'	 => $useRegex,
+											'target_model'	 => $targetModel,
+											'target_field'	 => $targetField,
 												)
 										);
 
@@ -147,15 +147,15 @@ class TextReplacesController extends TextReplaceAppController
 										$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
 										if ($saveResult) {
 											$this->saveLogging(array(
-												'original' => $originalData,
-												'save_result' => $saveResult,
-												'search_pattern' => $searchText,
-												'replace_pattern' => $replaceText,
-												'search_regex' => $useRegex,
-												'model' => $targetModel,
-												'target_field' => $targetField,
-												'user_id' => $user['id'],
-												'query_url' => $linkContainingQueryParameter,
+												'original'			 => $originalData,
+												'save_result'		 => $saveResult,
+												'search_pattern'	 => $searchText,
+												'replace_pattern'	 => $replaceText,
+												'search_regex'		 => $useRegex,
+												'model'				 => $targetModel,
+												'target_field'		 => $targetField,
+												'user_id'			 => $user['id'],
+												'query_url'			 => $linkContainingQueryParameter,
 											));
 											$datas[$targetModel][$targetField][] = $originalData;
 											$countResult++;
@@ -165,7 +165,7 @@ class TextReplacesController extends TextReplaceAppController
 										}
 									}
 								}
-								$message = '検索置換を実行しました。['. $countResult .'件]';
+								$message = '検索置換を実行しました。[' . $countResult . '件]';
 								if ($hasPageSaveResult) {
 									$message .= '　「固定ページテンプレート書出」を実行してください。';
 								}
@@ -193,20 +193,19 @@ class TextReplacesController extends TextReplaceAppController
 						$hasSearchReplaceError = false;
 
 						foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
-							$searchTarget = TextReplaceUtil::splitName($value);
-							$targetModel = $searchTarget['modelName'];
-							$targetField = $searchTarget['field'];
-							
+							$searchTarget	 = TextReplaceUtil::splitName($value);
+							$targetModel	 = $searchTarget['modelName'];
+							$targetField	 = $searchTarget['field'];
+
 							// 検索置換対象指定から、モデル別に検索語句を含むデータを全て取得する
-							$allData = $this->getSearchResult($targetModel, $targetField, $searchText,
-									array('use_regex' => $useRegex)
+							$allData = $this->getSearchResult($targetModel, $targetField, $searchText, array('use_regex' => $useRegex)
 							);
 
 							if ($allData) {
 								if (!$useRegex) {
 									// 正規表現検索を利用しない場合、単純に検索結果データに入れ込む
-									$datas[$targetModel][$targetField] = $allData;
-									$countResult = $countResult + count($allData);
+									$datas[$targetModel][$targetField]	 = $allData;
+									$countResult						 = $countResult + count($allData);
 								} else {
 									$result = array();
 									foreach ($allData as $resultKey => $resultValue) {
@@ -216,11 +215,9 @@ class TextReplacesController extends TextReplaceAppController
 											if (preg_match($searchText, $resultValue[$targetModel][$targetField])) {
 												// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
 												$allData[$resultKey][$targetModel][$targetField] = preg_replace_callback(
-														$searchText,
-														array($this, 'replaceHitString'),
-														$resultValue[$targetModel][$targetField]
+														$searchText, array($this, 'replaceHitString'), $resultValue[$targetModel][$targetField]
 												);
-												$result[] = $allData[$resultKey];
+												$result[]										 = $allData[$resultKey];
 											}
 										} catch (Exception $exc) {
 											$message .= $exc->getMessage();
@@ -230,8 +227,8 @@ class TextReplacesController extends TextReplaceAppController
 									}
 
 									if ($result) {
-										$datas[$targetModel][$targetField] = $result;
-										$countResult = $countResult + count($result);
+										$datas[$targetModel][$targetField]	 = $result;
+										$countResult						 = $countResult + count($result);
 									}
 								}
 							}
@@ -251,10 +248,10 @@ class TextReplacesController extends TextReplaceAppController
 			$this->setDefaultSearchTarget();
 		}
 		$query = $this->getSearchReplaceText($searchType, array('search_text' => $searchText, 'replace_text' => $replaceText));
-		
+
 		// 検索置換対象の指定内容を作成
 		$replaceTarget = TextReplaceUtil::getReplaceTarget($this->pluginSetting['target']);
-		
+
 		$this->set(compact('query', 'searchText', 'replaceText', 'replaceTarget', 'searchType', 'countResult', 'linkContainingQueryParameter'));
 		$this->set('datas', $datas);
 	}
@@ -265,12 +262,13 @@ class TextReplacesController extends TextReplaceAppController
 	 * @param array $requestQuery
 	 * @return string
 	 */
-	private function getLinkContainingQueryParameter($requestQuery) {
+	private function getLinkContainingQueryParameter($requestQuery)
+	{
 		$baseUrl = array(
-			'admin' => $this->request->params['admin'],
-			'plugin' => $this->request->params['plugin'],
+			'admin'		 => $this->request->params['admin'],
+			'plugin'	 => $this->request->params['plugin'],
 			'controller' => $this->request->params['controller'],
-			'action' => $this->request->params['action'],
+			'action'	 => $this->request->params['action'],
 		);
 
 		return Router::url(Hash::merge($baseUrl, array('?' => $requestQuery)), true);
@@ -285,7 +283,7 @@ class TextReplacesController extends TextReplaceAppController
 	private function replaceHitString($matches)
 	{
 		foreach ($matches as $key => $value) {
-			$matches[$key] = str_replace($value, ''. $value .'', $value);
+			$matches[$key] = str_replace($value, '' . $value . '', $value);
 		}
 		return $matches[$key];
 	}
@@ -299,12 +297,12 @@ class TextReplacesController extends TextReplaceAppController
 	 */
 	private function getSearchReplaceText($searchType, $options = array())
 	{
-		$_options = array(
-			'search_text' => '',
-			'replace_text' => '',
+		$_options	 = array(
+			'search_text'	 => '',
+			'replace_text'	 => '',
 		);
-		$options = Hash::merge($_options, $options);
-		
+		$options	 = Hash::merge($_options, $options);
+
 		$query[] = $options['search_text'];
 		if ($options['replace_text']) {
 			if ($searchType == 'dryrun') {
@@ -333,12 +331,12 @@ class TextReplacesController extends TextReplaceAppController
 	 */
 	private function saveLogging($options = array())
 	{
-		$_options = array(
-			'original' => array(),
-			'save_result' => array(),
+		$_options	 = array(
+			'original'		 => array(),
+			'save_result'	 => array(),
 		);
-		$options = Hash::merge($_options, $options);
-		
+		$options	 = Hash::merge($_options, $options);
+
 		// save したデータのログを取る
 		if ($options['original']) {
 			//$this->log($options['original'], LOG_TEXT_REPLACE_BEFORE);
@@ -355,7 +353,7 @@ class TextReplacesController extends TextReplaceAppController
 			$TextReplceLogModel = ClassRegistry::init('TextReplace.TextReplaceLog');
 		}
 
-		$saveData = array(
+		$saveData	 = array(
 			'TextReplaceLog' => array(
 				'search_pattern'	 => $options['search_pattern'],
 				'replace_pattern'	 => $options['replace_pattern'],
@@ -370,7 +368,7 @@ class TextReplacesController extends TextReplaceAppController
 			)
 		);
 		$TextReplceLogModel->create($saveData);
-		$result = $TextReplceLogModel->save($saveData, array('callbacks' => false));
+		$result		 = $TextReplceLogModel->save($saveData, array('callbacks' => false));
 		if (!$result) {
 			$this->log($saveData, LOG_DEBUG);
 		}
@@ -406,23 +404,23 @@ class TextReplacesController extends TextReplaceAppController
 	 */
 	protected function getSearchResult($modelName, $field, $searchText, $options = array())
 	{
-		$_options = array(
+		$_options	 = array(
 			'use_regex' => false,
 		);
-		$options = Hash::merge($_options, $options);
-		
+		$options	 = Hash::merge($_options, $options);
+
 		$conditions = array();
 		// 'conditions' => array($value .' REGEXP' => "^$param$|^$param,"),
 		// $conditions = array($value .' REGEXP' => "$searchText");
 		if (!$options['use_regex']) {
-			$target = implode('.', array($modelName, $field));
-			$conditions = array($target .' LIKE' => "%{$searchText}%");
+			$target		 = implode('.', array($modelName, $field));
+			$conditions	 = array($target . ' LIKE' => "%{$searchText}%");
 		}
 
 		$allData = $this->{$modelName}->find('all', array(
 			'conditions' => $conditions,
-			'order' => '',
-			'recursive' => -1,
+			'order'		 => '',
+			'recursive'	 => -1,
 		));
 		return $allData;
 	}
@@ -438,22 +436,21 @@ class TextReplacesController extends TextReplaceAppController
 	 */
 	protected function getReplaceData($originalData, $searchText = '', $replaceText = '', $options = array())
 	{
-		$_options = array(
-			'search_regex' => false,
-			'target_model' => '',
-			'target_field' => '',
+		$_options	 = array(
+			'search_regex'	 => false,
+			'target_model'	 => '',
+			'target_field'	 => '',
 		);
-		$options = Hash::merge($_options, $options);
-		
-		$useRegex = $options['search_regex'];
+		$options	 = Hash::merge($_options, $options);
+
+		$useRegex	 = $options['search_regex'];
 		$targetModel = $options['target_model'];
 		$targetField = $options['target_field'];
-		
-		$saveData = $originalData;
-		$saveData[$targetModel][$targetField] = TextReplaceUtil::getReplaceData(
-				$originalData[$targetModel][$targetField],
-				$searchText, $replaceText, array('search_regex' => $useRegex));
-		
+
+		$saveData								 = $originalData;
+		$saveData[$targetModel][$targetField]	 = TextReplaceUtil::getReplaceData(
+						$originalData[$targetModel][$targetField], $searchText, $replaceText, array('search_regex' => $useRegex));
+
 		return $saveData;
 	}
 
@@ -465,19 +462,19 @@ class TextReplacesController extends TextReplaceAppController
 	 */
 	protected function createSearchConditions($data)
 	{
-		$conditions = array();
-		$searchText = '';
-		
+		$conditions	 = array();
+		$searchText	 = '';
+
 		if ($data['TextReplace']['search_pattern']) {
 			$searchText = $data['TextReplace']['search_pattern'];
 		}
-		
+
 		if ($data['TextReplace']['replace_target']) {
 			foreach ($data['TextReplace']['replace_target'] as $key => $value) {
-				$conditions[] = array($value .' LIKE' => "%{$searchText}%");
+				$conditions[] = array($value . ' LIKE' => "%{$searchText}%");
 			}
 		}
-		
+
 		return $conditions;
 	}
 

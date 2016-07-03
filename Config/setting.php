@@ -1,4 +1,5 @@
 <?php
+
 /**
  * [Config] TextReplace
  *
@@ -12,22 +13,22 @@ App::uses('TextReplaceUtil', 'TextReplace.Lib');
  * システムナビ
  */
 $config['BcApp.adminNavi.text_replace'] = array(
-		'name'		=> 'テキスト置換 プラグイン',
-		'contents'	=> array(
-			array('name' => 'テキスト置換',
-				'url' => array(
-					'admin' => true,
-					'plugin' => 'text_replace',
-					'controller' => 'text_replaces',
-					'action' => 'index')
-			),
-			array('name' => 'テキスト置換ログ',
-				'url' => array(
-					'admin' => true,
-					'plugin' => 'text_replace',
-					'controller' => 'text_replace_logs',
-					'action' => 'index')
-			)
+	'name'		 => 'テキスト置換 プラグイン',
+	'contents'	 => array(
+		array('name'	 => 'テキスト置換',
+			'url'	 => array(
+				'admin'		 => true,
+				'plugin'	 => 'text_replace',
+				'controller' => 'text_replaces',
+				'action'	 => 'index')
+		),
+		array('name'	 => 'テキスト置換ログ',
+			'url'	 => array(
+				'admin'		 => true,
+				'plugin'	 => 'text_replace',
+				'controller' => 'text_replace_logs',
+				'action'	 => 'index')
+		)
 	)
 );
 
@@ -38,14 +39,14 @@ $config['BcApp.adminNavi.text_replace'] = array(
 define('LOG_TEXT_REPLACE', 'log_text_replace');
 CakeLog::config('log_text_replace', array(
 	'engine' => 'FileLog',
-	'types' => array('log_text_replace'),
-	'file' => 'log_text_replace',
+	'types'	 => array('log_text_replace'),
+	'file'	 => 'log_text_replace',
 ));
 define('LOG_TEXT_REPLACE_BEFORE', 'log_text_replace_before');
 CakeLog::config('log_text_replace_before', array(
 	'engine' => 'FileLog',
-	'types' => array('log_text_replace_before'),
-	'file' => 'log_text_replace_before',
+	'types'	 => array('log_text_replace_before'),
+	'file'	 => 'log_text_replace_before',
 ));
 
 /**
@@ -54,7 +55,7 @@ CakeLog::config('log_text_replace_before', array(
  */
 $config['TextReplace'] = array(
 	// フィールドタイプ種別
-	'target' => array(
+	'target'				 => array(
 //		設定用雛形
 //		'PLUGIN_NAME.MODEL_NAME' => array(
 //			'name' => 'MODEL_NAME',
@@ -70,38 +71,38 @@ $config['TextReplace'] = array(
 //				'pass' => array('paramater'),
 //			),
 //		),
-		'Page' => array(
-			'name' => 'Page',
-			'title' => '固定ページ',
-			'fields' => array(
-				'Page.name' => 'ページ名',
-				'Page.title' => 'ページタイトル',
-				'Page.description' => '説明文',
-				'Page.contents' => '記事本文',
-				'Page.draft' => '記事本文下書き',
-				),
-			'edit_url' => array(
-				'plugin' => null,
+		'Page'			 => array(
+			'name'		 => 'Page',
+			'title'		 => '固定ページ',
+			'fields'	 => array(
+				'Page.name'			 => 'ページ名',
+				'Page.title'		 => 'ページタイトル',
+				'Page.description'	 => '説明文',
+				'Page.contents'		 => '記事本文',
+				'Page.draft'		 => '記事本文下書き',
+			),
+			'edit_url'	 => array(
+				'plugin'	 => null,
 				'controller' => 'pages',
-				'action' => 'edit',
-				'pass' => array('id'),
+				'action'	 => 'edit',
+				'pass'		 => array('id'),
 			),
 		),
-		'Blog.BlogPost' => array(
-			'name' => 'BlogPost',
-			'title' => 'ブログ記事',
-			'fields' => array(
-				'BlogPost.name' => 'タイトル',
-				'BlogPost.content' => '記事概要',
-				'BlogPost.detail' => '記事詳細',
+		'Blog.BlogPost'	 => array(
+			'name'		 => 'BlogPost',
+			'title'		 => 'ブログ記事',
+			'fields'	 => array(
+				'BlogPost.name'			 => 'タイトル',
+				'BlogPost.content'		 => '記事概要',
+				'BlogPost.detail'		 => '記事詳細',
 				'BlogPost.content_draft' => '記事概要下書き',
-				'BlogPost.detail_draft' => '記事詳細下書き',
+				'BlogPost.detail_draft'	 => '記事詳細下書き',
 			),
-			'edit_url' => array(
-				'plugin' => 'blog',
+			'edit_url'	 => array(
+				'plugin'	 => 'blog',
 				'controller' => 'blog_posts',
-				'action' => 'edit',
-				'pass' => array('blog_content_id', 'id'),
+				'action'	 => 'edit',
+				'pass'		 => array('blog_content_id', 'id'),
 			),
 		),
 //		サイト内検索を利用している場合の、検索用データ保存モデル
@@ -193,20 +194,19 @@ $config['TextReplace'] = array(
  * /Plugin/TextReplace/Config 内に置いたphpファイルの設定内容を読み込む
  * 
  */
-$path = dirname(__FILE__);
-$dir = new Folder($path);
-$files = $dir->find('.*\.php');
+$path		 = dirname(__FILE__);
+$dir		 = new Folder($path);
+$files		 = $dir->find('.*\.php');
 $excludeFile = array('setting.php', 'init.php');
 foreach ($files as $file) {
 	if (!in_array($file, $excludeFile)) {
 		$original = $config;
-		include $dir->pwd() . DS . $file;	// $config に内容が格納される
-		
+		include $dir->pwd() . DS . $file; // $config に内容が格納される
 		// 追加した設定ファイル内の独自の「検索置換対象の指定」のデフォルト値を優先する
 		if (isset($config['TextReplace']['default_replace_target']) && !empty($config['TextReplace']['default_replace_target'])) {
 			$original['TextReplace']['default_replace_target'] = $config['TextReplace']['default_replace_target'];
 		}
-		
-		$config = Hash::merge($original, $config);	// デフォルト設定とマージする
+
+		$config = Hash::merge($original, $config); // デフォルト設定とマージする
 	}
 }

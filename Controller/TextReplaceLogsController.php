@@ -1,4 +1,5 @@
 <?php
+
 /**
  * [Controller] TextReplace
  *
@@ -8,8 +9,10 @@
  * @license			MIT
  */
 App::uses('TextReplaceAppController', 'TextReplace.Controller');
+
 class TextReplaceLogsController extends TextReplaceAppController
 {
+
 	/**
 	 * ControllerName
 	 * 
@@ -37,7 +40,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 	 * @var array
 	 */
 	public $subMenuElements = array('text_replace');
-	
+
 	/**
 	 * ぱんくずナビ
 	 *
@@ -47,7 +50,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 		array('name' => 'プラグイン管理', 'url' => array('plugin' => '', 'controller' => 'plugins', 'action' => 'index')),
 		array('name' => 'テキスト置換プラグイン', 'url' => array('plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'))
 	);
-	
+
 	/**
 	 * 管理画面タイトル
 	 *
@@ -62,32 +65,32 @@ class TextReplaceLogsController extends TextReplaceAppController
 	public function admin_index()
 	{
 		$this->pageTitle = $this->adminTitle . '一覧';
-		$this->search = 'text_replace_logs_index';
-		$this->help = 'text_replace_logs_index';
+		$this->search	 = 'text_replace_logs_index';
+		$this->help		 = 'text_replace_logs_index';
 
 		$default = array('named' => array(
-			'num' => $this->siteConfigs['admin_list_num'],
-			'sortmode' => 0)
+				'num'		 => $this->siteConfigs['admin_list_num'],
+				'sortmode'	 => 0)
 		);
 		$this->setViewConditions($this->modelClass, array('default' => $default));
 
-		$conditions = $this->_createAdminIndexConditions($this->request->data);
-		$this->paginate = array(
-			'conditions'	=> $conditions,
-			'fields'		=> array(),
-			'order'	=> $this->modelClass .'.id DESC',
-			'limit'			=> $this->passedArgs['num']
+		$conditions		 = $this->_createAdminIndexConditions($this->request->data);
+		$this->paginate	 = array(
+			'conditions' => $conditions,
+			'fields'	 => array(),
+			'order'		 => $this->modelClass . '.id DESC',
+			'limit'		 => $this->passedArgs['num']
 		);
 		$this->set('datas', $this->paginate($this->modelClass));
 
 		// モデルID一覧
-		$modelIdList = $this->{$this->modelClass}->getControlSource('model_id');
+		$modelIdList	 = $this->{$this->modelClass}->getControlSource('model_id');
 		// モデル名一覧
-		$modelNameList = $this->{$this->modelClass}->getControlSource('model');
+		$modelNameList	 = $this->{$this->modelClass}->getControlSource('model');
 		// 対象フィールド名一覧
 		$targetFieldList = $this->{$this->modelClass}->getControlSource('target_field');
 		// ユーザー一覧
-		$userList = $this->User->getUserList();
+		$userList		 = $this->User->getUserList();
 
 		$this->set(compact('modelIdList', 'modelNameList', 'targetFieldList', 'userList'));
 
@@ -104,20 +107,20 @@ class TextReplaceLogsController extends TextReplaceAppController
 	 */
 	public function admin_download_csv()
 	{
-		$default = array();
+		$default	 = array();
 		$this->setViewConditions($this->modelClass, array(
-			'default' => $default,
-			'group' => $this->Session->read('Auth.User.id'),
-			'action' => 'admin_index',
+			'default'	 => $default,
+			'group'		 => $this->Session->read('Auth.User.id'),
+			'action'	 => 'admin_index',
 		));
-		$conditions = $this->_createAdminIndexConditions($this->request->data);
-		$datas = $this->{$this->modelClass}->find('all', array(
+		$conditions	 = $this->_createAdminIndexConditions($this->request->data);
+		$datas		 = $this->{$this->modelClass}->find('all', array(
 			'conditions' => $conditions,
-			'recursive' => 0
+			'recursive'	 => 0
 		));
 
 		$this->set('datas', $datas);
-		$this->set('csvFileName', date('YmdHis') .'_'. Inflector::underscore($this->modelClass));
+		$this->set('csvFileName', date('YmdHis') . '_' . Inflector::underscore($this->modelClass));
 	}
 
 	/**
@@ -128,23 +131,23 @@ class TextReplaceLogsController extends TextReplaceAppController
 	public function admin_view($id = null)
 	{
 		$this->pageTitle = $this->adminTitle . '確認';
-		$this->help = 'text_replace_logs_index';
+		$this->help		 = 'text_replace_logs_index';
 		$this->init();
-		$originalData = array();
+		$originalData	 = array();
 
 		if (!$id) {
 			$this->setMessage('無効な処理です。', true);
-			$this->redirect(array('action' => 'index'));			
+			$this->redirect(array('action' => 'index'));
 		}
 		if (empty($this->request->data)) {
-			$this->{$this->modelClass}->id = $id;
-			$data = $this->{$this->modelClass}->read();
+			$this->{$this->modelClass}->id	 = $id;
+			$data							 = $this->{$this->modelClass}->read();
 
 			if ($data) {
-				$modelField = array(
-					$data[$this->modelClass]['model'] .'.'. $data[$this->modelClass]['target_field'] => $data[$this->modelClass]['model_id']
+				$modelField		 = array(
+					$data[$this->modelClass]['model'] . '.' . $data[$this->modelClass]['target_field'] => $data[$this->modelClass]['model_id']
 				);
-				$originalData = $this->getModelData($modelField);
+				$originalData	 = $this->getModelData($modelField);
 			}
 		}
 		// ユーザー一覧
@@ -192,7 +195,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 		}
 		exit();
 	}
-	
+
 	/**
 	 * データを削除する
 	 * 
@@ -205,7 +208,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 		$data = $this->{$this->modelClass}->read(null, $id);
 		// 削除実行
 		if ($this->{$this->modelClass}->delete($id)) {
-			$this->{$this->modelClass}->saveDbLog($data[$this->modelClass]['id'] .' を削除しました。');
+			$this->{$this->modelClass}->saveDbLog($data[$this->modelClass]['id'] . ' を削除しました。');
 			return true;
 		} else {
 			return false;
@@ -236,14 +239,14 @@ class TextReplaceLogsController extends TextReplaceAppController
 	 */
 	public function _createAdminIndexConditions($data)
 	{
-		$conditions = array();
-		$modelId = '';
-		$modelName = '';
-		$targetField = '';
-		$beforeContents = '';
-		$afterContents = '';
-		$created_begin = '';
-		$created_end = '';
+		$conditions		 = array();
+		$modelId		 = '';
+		$modelName		 = '';
+		$targetField	 = '';
+		$beforeContents	 = '';
+		$afterContents	 = '';
+		$created_begin	 = '';
+		$created_end	 = '';
 
 		if (isset($data[$this->modelClass]['model_id'])) {
 			$modelId = $data[$this->modelClass]['model_id'];
@@ -265,14 +268,14 @@ class TextReplaceLogsController extends TextReplaceAppController
 			$created_begin = $data[$this->modelClass]['created_begin_date'];
 		}
 		if (!empty($data[$this->modelClass]['created_begin_time'])) {
-			$created_begin .= ' '. $data[$this->modelClass]['created_begin_time'];
+			$created_begin .= ' ' . $data[$this->modelClass]['created_begin_time'];
 		}
 
 		if (isset($data[$this->modelClass]['created_end_date'])) {
 			$created_end = $data[$this->modelClass]['created_end_date'];
 		}
 		if (!empty($data[$this->modelClass]['created_end_time'])) {
-			$created_end .= ' '. $data[$this->modelClass]['created_end_time'];
+			$created_end .= ' ' . $data[$this->modelClass]['created_end_time'];
 		}
 
 		unset($data['_Token']);
@@ -288,27 +291,27 @@ class TextReplaceLogsController extends TextReplaceAppController
 		unset($data[$this->modelClass]['created_end_time']);
 
 		// 条件指定のないフィールドを解除
-		foreach($data[$this->modelClass] as $key => $value) {
+		foreach ($data[$this->modelClass] as $key => $value) {
 			if ($value === '') {
 				unset($data[$this->modelClass][$key]);
 			}
 		}
 
 		if (!empty($created_begin)) {
-			$conditions[$this->modelClass .'.created >='] = $created_begin;
+			$conditions[$this->modelClass . '.created >='] = $created_begin;
 		}
 		if (!empty($created_end)) {
-			$conditions[$this->modelClass .'.created <='] = $created_end;
+			$conditions[$this->modelClass . '.created <='] = $created_end;
 		}
 
 		if ($modelId) {
-			$conditions[$this->modelClass .'.model_id'] = $modelId;
+			$conditions[$this->modelClass . '.model_id'] = $modelId;
 		}
 		if ($modelName) {
-			$conditions[$this->modelClass .'.model'] = $modelName;
+			$conditions[$this->modelClass . '.model'] = $modelName;
 		}
 		if ($targetField) {
-			$conditions[$this->modelClass .'.target_field'] = $targetField;
+			$conditions[$this->modelClass . '.target_field'] = $targetField;
 		}
 
 		if ($data[$this->modelClass]) {
@@ -318,12 +321,12 @@ class TextReplaceLogsController extends TextReplaceAppController
 		// １つの入力指定から複数フィールド検索指定
 		if ($beforeContents) {
 			$conditions[] = array(
-				$this->modelClass .'.before_contents LIKE' => '%'.$beforeContents.'%'
+				$this->modelClass . '.before_contents LIKE' => '%' . $beforeContents . '%'
 			);
 		}
 		if ($afterContents) {
 			$conditions[] = array(
-				$this->modelClass .'.after_contents LIKE' => '%'.$afterContents.'%'
+				$this->modelClass . '.after_contents LIKE' => '%' . $afterContents . '%'
 			);
 		}
 

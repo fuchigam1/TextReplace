@@ -1,4 +1,5 @@
 <?php
+
 /**
  * [Model] TextReplace
  *
@@ -9,6 +10,7 @@
  */
 class TextReplaceLog extends BcPluginAppModel
 {
+
 	/**
 	 * ModelName
 	 * 
@@ -45,10 +47,10 @@ class TextReplaceLog extends BcPluginAppModel
 
 		switch ($field) {
 			case 'model_id':
-				$conditions = array(
-					'fields' => array('DISTINCT '. $this->name .'.'. $field)
+				$conditions	 = array(
+					'fields' => array('DISTINCT ' . $this->name . '.' . $field)
 				);
-				$allModelId = $this->find('all', $conditions);
+				$allModelId	 = $this->find('all', $conditions);
 				if ($allModelId) {
 					foreach ($allModelId as $modelId) {
 						$controlSources[$modelId[$this->name][$field]] = $modelId[$this->name][$field];
@@ -57,10 +59,10 @@ class TextReplaceLog extends BcPluginAppModel
 				break;
 
 			case 'model':
-				$conditions = array(
-					'fields' => array('DISTINCT '. $this->name .'.'. $field)
+				$conditions	 = array(
+					'fields' => array('DISTINCT ' . $this->name . '.' . $field)
 				);
-				$allModelId = $this->find('all', $conditions);
+				$allModelId	 = $this->find('all', $conditions);
 				if ($allModelId) {
 					foreach ($allModelId as $modelId) {
 						$controlSources[$modelId[$this->name][$field]] = $modelId[$this->name][$field];
@@ -68,10 +70,10 @@ class TextReplaceLog extends BcPluginAppModel
 				}
 				break;
 			case 'target_field':
-				$conditions = array(
-					'fields' => array('DISTINCT '. $this->name .'.'. $field)
+				$conditions	 = array(
+					'fields' => array('DISTINCT ' . $this->name . '.' . $field)
 				);
-				$allModelId = $this->find('all', $conditions);
+				$allModelId	 = $this->find('all', $conditions);
 				if ($allModelId) {
 					foreach ($allModelId as $modelId) {
 						$controlSources[$modelId[$this->name][$field]] = $modelId[$this->name][$field];

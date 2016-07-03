@@ -1,4 +1,5 @@
 <?php
+
 /**
  * [Helper] TextReplace
  *
@@ -9,33 +10,34 @@
  */
 class TextReplaceHelper extends AppHelper
 {
+
 	/**
 	 * ヘルパー
 	 *
 	 */
 	public $helpers = array('BcBaser');
-	
+
 	/**
 	 * 検索語句
 	 * 
 	 * @var string
 	 */
 	public $searchText = '';
-	
+
 	/**
 	 * 置換後
 	 * 
 	 * @var string
 	 */
 	public $replaceText = '';
-	
+
 	/**
 	 * 設定ファイルの設定値
 	 * 
 	 * @var array
 	 */
 	public static $pluginSetting = array();
-	
+
 	/**
 	 * constructor
 	 * 
@@ -47,7 +49,7 @@ class TextReplaceHelper extends AppHelper
 		parent::__construct($View, $settings);
 		self::setSelfValue();
 	}
-	
+
 	/**
 	 * 初期設定
 	 * 
@@ -56,7 +58,7 @@ class TextReplaceHelper extends AppHelper
 	{
 		self::$pluginSetting = Configure::read('TextReplace');
 	}
-	
+
 	/**
 	 * モデル名とタイトルのリストを取得する
 	 * 
@@ -65,7 +67,7 @@ class TextReplaceHelper extends AppHelper
 	public function getModelList()
 	{
 		$setting = self::$pluginSetting['target'];
-		$list = array();
+		$list	 = array();
 		foreach ($setting as $model => $fieldData) {
 			$list[$fieldData['name']] = $fieldData['title'];
 		}
@@ -81,8 +83,8 @@ class TextReplaceHelper extends AppHelper
 	 */
 	public function getEditUrl($modelName, $data)
 	{
-		$setting = self::$pluginSetting['target'];
-		$editUrlSetting = array();
+		$setting		 = self::$pluginSetting['target'];
+		$editUrlSetting	 = array();
 		foreach ($setting as $model => $fieldData) {
 			if ($fieldData['name'] == $modelName) {
 				if (!empty($fieldData['edit_url'])) {
@@ -92,8 +94,8 @@ class TextReplaceHelper extends AppHelper
 			}
 		}
 
-		$editUrl = array();
-		$replacedPass = array();
+		$editUrl		 = array();
+		$replacedPass	 = array();
 
 		if ($editUrlSetting) {
 			foreach ($editUrlSetting['pass'] as $key => $args) {
@@ -127,8 +129,8 @@ class TextReplaceHelper extends AppHelper
 		if (!$regexFlg) {
 			$contents = $this->BcBaser->mark($searchText, nl2br(h($data)));
 		} else {
-			$hitCount = preg_match_all($searchText, $data, $matches);
-			$contents = $data;
+			$hitCount	 = preg_match_all($searchText, $data, $matches);
+			$contents	 = $data;
 			if ($hitCount) {
 				foreach ($matches as $matche) {
 					$contents = $this->BcBaser->mark($matche, nl2br(h($contents)));
@@ -143,7 +145,8 @@ class TextReplaceHelper extends AppHelper
 	 * 
 	 * @return boolean
 	 */
-	public function isAccessFromTextReplaceLogs() {
+	public function isAccessFromTextReplaceLogs()
+	{
 		$refererUrl = $this->request->referer();
 		if (!$refererUrl) {
 			return false;
