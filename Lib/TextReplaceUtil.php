@@ -204,25 +204,82 @@ class TextReplaceUtil extends Object
 	}
 
 	/**
+	 * コンテンツ内で検索語句が該当した箇所にマークを付ける
+	 * 
+	 * @param string $data 検索対象データ
+	 * @param string $searchText 検索語句
+	 * @param string $replaceText 置換後文字列
+	 * @param array $options オプション
+	 * @return string 検索置換後データ
+	 */
+	public static function getBeforeSearchReplaceData($data = '', $searchText = '', $replaceText = '', $options = array())
+	{
+		$_options	 = array(
+			'search_regex'	 => false,
+			'query'			 => array(),
+		);
+		$options	 = Hash::merge($_options, $options);
+
+		if ($options['search_regex']) {
+			preg_match_all($searchText, $data, $matches);
+			$matches = array_filter($matches);
+			if ($matches) {
+				$matchList		 = $matches[0];
+				$highlightList	 = array();
+				foreach ($matchList as $match) {
+					$highlightList[] = '<strong>' . $match . '</strong>';
+				}
+				$data = str_replace($matchList, $highlightList, $data);
+			}
+		} else {
+			$data = str_replace($searchText, '<strong>' . $replaceText . '</strong>', $data);
+		}
+
+		return $data;
+	}
+
+	/**
 	 * 検索語句を置換後で置換する
 	 * 
-	 * @param string $data
-	 * @return string
+	 * @param string $data 検索対象データ
+	 * @param string $searchText 検索語句
+	 * @param string $replaceText 置換後文字列
+	 * @param array $options オプション
+	 * @return string 検索置換後データ
 	 */
 	public static function getReplaceData($data = '', $searchText = '', $replaceText = '', $options = array())
 	{
 		$_options	 = array(
-			'search_regex' => false,
+			'search_regex'	 => false,
+			'show_only'		 => false,
 		);
 		$options	 = Hash::merge($_options, $options);
 
-		$result = '';
 		if ($options['search_regex']) {
-			$result = preg_replace($searchText, $replaceText, $data);
+			//$data = preg_replace($searchText, $replaceText, $data);
+			preg_match_all($searchText, $data, $matches);
+			$matches = array_filter($matches);
+			if ($matches) {
+				$matchList		 = $matches[0];
+				$highlightList	 = array();
+				foreach ($matchList as $match) {
+					if ($options['show_only']) {
+						$highlightList[] = '<strong>' . $replaceText . '</strong>';
+					} else {
+						$highlightList[] = $replaceText;
+					}
+				}
+				$data = str_replace($matchList, $highlightList, $data);
+			}
 		} else {
-			$result = str_replace($searchText, $replaceText, $data);
+			if ($options['show_only']) {
+				$data = str_replace($searchText, '<strong>' . $replaceText . '</strong>', $data);
+			} else {
+				$data = str_replace($searchText, $replaceText, $data);
+			}
 		}
-		return $result;
+
+		return $data;
 	}
 
 	/**

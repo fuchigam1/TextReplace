@@ -118,13 +118,15 @@ class TextReplaceHelper extends AppHelper
 	/**
 	 * コンテンツ内で検索語句が該当した箇所にマークを付ける
 	 * 
-	 * @param string $data
-	 * @param string $searchText
-	 * @param boolean $regexFlg
+	 * @param string $data 検索対象データ
+	 * @param string $searchText 検索語句
+	 * @param boolean $regexFlg 正規表現利用の指定
 	 * @return string
+	 * @deprecated 1.3.0 since 1.2.2
 	 */
 	public function getBeforeSearchReplaceData($data, $searchText, $regexFlg = false)
 	{
+		$this->log(__d('baser', deprecatedMessage('メソッド：TextReplaceHelper::getBeforeSearchReplaceData()', '1.2.2', '1.3.0', 'TextReplaceUtil::getBeforeSearchReplaceData() を利用してください。')), LOG_ALERT);
 		$contents = '';
 		if (!$regexFlg) {
 			$contents = $this->BcBaser->mark($searchText, nl2br(h($data)));

@@ -33,8 +33,7 @@ $config['BcApp.adminNavi.text_replace'] = array(
 );
 
 /**
- * TextReplace専用ログ ※検索ログ保存機能の追加により未使用
- * 検索置換実行時にログを保存する
+ * TextReplace専用ログ
  */
 define('LOG_TEXT_REPLACE', 'log_text_replace');
 CakeLog::config('log_text_replace', array(

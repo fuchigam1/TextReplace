@@ -77,13 +77,24 @@ $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 	</tr>
 	<tr>
 		<td class="col-input replace-before">
-			<?php echo $this->TextReplace->getBeforeSearchReplaceData(
-					$data['TextReplaceLog']['before_contents'],
-					$data['TextReplaceLog']['search_pattern'],
-					$data['TextReplaceLog']['search_regex']) ?>
+			<?php echo nl2br(
+				TextReplaceUtil::getBeforeSearchReplaceData(
+					h($data['TextReplaceLog']['before_contents']),
+					h($data['TextReplaceLog']['search_pattern']),
+					h($data['TextReplaceLog']['search_pattern']),
+					array('search_regex' => $data['TextReplaceLog']['search_regex'])
+				)
+			); ?>
 		</td>
 		<td class="col-input replace-after">
-			<?php echo $this->BcBaser->mark($data['TextReplaceLog']['replace_pattern'], nl2br(h($data['TextReplaceLog']['after_contents']))) ?>
+			<?php echo nl2br(
+				TextReplaceUtil::getReplaceData(
+					h($data['TextReplaceLog']['after_contents']),
+					h($data['TextReplaceLog']['replace_pattern']),
+					h($data['TextReplaceLog']['replace_pattern']),
+					array('show_only' => true)
+				)
+			); ?>
 		</td>
 	</tr>
 </table>

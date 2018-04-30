@@ -247,23 +247,27 @@ if ($searchType === 'search-and-replace') {
 					</td>
 					<?php endif ?>
 					<td class="col-input replace-before" style="width: 100%;">
-						<?php echo $this->TextReplace->getBeforeSearchReplaceData(
-								$result[$modelName][$fieldName],
-								$this->TextReplace->searchText,
-								$this->request->data['TextReplace']['search_regex']) ?>
-						<?php //echo $this->BcBaser->mark($query, nl2br(h($result[$modelName][$fieldName]))) ?>
+						<?php echo nl2br(
+							TextReplaceUtil::getBeforeSearchReplaceData(
+								h($result[$modelName][$fieldName]),
+								h($this->request->data['TextReplace']['search_pattern']),
+								h($this->request->data['TextReplace']['search_pattern']),
+								array('search_regex' => $this->request->data['TextReplace']['search_regex'], 'query' => h($query))
+							)
+						); ?>
 					</td>
 				</tr>
 				<?php if ($isReplace || $isSearchAndReplace): ?>
 				<tr>
 					<td class="col-input replace-after">
-						<?php echo $this->BcBaser->mark($query,
-							nl2br(h(TextReplaceUtil::getReplaceData($result[$modelName][$fieldName],
-								$this->request->data['TextReplace']['search_pattern'],
-								$this->request->data['TextReplace']['replace_pattern'],
-								array('search_regex' => $this->request->data['TextReplace']['search_regex'])
-							)))
-						) ?>
+						<?php echo nl2br(
+							TextReplaceUtil::getReplaceData(
+								h($result[$modelName][$fieldName]),
+								h($this->request->data['TextReplace']['search_pattern']),
+								h($this->request->data['TextReplace']['replace_pattern']),
+								array('search_regex' => $this->request->data['TextReplace']['search_regex'], 'query' => h($query), 'show_only' => true)
+							)
+						); ?>
 					</td>
 				</tr>
 				<?php endif ?>
