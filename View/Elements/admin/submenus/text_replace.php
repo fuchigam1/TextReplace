@@ -9,6 +9,7 @@
  */
 ?>
 <tr>
+	<th>テキスト置換管理メニュー</th>
 	<td>
 		<ul>
 			<?php if ($this->request->params['controller'] == 'text_replaces'): ?>
