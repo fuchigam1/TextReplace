@@ -152,6 +152,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 		// ユーザー一覧
 		$userList = $this->User->getUserList();
 
+		$this->crumbs[] = array('name' => $this->adminTitle, 'url' => array('plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'index'));
 		$this->set(compact('data', 'userList', 'originalData'));
 		$this->render('view');
 	}
