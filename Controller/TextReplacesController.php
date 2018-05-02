@@ -197,8 +197,7 @@ class TextReplacesController extends TextReplaceAppController
 							$targetField	 = $searchTarget['field'];
 
 							// 検索置換対象指定から、モデル別に検索語句を含むデータを全て取得する
-							$allData = $this->getSearchResult($targetModel, $targetField, $searchText, array('use_regex' => $useRegex)
-							);
+							$allData = $this->getSearchResult($targetModel, $targetField, $searchText, array('use_regex' => $useRegex));
 
 							if ($allData) {
 								if (!$useRegex) {
