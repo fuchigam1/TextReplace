@@ -40,13 +40,13 @@ $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));
 			</small>
 		</th>
 		<td class="col-input" colspan="3">
-			<?php echo $data['TextReplaceLog']['search_pattern'] ?>
+			<?php echo h($data['TextReplaceLog']['search_pattern']) ?>
 		</td>
 	</tr>
 	<tr>
 		<th class="col-head">置換後</th>
 		<td class="col-input" colspan="3">
-			<?php echo $data['TextReplaceLog']['replace_pattern'] ?>
+			<?php echo h($data['TextReplaceLog']['replace_pattern']) ?>
 		</td>
 	</tr>
 	<tr>
