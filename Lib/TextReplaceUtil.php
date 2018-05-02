@@ -269,7 +269,7 @@ class TextReplaceUtil extends Object
 						$highlightList[] = $replaceText;
 					}
 				}
-				$data = str_replace($matchList, $highlightList, $data);
+				$data = preg_replace((array)$searchText, $highlightList, $data);
 			}
 		} else {
 			if ($options['show_only']) {
