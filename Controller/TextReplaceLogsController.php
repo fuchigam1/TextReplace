@@ -47,8 +47,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 	 * @var string
 	 */
 	public $crumbs = array(
-		array('name' => 'プラグイン管理', 'url' => array('plugin' => '', 'controller' => 'plugins', 'action' => 'index')),
-		array('name' => 'テキスト置換プラグイン', 'url' => array('plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'))
+		array('name' => 'テキスト置換管理', 'url' => array('plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'))
 	);
 
 	/**
