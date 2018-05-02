@@ -205,28 +205,35 @@ class TextReplacesController extends TextReplaceAppController
 									$datas[$targetModel][$targetField]	 = $allData;
 									$countResult						 = $countResult + count($allData);
 								} else {
-									$result = array();
-									foreach ($allData as $resultKey => $resultValue) {
-										// 正規表現検索を利用する場合、検索にヒットしたデータの文字列内に、パターン(検索語句)にマッチするデータがあるか判定する
-										// ヒットした場合: データ内の、パターン(検索語句)にマッチする文字列をコールバック関数を利用して書き換える
-										try {
-											if (preg_match($searchText, $resultValue[$targetModel][$targetField])) {
-												// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
-												$allData[$resultKey][$targetModel][$targetField] = preg_replace_callback(
+									// 正規表現検索時、正規表現にエラーがある場合やメモリオーバー時はエラーとする
+									if (!empty($allData['error'])) {
+										$hasSearchReplaceError = true;
+										$message .= $allData['message'];
+									} else {
+										$result = array();
+										foreach ($allData as $resultKey => $resultValue) {
+											// 正規表現検索を利用する場合、検索にヒットしたデータの文字列内に、パターン(検索語句)にマッチするデータがあるか判定する
+											// ヒットした場合: データ内の、パターン(検索語句)にマッチする文字列をコールバック関数を利用して書き換える
+											try {
+												if (preg_match($searchText, $resultValue[$targetModel][$targetField])) {
+													// preg_replace_callback 関数は正規表現にマッチした文字列を コールバック関数 replaceHitString に配列で渡す
+													$allData[$resultKey][$targetModel][$targetField] = preg_replace_callback(
 														$searchText, array($this, 'replaceHitString'), $resultValue[$targetModel][$targetField]
-												);
-												$result[]										 = $allData[$resultKey];
-											}
-										} catch (Exception $exc) {
-											$message .= $exc->getMessage();
-											$hasSearchReplaceError = true;
-											break;
-										}
-									}
+													);
 
-									if ($result) {
-										$datas[$targetModel][$targetField]	 = $result;
-										$countResult						 = $countResult + count($result);
+													$result[] = $allData[$resultKey];
+												}
+											} catch (Exception $exc) {
+												$message .= $exc->getMessage();
+												$hasSearchReplaceError = true;
+												break;
+											}
+										}
+
+										if ($result) {
+											$datas[$targetModel][$targetField]	 = $result;
+											$countResult						 = $countResult + count($result);
+										}
 									}
 								}
 							}
@@ -428,6 +435,7 @@ class TextReplacesController extends TextReplaceAppController
 	/**
 	 * 正規表現で検索した場合の検索結果一覧を取得する
 	 * - DB直で検索できないため、対象モデルのデータ一覧を取得後、1レコードずつ検索する
+	 * - 正規表現指定時のエラーの場合、エラーメッセージを返す
 	 * 
 	 * @param string $modelName 対象モデル名
 	 * @param string $field 対象フィールド名
@@ -458,10 +466,16 @@ class TextReplacesController extends TextReplaceAppController
 				unset($allData);
 			}
 		} catch (Exception $exc) {
+			$message = $exc->getMessage();
+			$this->log($message, LOG_TEXT_REPLACE);
 			$this->log($exc->getTraceAsString(), LOG_TEXT_REPLACE);
 			$this->log("NOW UseMemory: " . memory_get_usage() / (1024 * 1024) . "MB", LOG_TEXT_REPLACE);
-			$this->setMessage('検索データ量が多過ぎるため、検索対象を減らすか、利用可能なメモリ量を増やしてください。', true);
-			$this->redirect(array('action' => 'index'));
+
+			$error = array(
+				'error'		 => true,
+				'message'	 => $message,
+			);
+			return $error;
 		}
 
 		return $matchDataList;
@@ -494,30 +508,6 @@ class TextReplacesController extends TextReplaceAppController
 						$originalData[$targetModel][$targetField], $searchText, $replaceText, array('search_regex' => $useRegex));
 
 		return $saveData;
-	}
-
-	/**
-	 * 検索条件を生成する
-	 *
-	 * @param array $data
-	 * @return array $conditions
-	 */
-	protected function createSearchConditions($data)
-	{
-		$conditions	 = array();
-		$searchText	 = '';
-
-		if ($data['TextReplace']['search_pattern']) {
-			$searchText = $data['TextReplace']['search_pattern'];
-		}
-
-		if ($data['TextReplace']['replace_target']) {
-			foreach ($data['TextReplace']['replace_target'] as $key => $value) {
-				$conditions[] = array($value . ' LIKE' => "%{$searchText}%");
-			}
-		}
-
-		return $conditions;
 	}
 
 }
