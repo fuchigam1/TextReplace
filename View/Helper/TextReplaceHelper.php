@@ -69,7 +69,12 @@ class TextReplaceHelper extends AppHelper
 		$setting = self::$pluginSetting['target'];
 		$list	 = array();
 		foreach ($setting as $model => $fieldData) {
-			$list[$fieldData['name']] = $fieldData['title'];
+			foreach($fieldData['fields'] as $key => $value) {
+				list($model) = explode('.', $key);
+				if(!isset($list[$model])) {
+					$list[$model] = $fieldData['title'];
+				}
+			}
 		}
 		return $list;
 	}

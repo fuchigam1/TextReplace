@@ -8,7 +8,7 @@
  * @package			TextReplace
  * @license			MIT
  */
-class TextReplaceUtil extends Object
+class TextReplaceUtil extends CakeObject
 {
 
 	/**
@@ -45,8 +45,13 @@ class TextReplaceUtil extends Object
 	public static function getUseModel($setting = array())
 	{
 		$useModel = array();
-		foreach ($setting as $model => $fieldData) {
-			$useModel[] = $model;
+		foreach ($setting as $fieldData) {
+			foreach($fieldData['fields'] as $key => $field) {
+				list($model) = explode('.', $key);
+				if(!in_array($model, $useModel)) {
+					$useModel[] = $model;	
+				}
+			}
 		}
 		self::setHandleModel($useModel);
 	}
@@ -62,12 +67,8 @@ class TextReplaceUtil extends Object
 		if (!is_array($useModel)) {
 			return false;
 		}
-
-		if (ClassRegistry::isKeySet('Plugin')) {
-			$PluginModel = ClassRegistry::getObject('Plugin');
-		} else {
-			$PluginModel = ClassRegistry::init('Plugin');
-		}
+		
+		$PluginModel = ClassRegistry::init('Plugin');
 
 		foreach ($useModel as $model) {
 			if (strpos($model, '.') === false) {
@@ -80,7 +81,7 @@ class TextReplaceUtil extends Object
 				'name'	 => $pluginName,
 				'status' => true,
 			);
-			if ($PluginModel->hasAny($conditions)) {
+			if ($PluginModel->find('count', ['conditions' => $conditions])) {
 				self::$enabledModelList[] = $model;
 			} else {
 				self::$disabledModelList[] = $model;
@@ -162,10 +163,9 @@ class TextReplaceUtil extends Object
 		foreach ($setting as $model => $fieldData) {
 			$fieldName = array();
 			foreach ($fieldData['fields'] as $key => $value) {
-				$exploded	 = explode('.', $key);
-				$fieldName[] = $exploded[1];
+				list($model, $field)  = explode('.', $key);
+				$data[$model][] = $field;
 			}
-			$data[$fieldData['name']] = $fieldName;
 		}
 		return $data;
 	}
@@ -187,15 +187,11 @@ class TextReplaceUtil extends Object
 		$fieldTitle	 = '';
 
 		foreach ($setting as $settingKey => $fieldData) {
-			if ($targetModelName === $fieldData['name']) {
-				$fieldName = '';
-				foreach ($fieldData['fields'] as $key => $value) {
-					$exploded	 = explode('.', $key);
-					$fieldName	 = $exploded[1];
-					if ($targetFieldName === $fieldName) {
-						$fieldTitle = $value;
-						break;
-					}
+			foreach($fieldData['fields'] as $fieldName => $title) {
+				list($model, $field) = explode('.', $fieldName);
+				if($model === $targetModelName && $field === $targetFieldName) {
+					$fieldTitle = $title;
+					break;
 				}
 			}
 		}
@@ -329,5 +325,24 @@ class TextReplaceUtil extends Object
 	{
 		return App::pluginPath('TextReplace');
 	}
-
+	
+	/**
+	 * フィールド名から設定名称を取得する
+	 * 
+	 * @param string $fieldName
+	 * @return string
+	 */
+	public static function getSettingNameByFieldName($fieldName)
+	{
+		$setting = Configure::read('TextReplace.target');
+		foreach ($setting as $settingKey => $fieldData) {
+			foreach($fieldData['fields'] as $key => $value) {
+				if($key === $fieldName) {
+					return $settingKey;
+				}
+			}
+		}
+		return '';
+	}
+	
 }

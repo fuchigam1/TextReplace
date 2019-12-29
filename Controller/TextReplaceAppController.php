@@ -111,7 +111,7 @@ class TextReplaceAppController extends BcPluginAppController
 
 		$originalData = $this->{$targetModel}->find('first', array(
 			'conditions' => array($targetModel . '.id' => $modelField[$valueKey]),
-			'recursive'	 => -1,
+			'recursive'	 => -1
 		));
 
 		return $originalData;

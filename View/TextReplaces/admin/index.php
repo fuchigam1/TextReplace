@@ -35,31 +35,31 @@ if ($searchType === 'search-and-replace') {
 </div>
 
 <?php echo $this->BcForm->create('TextReplace', array('type' => 'get', 'url' => array('action' => 'index'))) ?>
-<table cellpadding="0" cellspacing="0" class="form-table section">
+<table class="form-table section bca-form-table">
 	<tbody>
 		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_all', '全て選択') ?></th>
-			<td class="col-input">
+			<th class="col-head bca-form-table__label"><?php echo $this->BcForm->label('TextReplace.check_all', '全て選択') ?></th>
+			<td class="col-input bca-form-table__input">
 				<?php echo $this->BcForm->input('TextReplace.check_all', array('type' => 'checkbox', 'label' => '検索置換対象全てにチェックを入れる')); ?>
 				<?php echo $this->BcForm->error('TextReplace.check_all') ?>
-				<small>「対象」はクリックした対象名の範囲全てに対して チェックを入れる／外す ことができます。</small>
+				<br><small>「対象」はクリックした対象名の範囲全てに対して チェックを入れる／外す ことができます。</small>
 			</td>
 		</tr>
 		<tr>
-			<th class="col-head">
+			<th class="col-head bca-form-table__label">
 				<?php echo $this->BcForm->label('TextReplace.replace_target', '検索置換対象の指定') ?>
 			</th>
-			<td class="col-input target-check">
+			<td class="col-input target-check bca-form-table__input">
 				<?php echo $this->BcForm->input('TextReplace.replace_target', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $replaceTarget)); ?>
 				<?php echo $this->BcForm->error('TextReplace.replace_target') ?>
 			</td>
 		</tr>
 		<?php if ($linkContainingQueryParameter): ?>
 		<tr>
-			<th class="col-head">
+			<th class="col-head bca-form-table__label">
 				検索条件のURL
 			</th>
-			<td class="col-input" style="word-break: break-all; word-wrap: break-word;">
+			<td class="col-input bca-form-table__input" style="word-break: break-all; word-wrap: break-word;">
 				<small>
 					<?php echo $this->BcBaser->link($linkContainingQueryParameter, $linkContainingQueryParameter) ?>
 				</small>
@@ -68,10 +68,10 @@ if ($searchType === 'search-and-replace') {
 		<?php endif ?>
 		<?php if ($this->TextReplace->isAccessFromTextReplaceLogs()): ?>
 		<tr>
-			<th class="col-head">
+			<th class="col-head bca-form-table__label">
 				確認元のログ画面
 			</th>
-			<td class="col-input" style="word-break: break-all; word-wrap: break-word;">
+			<td class="col-input bca-form-table__input" style="word-break: break-all; word-wrap: break-word;">
 				<span id="IsAccessFromTextReplaceLogs" style="display: none;">
 					<?php $refererUrl = $this->request->referer(); ?>
 					<?php echo $this->BcBaser->link($refererUrl, $refererUrl) ?>
@@ -82,7 +82,7 @@ if ($searchType === 'search-and-replace') {
 		<?php $settingFiles = TextReplaceUtil::hasOriginalSetting() ?>
 		<?php if ($settingFiles): ?>
 		<tr>
-			<th class="col-head">
+			<th class="col-head bca-form-table__label">
 				<p class="annotation-text-green"><small>追加設定ファイル有り</small></p>
 			</th>
 			<td class="col-input target-check">
@@ -104,10 +104,10 @@ if ($searchType === 'search-and-replace') {
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tbody>
 		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.search_pattern', '検索語句') ?></th>
-			<td class="col-input">
+			<th class="col-head bca-form-table__label"><?php echo $this->BcForm->label('TextReplace.search_pattern', '検索語句') ?></th>
+			<td class="col-input bca-form-table__input">
 				<?php echo $this->BcForm->input('TextReplace.search_pattern', array('type' => 'text', 'size' => '76', 'maxlength' => '255', 'counter' => true)) ?>
-				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpSearchPattern', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<i class="bca-icon--question-circle btn help bca-help"></i>
 				<div id="helptextSearchPattern" class="helptext">
 					<ul>
 						<li>検索する文字列を指定します。</li>
@@ -126,10 +126,10 @@ if ($searchType === 'search-and-replace') {
 			</td>
 		</tr>
 		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.replace_pattern', '置換後') ?></th>
-			<td class="col-input">
+			<th class="col-head bca-form-table__label"><?php echo $this->BcForm->label('TextReplace.replace_pattern', '置換後') ?></th>
+			<td class="col-input bca-form-table__input">
 				<?php echo $this->BcForm->input('TextReplace.replace_pattern', array('type' => 'text', 'size' => '76', 'maxlength' => '255', 'counter' => true)) ?>
-				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpReplacePattern', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<i class="bca-icon--question-circle btn help bca-help"></i>
 				<div id="helptextReplacePattern" class="helptext">
 					<ul>
 						<li>置換後の文字列を指定します。</li>
@@ -143,17 +143,17 @@ if ($searchType === 'search-and-replace') {
 
 <?php if ($isEnableSearch): ?>
 <?php echo $this->BcForm->input('TextReplace.type', array('type' => 'hidden', 'value' => '')) ?>
-<div class="submit">
+<div class="submit bca-actions">
 	<?php $confirmMessageSearch = '検索置換対象の指定内容で、検索語句を一括検索します。\n宜しいですか？' ?>
 	<?php //echo $this->BcForm->submit('検索', array('div' => false, 'id' => 'BtnTypeSearch', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageSearch')")) ?>
-	<?php echo $this->BcForm->submit('検索', array('div' => false, 'id' => 'BtnTypeSearch', 'class' => 'button')) ?>
+	<?php echo $this->BcForm->submit('検索', array('div' => false, 'id' => 'BtnTypeSearch', 'class' => 'button bca-btn bca-actions__item', 'data-bca-btn-size' => 'lg', 'data-bca-btn-width' => 'lg')) ?>
 
 	<?php $confirmMessageDryrun = '検索置換対象の指定内容で、検索語句を一括検索し、置換後の状態を表示します。\n宜しいですか？' ?>
 	<?php //echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button', 'onClick'=>"return confirm('$confirmMessageDryrun')")) ?>
-	<?php echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button')) ?>
+	<?php echo $this->BcForm->submit('置換確認', array('div' => false, 'id' => 'BtnTypeDryrun', 'class' => 'button bca-btn bca-actions__item', 'data-bca-btn-size' => 'lg', 'data-bca-btn-width' => 'lg')) ?>
 
 	<?php if ($isReplace): ?>
-		<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'class' => 'button btn-type-search-and-replace')) ?>
+		<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'class' => 'button bca-btn bca-actions__item btn-type-search-and-replace', 'data-bca-btn-size' => 'lg', 'data-bca-btn-width' => 'lg')) ?>
 	<?php endif ?>
 </div>
 <?php //echo $this->BcForm->end() ?>
@@ -164,50 +164,17 @@ if ($searchType === 'search-and-replace') {
 <?php if ($datas): ?>
 <?php //echo $this->BcForm->create('TextReplace', array('url' => array('action' => 'batch_replace'))) ?>
 
-<h2 id="helpTextReplaceInsight">実行結果一覧（<?php echo $countResult; ?>件）
-	&nbsp;<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => '', 'class' => 'btn', 'alt' => 'ヘルプ')) ?>
+<h2 id="helpTextReplaceInsight" class="bca-main__heading">実行結果一覧（<?php echo $countResult; ?>件）
+	&nbsp;<i class="bca-icon--question-circle btn help bca-help"></i>
+	<div class="helptext">コンテンツ（モデル名）・・・クリックすると結果を開閉できます。</div>
 </h2>
 
-<div id="TextReplaceInsight">
-	<h3>コンテンツ（モデル名）・・・クリックすると結果を開閉できます。</h3>
-	<table cellpadding="0" cellspacing="0" class="list-table form-table">
-		<tbody>
-				<tr>
-					<th class="col-head"<?php echo $rowspan; ?>>
-						フィールド名（ID:モデルID）
-					</th>
-					<?php if ($isReplace): ?>
-					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
-						置換対象<br />チェック
-					</td>
-					<?php endif ?>
-					<td class="col-input" style="width: 100%;">
-						検索結果
-					</td>
-				</tr>
-				<?php if ($rowspan): ?>
-				<tr>
-					<td class="col-input">
-						検索置換結果
-					</td>
-				</tr>
-				<?php endif ?>
-		</tbody>
-	</table>
-</div>
 
 <?php if ($isReplace): ?>
-<table cellpadding="0" cellspacing="0" class="form-table section">
-	<tbody>
-		<tr>
-			<th class="col-head"><?php echo $this->BcForm->label('TextReplace.check_box_model_result', '全て選択') ?></th>
-			<td class="col-input">
-				<?php echo $this->BcForm->input('TextReplace.check_box_model_result', array('type' => 'checkbox', 'label' => '置換対象全てにチェックを入れる')); ?>
-				<?php echo $this->BcForm->error('TextReplace.check_box_model_result') ?>
-			</td>
-		</tr>
-	</tbody>
-</table>
+<section class="bca-section">
+	<?php echo $this->BcForm->input('TextReplace.check_box_model_result', array('type' => 'checkbox', 'label' => '置換対象全てにチェックを入れる')); ?>
+	<?php echo $this->BcForm->error('TextReplace.check_box_model_result') ?>
+</section>
 <?php endif ?>
 
 
@@ -218,7 +185,9 @@ if ($searchType === 'search-and-replace') {
 	<?php $fieldCount = 0; ?>
 	<div class="box-field-result-all">
 	<?php if ($isReplace): ?>
-	<p><?php echo $this->BcForm->input('TextReplace.select_this_'. $modelName, array('type' => 'checkbox', 'class' => 'select-this-model', 'label' => $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) .' を全て選択する')); ?></p>
+	<section class="bca-section">
+		<?php echo $this->BcForm->input('TextReplace.select_this_'. $modelName, array('type' => 'checkbox', 'class' => 'select-this-model bca-checkbox__input', 'label' => $this->BcText->arrayValue($modelName, $this->TextReplace->getModelList()) .' を全て選択する')); ?>
+	</section>
 	<?php endif ?>
 	<?php // フィールド毎のループ ?>
 	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
@@ -229,7 +198,7 @@ if ($searchType === 'search-and-replace') {
 				<?php // フィールド毎にヒットした結果のループ ?>
 				<?php foreach ($fieldValue as $num => $result): ?>
 				<tr>
-					<th class="col-head"<?php echo $rowspan; ?>>
+					<th class="col-head  bca-form-table__label"<?php echo $rowspan; ?> nowrap>
 						<label for="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id'] ?>">
 							<?php echo TextReplaceUtil::getFieldTitle($modelName, $fieldName) ?>
 							<?php //echo $fieldName; ?>（ID: <?php echo $result[$modelName]['id'] ?>）
@@ -240,13 +209,18 @@ if ($searchType === 'search-and-replace') {
 						<?php endif ?>
 					</th>
 					<?php if ($isReplace): ?>
-					<td class="col-input" nowrap="nowrap"<?php echo $rowspan; ?>>
-						<label for="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>">
-							<input type="checkbox" name="data[ReplaceTarget][][<?php echo $modelName; ?>.<?php echo $fieldName; ?>]" value="<?php echo $result[$modelName]['id']; ?>" id="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>">
-						</label>
+					<td class="col-input bca-form-table__input" nowrap="nowrap"<?php echo $rowspan; ?>>
+						<span class="bca-checkbox">
+							<input type="checkbox" 
+								name="data[ReplaceTarget][][<?php echo $modelName; ?>.<?php echo $fieldName; ?>]" 
+								value="<?php echo $result[$modelName]['id']; ?>" 
+								id="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>"
+								class="bca-checkbox__input">
+							<label for="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>"></label>
+						</span>
 					</td>
 					<?php endif ?>
-					<td class="col-input replace-before" style="width: 100%;">
+					<td class="col-input replace-before bca-form-table__input" style="width: 100%;">
 						<?php echo nl2br(
 							TextReplaceUtil::getBeforeSearchReplaceData(
 								h($result[$modelName][$fieldName]),
@@ -259,7 +233,7 @@ if ($searchType === 'search-and-replace') {
 				</tr>
 				<?php if ($isReplace || $isSearchAndReplace): ?>
 				<tr>
-					<td class="col-input replace-after">
+					<td class="col-input replace-after bca-form-table__input">
 						<?php echo nl2br(
 							TextReplaceUtil::getReplaceData(
 								h($result[$modelName][$fieldName]),
@@ -282,9 +256,8 @@ if ($searchType === 'search-and-replace') {
 <?php endforeach ?>
 
 <?php if ($isReplace): ?>
-<div class="submit">
-	<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'class' => 'button btn-type-search-and-replace')) ?>
-	<span id="MoveToBtn"><?php $this->BcBaser->link('▲ 検索、置換確認 実行ボタンへ', '#SearchReplaceInputTable') ?></span>
+<div class="submit bca-actions">
+	<?php echo $this->BcForm->submit('置換＆保存', array('div' => false, 'class' => 'button btn-type-search-and-replace bca-btn bca-actions__item', 'data-bca-btn-size' => 'lg', 'data-bca-btn-width' => 'lg')) ?>
 </div>
 <?php endif ?>
 

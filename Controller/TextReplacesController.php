@@ -105,6 +105,7 @@ class TextReplacesController extends TextReplaceAppController
 			$linkContainingQueryParameter	 = $this->getLinkContainingQueryParameter($requestQuery);
 		}
 
+		$countResult = 0; // 検索結果数
 		if ($this->request->data) {
 			clearAllCache();
 
@@ -114,14 +115,13 @@ class TextReplacesController extends TextReplaceAppController
 				$errors = $this->TextReplace->validationErrors;
 				$message .= '入力エラーです。内容を修正してください。';
 			}
-
+			
 			if (!$this->isNoinputSearchReplace($this->request->data) && !$errors) {
 
 				$searchText	 = $this->request->data['TextReplace']['search_pattern']; // 検索語句
 				$replaceText = $this->request->data['TextReplace']['replace_pattern']; // 置換後
 				$useRegex	 = $this->request->data['TextReplace']['search_regex'];  // 正規表現の利用指定
 				$searchType	 = $this->request->data['TextReplace']['type'];	// 検索タイプ
-				$countResult = 0; // 検索結果数
 				// 実行ボタン別に処理を行う
 				switch ($searchType) {
 					case 'search-and-replace':
@@ -132,7 +132,7 @@ class TextReplacesController extends TextReplaceAppController
 									$target		 = $this->getTargetModelField($value);
 									$targetModel = $target['modelName'];
 									$targetField = $target['field'];
-
+									clearDataCache();
 									$originalData = $this->getModelData($value);
 									if ($originalData) {
 										$data = $this->getReplaceData($originalData, $searchText, $replaceText, array(
@@ -143,7 +143,12 @@ class TextReplacesController extends TextReplaceAppController
 										);
 
 										//$saveResult = true;
-										$saveResult = $this->{$targetModel}->save($data, array('callbacks' => false, 'validate' => false));
+										$options = ['callbacks' => false, 'validate' => false];
+										if($targetModel === 'Content') {
+											// Content モデルの場合、URLが変更となる可能性があるので callbacks が必要
+											unset($options['callbacks']);
+										}
+										$saveResult = $this->{$targetModel}->save($data, $options);
 										if ($saveResult) {
 											$this->saveLogging(array(
 												'original'			 => $originalData,
@@ -158,7 +163,8 @@ class TextReplacesController extends TextReplaceAppController
 											));
 											$datas[$targetModel][$targetField][] = $originalData;
 											$countResult++;
-											if ($targetModel === 'Page') {
+											$settingName = TextReplaceUtil::getSettingNameByFieldName(key($value));
+											if ($settingName === 'Page') {
 												$hasPageSaveResult = true;
 											}
 										}

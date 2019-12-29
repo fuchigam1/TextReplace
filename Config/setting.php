@@ -74,9 +74,9 @@ $config['TextReplace'] = array(
 			'name'		 => 'Page',
 			'title'		 => '固定ページ',
 			'fields'	 => array(
-				'Page.name'			 => 'ページ名',
-				'Page.title'		 => 'ページタイトル',
-				'Page.description'	 => '説明文',
+				'Content.name'			 => 'ページ名',
+				'Content.title'		 => 'ページタイトル',
+				'Content.description'	 => '説明文',
 				'Page.contents'		 => '記事本文',
 				'Page.draft'		 => '記事本文下書き',
 			),
@@ -176,9 +176,9 @@ $config['TextReplace'] = array(
 	// 「検索置換対象の指定」のデフォルト値
 	'default_replace_target' => array(
 //		'MODEL_NAME.FIELD_NAME',
-		'Page.name',
-		'Page.title',
-		'Page.description',
+		'Content.name',
+		'Content.title',
+		'Content.description',
 		'Page.contents',
 		'Page.draft',
 		'BlogPost.name',

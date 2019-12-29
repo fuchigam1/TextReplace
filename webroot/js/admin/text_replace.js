@@ -13,11 +13,6 @@ $(window).load(function () {
 $(function () {
 
 	/**
-	 * ボタン間移動
-	 */
-	$('#MoveToBtn a').mScroll({du: 300});
-
-	/**
 	 * 検索時の正規表現利用チェック時の操作
 	 */
 	searchRegexCheckHandler();
@@ -38,9 +33,9 @@ $(function () {
 	 */
 	// 「対象」にチェックボックスを備える
 	$('.target-check legend').each(function () {
-		var $input = $('<input type="checkbox" class="model-range" />').attr("checked", false);
+		var $input = $('<span class="bca-checkbox"><input type="checkbox" class="model-range bca-checkbox__input" /><label class="bca-checkbox__label">' + $(this).html() + '</label></span>').attr("checked", false);
 		// legend の対象テキスト: console.log($(this).html());
-		$(this).prepend($input);
+		$(this).html($input);
 	});
 
 	// 「対象」配下全てにチェックボックスが入ってる場合は、その「対象」にチェックを入れる（検索・置換実行後のための制御）
@@ -77,11 +72,11 @@ $(function () {
 		if (isChecked) {
 			// 動的に付与した「対象」チェックチェックがついてるときは、配下の対象チェックをオフにする
 			$(this).find('input.model-range').prop('checked', false);
-			$(this).parent().find('label input[type=checkbox]').prop('checked', false);
+			$(this).parent().find('input[type=checkbox]').prop('checked', false);
 		} else {
 			// 動的に付与した「対象」チェックがついてないときは、配下の対象チェックをオンにする
 			$(this).find('input.model-range').prop('checked', true);
-			$(this).parent().find('label input[type=checkbox]').prop('checked', true);
+			$(this).parent().find('input[type=checkbox]').prop('checked', true);
 		}
 	});
 
@@ -113,8 +108,9 @@ $(function () {
 				"OK": function () {
 					$(this).dialog("close");
 					// 検索置換時、414 Request-URI too large が出る可能性が高いため post 送信に切替える
-					$('#TextReplaceAdminIndexForm').attr({'method': 'post'});
-					$("#TextReplaceAdminIndexForm").submit();
+					$('#TextReplaceIndexForm').attr({'method': 'post'});
+					$.bcUtil.showLoader();
+					$("#TextReplaceIndexForm").submit();
 				}
 			}
 		});
@@ -124,13 +120,6 @@ $(function () {
 	/**
 	 * 検索・置換一覧を操作する
 	 */
-	// 検索結果一覧の見方を表示する
-	if ($('#TextReplaceInsight').length) {
-		$('#TextReplaceInsight').hide();
-		$('#helpTextReplaceInsight').on('click', function () {
-			$('#TextReplaceInsight').slideToggle();
-		});
-	}
 
 	// モデル別の検索結果数を表示する
 	if ($('.box-field-result-all').length) {
