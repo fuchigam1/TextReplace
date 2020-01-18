@@ -8,6 +8,23 @@ class TextReplaceLogsSchema extends CakeSchema {
 	}
 
 	public function after($event = array()) {
+		// mediumtext, longtext 利用を考慮し、記事データを収めておくフィールドを拡張する
+		$db = ConnectionManager::getDataSource($this->connection);
+		$db->cacheSources = false;
+		if (get_class($db) !== 'BcMysql'){
+			return true ;
+		}
+		if (isset($event['create'])) {
+			switch ($event['create']) {
+				case 'textreplacelogs':
+					$tableName = $db->config['prefix'] . 'text_replace_logs';
+					// COMMENTは指定しておかないと消えるため
+					$db->query("ALTER TABLE {$tableName} CHANGE before_contents before_contents LONGTEXT COMMENT '検索置換前の内容';");
+					$db->query("ALTER TABLE {$tableName} CHANGE after_contents after_contents LONGTEXT COMMENT '検索置換後の内容';");
+					break;
+			}
+		}
+		return true;
 	}
 
 	public $text_replace_logs = array(
