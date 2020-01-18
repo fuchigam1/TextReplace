@@ -1,9 +1,7 @@
-<?php 
+<?php
 class TextReplaceLogsSchema extends CakeSchema {
 
 	public $file = 'text_replace_logs.php';
-
-	public $connection = 'plugin';
 
 	public function before($event = array()) {
 		return true;
