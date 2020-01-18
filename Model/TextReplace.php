@@ -8,7 +8,7 @@
  * @package			TextReplace
  * @license			MIT
  */
-class TextReplace extends BcPluginAppModel
+class TextReplace extends AppModel
 {
 
 	/**
