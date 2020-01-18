@@ -7,4 +7,4 @@
  * @package TextReplace
  * @license MIT
  */
-$this->Plugin->initDb('plugin', 'TextReplace');
+$this->Plugin->initDb('TextReplace');
