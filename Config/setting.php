@@ -104,27 +104,12 @@ $config['TextReplace'] = array(
 			),
 		),
 //		サイト内検索を利用している場合の、検索用データ保存モデル
-//		'Content' => array(
-//			'name' => 'Content',
+//		'SearchIndex' => array(
+//			'name' => 'SearchIndex',
 //			'title' => '検索用データ',
 //			'fields' => array(
-//				'Content.category' => 'カテゴリ',
-//				'Content.title' => 'タイトル',
-//				'Content.detail' => '記事本文',
-//			),
-//		),
-//		'PageCategory' => array(
-//			'name' => 'PageCategory',
-//			'title' => '固定ページカテゴリ',
-//			'fields' => array(
-//				'PageCategory.name' => 'ページカテゴリ名',
-//				'PageCategory.title' => 'ページカテゴリタイトル',
-//			),
-//			'edit_url' => array(
-//				'plugin' => null,
-//				'controller' => 'page_categories',
-//				'action' => 'edit',
-//				'pass' => array('id'),
+//				'SearchIndex.title' => 'タイトル',
+//				'SearchIndex.detail' => '記事本文',
 //			),
 //		),
 //		'Blog.BlogContent' => array(
