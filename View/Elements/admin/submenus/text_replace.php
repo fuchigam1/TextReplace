@@ -13,31 +13,31 @@
 	<td>
 		<ul>
 			<?php if ($this->request->params['controller'] == 'text_replaces'): ?>
-				<li><?php $this->BcBaser->link('テキスト置換処理',
+				<?php $this->BcBaser->link('<li>テキスト置換処理</li>',
 						array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'),
-						array(), '検索条件は保存されません。よろしいですか？', false); ?></li>
+						array(), '検索条件は保存されません。よろしいですか？', false); ?>
 			<?php else: ?>
-				<li><?php $this->BcBaser->link('テキスト置換処理',
-						array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index')); ?></li>
+				<?php $this->BcBaser->link('<li>テキスト置換処理</li>',
+						array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index')); ?>
 			<?php endif ?>
-			<li><?php $this->BcBaser->link('テキスト置換ログ',
-					array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'index')); ?></li>
+				<?php $this->BcBaser->link('<li>テキスト置換ログ</li>',
+					array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'index')); ?>
 
 			<?php if ($this->request->params['controller'] == 'text_replace_logs'): ?>
-			<li><?php $this->BcBaser->link('テキスト置換ログCSVダウンロード',
-					array('plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'download_csv')) ?></li>
+				<?php $this->BcBaser->link('<li>テキスト置換ログCSVダウンロード</li>',
+					array('plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'download_csv')) ?>
 			<?php endif ?>
 
 			<?php if ($this->request->params['controller'] == 'text_replaces'): ?>
-				<li><?php $this->BcBaser->link('固定ページテンプレート書出',
+				<?php $this->BcBaser->link('<li>固定ページテンプレート書出</li>',
 						array('admin' => true, 'plugin' => null, 'controller' => 'pages', 'action' => 'write_page_files'),
-						array('confirm' => 'データベース内のページデータを、' . 'テーマ ' . Inflector::camelize($this->BcBaser->siteConfig['theme']) . " のページテンプレートとして全て書出します。\n本当によろしいですか？")) ?></li>
-				<li><?php $this->BcBaser->link('サーバーキャッシュ削除',
+						array('confirm' => 'データベース内のページデータを、' . 'テーマ ' . Inflector::camelize($this->BcBaser->siteConfig['theme']) . " のページテンプレートとして全て書出します。\n本当によろしいですか？")) ?>
+				<?php $this->BcBaser->link('<li>サーバーキャッシュ削除</li>',
 						array('admin' => true, 'plugin' => null, 'controller' => 'site_configs', 'action' => 'del_cache'),
-						array(), '検索条件は保存されません。よろしいですか？', false); ?></li>
-				<li><?php $this->BcBaser->link('データメンテナンス',
+						array(), '検索条件は保存されません。よろしいですか？', false); ?>
+				<?php $this->BcBaser->link('<li>データメンテナンス</li>',
 						array('admin' => true, 'plugin' => null, 'controller' => 'tools', 'action' => 'maintenance'),
-						array(), '検索条件は保存されません。よろしいですか？', false); ?></li>
+						array(), '検索条件は保存されません。よろしいですか？', false); ?>
 			<?php endif ?>
 		</ul>
 	</td>
