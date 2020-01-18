@@ -1,33 +1,32 @@
 <?php
-
 /**
  * [Lib] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 class TextReplaceUtil extends CakeObject
 {
 
 	/**
 	 * 検索置換利用可能なモデル一覧
-	 * 
+	 *
 	 * @var array
 	 */
 	private static $enabledModelList = array();
 
 	/**
 	 * 検索置換利用不可のモデル一覧
-	 * 
+	 *
 	 * @var array
 	 */
 	private static $disabledModelList = array();
 
 	/**
 	 * 初期化処理
-	 * 
+	 *
 	 * @param array $setting
 	 */
 	public static function init($setting = array())
@@ -38,7 +37,7 @@ class TextReplaceUtil extends CakeObject
 	/**
 	 * getUseModel
 	 * 設定ファイルから利用モデル一覧を取得する
-	 * 
+	 *
 	 * @param array $setting
 	 * @return array
 	 */
@@ -49,7 +48,7 @@ class TextReplaceUtil extends CakeObject
 			foreach($fieldData['fields'] as $key => $field) {
 				list($model) = explode('.', $key);
 				if(!in_array($model, $useModel)) {
-					$useModel[] = $model;	
+					$useModel[] = $model;
 				}
 			}
 		}
@@ -58,7 +57,7 @@ class TextReplaceUtil extends CakeObject
 
 	/**
 	 * 検索置換取扱い可能なモデルと不可のモデルを設定する
-	 * 
+	 *
 	 * @param array $useModel
 	 * @return boolean
 	 */
@@ -67,7 +66,7 @@ class TextReplaceUtil extends CakeObject
 		if (!is_array($useModel)) {
 			return false;
 		}
-		
+
 		$PluginModel = ClassRegistry::init('Plugin');
 
 		foreach ($useModel as $model) {
@@ -91,7 +90,7 @@ class TextReplaceUtil extends CakeObject
 
 	/**
 	 * 検索置換利用可能なモデル一覧を取得する
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function getEnabledModel()
@@ -101,7 +100,7 @@ class TextReplaceUtil extends CakeObject
 
 	/**
 	 * 検索置換利用不可のモデル一覧を取得する
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function getDisabledModel()
@@ -112,7 +111,7 @@ class TextReplaceUtil extends CakeObject
 	/**
 	 * getReplaceTarget
 	 * 設定ファイルから検索置換対象の指定一覧を取得する
-	 * 
+	 *
 	 * @param array $setting
 	 * @return array
 	 */
@@ -129,7 +128,7 @@ class TextReplaceUtil extends CakeObject
 	/**
 	 * getUseModelName
 	 * 設定ファイルから利用モデル名一覧を取得する
-	 * 
+	 *
 	 * @param array $setting
 	 * @return array
 	 */
@@ -153,7 +152,7 @@ class TextReplaceUtil extends CakeObject
 	/**
 	 * getModelField
 	 * 設定ファイルからモデルとフィールドの対応表を取得する
-	 * 
+	 *
 	 * @param array $setting
 	 * @return array
 	 */
@@ -173,7 +172,7 @@ class TextReplaceUtil extends CakeObject
 	/**
 	 * getFieldTitle
 	 * モデル名とフィールド名から、テキスト置換用設定内のフィールドのタイトルを取得する
-	 * 
+	 *
 	 * @param string $targetModelName
 	 * @param string $targetFieldName
 	 * @return string
@@ -201,7 +200,7 @@ class TextReplaceUtil extends CakeObject
 
 	/**
 	 * コンテンツ内で検索語句が該当した箇所にマークを付ける
-	 * 
+	 *
 	 * @param string $data 検索対象データ
 	 * @param string $searchText 検索語句
 	 * @param string $replaceText 置換後文字列
@@ -236,7 +235,7 @@ class TextReplaceUtil extends CakeObject
 
 	/**
 	 * 検索語句を置換後で置換する
-	 * 
+	 *
 	 * @param string $data 検索対象データ
 	 * @param string $searchText 検索語句
 	 * @param string $replaceText 置換後文字列
@@ -280,7 +279,7 @@ class TextReplaceUtil extends CakeObject
 
 	/**
 	 * モデル名.フィールド名の文字列から配列を生成して返す
-	 * 
+	 *
 	 * @param string $value
 	 * @return array
 	 */
@@ -298,7 +297,7 @@ class TextReplaceUtil extends CakeObject
 	/**
 	 * 独自の設定ファイルが存在するかチェックする
 	 * - /Plugin/TextReplace/Config 内に置いたphpファイルの存在をチェックする
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public static function hasOriginalSetting()
@@ -318,17 +317,17 @@ class TextReplaceUtil extends CakeObject
 
 	/**
 	 * TextReplaceプラグインのパスを取得する
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getPluginPath()
 	{
 		return App::pluginPath('TextReplace');
 	}
-	
+
 	/**
 	 * フィールド名から設定名称を取得する
-	 * 
+	 *
 	 * @param string $fieldName
 	 * @return string
 	 */
@@ -344,5 +343,5 @@ class TextReplaceUtil extends CakeObject
 		}
 		return '';
 	}
-	
+
 }

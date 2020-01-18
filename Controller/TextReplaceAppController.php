@@ -1,47 +1,46 @@
 <?php
-
 /**
  * [Controller] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 class TextReplaceAppController extends AppController
 {
 
 	/**
 	 * 設定ファイルのフィールド指定の誤り判定
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected $hasFieldError = false;
 
 	/**
 	 * 設定ファイルのフィールド指定に誤りがある場合のメッセージ
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $errorFieldInfo = '';
 
 	/**
 	 * 置換＆保存が可能かどうかの判定値
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected $isEnableSearchAndReplace = false;
 
 	/**
 	 * 設定ファイルの設定値
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $pluginSetting = array();
 
 	/**
 	 * beforeFilter
-	 * 
+	 *
 	 */
 	public function beforeFilter()
 	{
@@ -52,7 +51,7 @@ class TextReplaceAppController extends AppController
 	/**
 	 * 初期化処理
 	 * - 設定不備をチェックする
-	 * 
+	 *
 	 */
 	protected function init()
 	{
@@ -86,7 +85,7 @@ class TextReplaceAppController extends AppController
 
 	/**
 	 * 検索・置換対象のモデル名とフィールド名と取得する
-	 * 
+	 *
 	 * @param array $modelField array(Model.field => id値)
 	 * @return array
 	 */
@@ -99,7 +98,7 @@ class TextReplaceAppController extends AppController
 
 	/**
 	 * モデル名.フィールド名 と id値 からデータを取得する
-	 * 
+	 *
 	 * @param array $modelField array(Model.field => id値)
 	 */
 	protected function getModelData($modelField)
@@ -119,7 +118,7 @@ class TextReplaceAppController extends AppController
 
 	/**
 	 * 設定ファイルのフィールド指定にエラーがないかチェックする
-	 * 
+	 *
 	 * @param array $setting
 	 * @return boolean
 	 */

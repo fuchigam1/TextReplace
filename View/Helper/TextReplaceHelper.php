@@ -1,12 +1,11 @@
 <?php
-
 /**
  * [Helper] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 class TextReplaceHelper extends AppHelper
 {
@@ -19,28 +18,28 @@ class TextReplaceHelper extends AppHelper
 
 	/**
 	 * 検索語句
-	 * 
+	 *
 	 * @var string
 	 */
 	public $searchText = '';
 
 	/**
 	 * 置換後
-	 * 
+	 *
 	 * @var string
 	 */
 	public $replaceText = '';
 
 	/**
 	 * 設定ファイルの設定値
-	 * 
+	 *
 	 * @var array
 	 */
 	public static $pluginSetting = array();
 
 	/**
 	 * constructor
-	 * 
+	 *
 	 * @param \View $View
 	 * @param array $settings
 	 */
@@ -52,7 +51,7 @@ class TextReplaceHelper extends AppHelper
 
 	/**
 	 * 初期設定
-	 * 
+	 *
 	 */
 	public static function setSelfValue()
 	{
@@ -61,7 +60,7 @@ class TextReplaceHelper extends AppHelper
 
 	/**
 	 * モデル名とタイトルのリストを取得する
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getModelList()
@@ -81,7 +80,7 @@ class TextReplaceHelper extends AppHelper
 
 	/**
 	 * 設定ファイルのモデル別編集リンク設定をもとに、編集画面へのリンクを生成する
-	 * 
+	 *
 	 * @param string $modelName
 	 * @param array $data
 	 * @return array
@@ -122,7 +121,7 @@ class TextReplaceHelper extends AppHelper
 
 	/**
 	 * コンテンツ内で検索語句が該当した箇所にマークを付ける
-	 * 
+	 *
 	 * @param string $data 検索対象データ
 	 * @param string $searchText 検索語句
 	 * @param boolean $regexFlg 正規表現利用の指定
@@ -149,7 +148,7 @@ class TextReplaceHelper extends AppHelper
 
 	/**
 	 * アクセス元がテキスト置換ログ画面からのURLかを確認する
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isAccessFromTextReplaceLogs()

@@ -1,12 +1,11 @@
 <?php
-
 /**
  * [Controller] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 App::uses('TextReplaceAppController', 'TextReplace.Controller');
 
@@ -15,21 +14,21 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * ControllerName
-	 * 
+	 *
 	 * @var string
 	 */
 	public $name = 'TextReplaces';
 
 	/**
 	 * Model
-	 * 
+	 *
 	 * @var array
 	 */
 	public $uses = array('TextReplace.TextReplace');
 
 	/**
 	 * Components
-	 * 
+	 *
 	 * @var array
 	 */
 	public $components = array('BcAuth', 'Cookie', 'BcAuthConfigure');
@@ -59,7 +58,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * [ADMIN] 検索、置換確認
-	 * 
+	 *
 	 * - 検索置換実行時は post 送信とする（414 Request-URI too large が発生する点を考慮）
 	 */
 	public function admin_index()
@@ -115,7 +114,7 @@ class TextReplacesController extends TextReplaceAppController
 				$errors = $this->TextReplace->validationErrors;
 				$message .= '入力エラーです。内容を修正してください。';
 			}
-			
+
 			if (!$this->isNoinputSearchReplace($this->request->data) && !$errors) {
 
 				$searchText	 = $this->request->data['TextReplace']['search_pattern']; // 検索語句
@@ -269,7 +268,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * 検索、置換確認時時のURLを取得する
-	 * 
+	 *
 	 * @param array $requestQuery
 	 * @return string
 	 */
@@ -287,7 +286,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * callback: preg_replace_callback
-	 * 
+	 *
 	 * @param array $matches
 	 * @return string
 	 */
@@ -301,7 +300,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * 検索文字列、置換後文字列を取得する
-	 * 
+	 *
 	 * @param string $searchType
 	 * @param array $options
 	 * @return array
@@ -325,7 +324,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * 検索置換対象の指定 の初期値を設定する
-	 * 
+	 *
 	 */
 	private function setDefaultSearchTarget()
 	{
@@ -337,7 +336,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * 実行結果をログファイルに保存する
-	 * 
+	 *
 	 * @param array $options
 	 */
 	private function saveLogging($options = array())
@@ -387,7 +386,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * 検索語句に指定があるかチェックする
-	 * 
+	 *
 	 * @param array $data
 	 * @return boolean
 	 */
@@ -406,7 +405,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * 検索置換対象指定から、検索語句を含むデータを全て取得する
-	 * 
+	 *
 	 * @param string $modelName
 	 * @param string $field
 	 * @param string $searchText
@@ -442,7 +441,7 @@ class TextReplacesController extends TextReplaceAppController
 	 * 正規表現で検索した場合の検索結果一覧を取得する
 	 * - DB直で検索できないため、対象モデルのデータ一覧を取得後、1レコードずつ検索する
 	 * - 正規表現指定時のエラーの場合、エラーメッセージを返す
-	 * 
+	 *
 	 * @param string $modelName 対象モデル名
 	 * @param string $field 対象フィールド名
 	 * @param string $searchText 検索語句
@@ -489,7 +488,7 @@ class TextReplacesController extends TextReplaceAppController
 
 	/**
 	 * 元データ内の検索語句を置換指定語句で変換した内容を取得する
-	 * 
+	 *
 	 * @param array $originalData
 	 * @param string $searchText
 	 * @param string $replaceText

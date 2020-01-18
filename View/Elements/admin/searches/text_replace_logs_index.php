@@ -2,10 +2,10 @@
 /**
  * [Controller] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 ?>
 <?php echo $this->BcForm->create('TextReplaceLog', array('url' => array('action' => 'index'))) ?>
@@ -45,7 +45,7 @@
 	</span>
 </p>
 <div class="button">
-	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/btn_search.png', array('alt' => '検索', 'class' => 'btn')), "javascript:void(0)", array('id' => 'BtnSearchSubmit')) ?> 
-	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/btn_clear.png', array('alt' => 'クリア', 'class' => 'btn')), "javascript:void(0)", array('id' => 'BtnSearchClear')) ?> 
+	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/btn_search.png', array('alt' => '検索', 'class' => 'btn')), "javascript:void(0)", array('id' => 'BtnSearchSubmit')) ?>
+	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/btn_clear.png', array('alt' => 'クリア', 'class' => 'btn')), "javascript:void(0)", array('id' => 'BtnSearchClear')) ?>
 </div>
 <?php echo $this->BcForm->end() ?>

@@ -2,10 +2,10 @@
 /**
  * [ADMIN] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 ?>
 <p>置換＆保存を実行した履歴を確認できます。</p>

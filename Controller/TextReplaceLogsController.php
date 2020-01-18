@@ -1,12 +1,11 @@
 <?php
-
 /**
  * [Controller] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 App::uses('TextReplaceAppController', 'TextReplace.Controller');
 
@@ -15,21 +14,21 @@ class TextReplaceLogsController extends TextReplaceAppController
 
 	/**
 	 * ControllerName
-	 * 
+	 *
 	 * @var string
 	 */
 	public $name = 'TextReplaceLogs';
 
 	/**
 	 * Model
-	 * 
+	 *
 	 * @var array
 	 */
 	public $uses = array('TextReplace.TextReplaceLog');
 
 	/**
 	 * Components
-	 * 
+	 *
 	 * @var array
 	 */
 	public $components = array('BcAuth', 'Cookie', 'BcAuthConfigure');
@@ -59,7 +58,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 
 	/**
 	 * [ADMIN] 一覧表示
-	 * 
+	 *
 	 */
 	public function admin_index()
 	{
@@ -102,7 +101,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 
 	/**
 	 * [ADMIN] CSVファイルをダウンロードする
-	 * 
+	 *
 	 */
 	public function admin_download_csv()
 	{
@@ -124,7 +123,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 
 	/**
 	 * [ADMIN] 編集
-	 * 
+	 *
 	 * @param int $id
 	 */
 	public function admin_view($id = null)
@@ -198,9 +197,9 @@ class TextReplaceLogsController extends TextReplaceAppController
 
 	/**
 	 * データを削除する
-	 * 
+	 *
 	 * @param int $id
-	 * @return boolean 
+	 * @return boolean
 	 */
 	protected function _delete($id)
 	{
@@ -217,7 +216,7 @@ class TextReplaceLogsController extends TextReplaceAppController
 
 	/**
 	 * 一括削除
-	 * 
+	 *
 	 * @param array $ids
 	 * @return boolean
 	 */

@@ -1,33 +1,32 @@
 <?php
-
 /**
  * [Model] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 class TextReplaceLog extends AppModel
 {
 
 	/**
 	 * ModelName
-	 * 
+	 *
 	 * @var string
 	 */
 	public $name = 'TextReplaceLog';
 
 	/**
 	 * PluginName
-	 * 
+	 *
 	 * @var string
 	 */
 	public $plugin = 'TextReplace';
 
 	/**
 	 * Behavior
-	 * 
+	 *
 	 * @var array
 	 */
 	public $actsAs = array(

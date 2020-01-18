@@ -14,10 +14,10 @@
  * ClassRegistry を利用せず、モデルクラスを直接イニシャライズしないと、
  * スキーマのキャッシュが古いままとなるので注意が必要です。
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 /**
  * text_replace_logs テーブルの構造変更

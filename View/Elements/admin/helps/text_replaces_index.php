@@ -2,10 +2,10 @@
 /**
  * [ADMIN] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 ?>
 <p style="font-weight: bold; color: #C00;">置換はデータベース内のテキストを直接変更するため、実行すると元に戻すことはできません。<br />

@@ -1,40 +1,39 @@
 <?php
-
 /**
  * [Model] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 class TextReplace extends AppModel
 {
 
 	/**
 	 * ModelName
-	 * 
+	 *
 	 * @var string
 	 */
 	public $name = 'TextReplace';
 
 	/**
 	 * PluginName
-	 * 
+	 *
 	 * @var string
 	 */
 	public $plugin = 'TextReplace';
 
 	/**
 	 * table
-	 * 
+	 *
 	 * @var string or boolean
 	 */
 	public $useTable = false;
 
 	/**
 	 * DB（Tableを未使用で、モデルのバリデーションを実行するため、スキーマを定義する
-	 * 
+	 *
 	 * @var array
 	 */
 	public $_schema = array(
@@ -74,7 +73,7 @@ class TextReplace extends AppModel
 
 	/**
 	 * フォームの初期値を設定する
-	 * 
+	 *
 	 * @return array 初期値データ
 	 */
 	public function getDefaultValue()

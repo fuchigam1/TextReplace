@@ -3,15 +3,15 @@
 /**
  * [ADMIN] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
-$title			 = 'TextReplaceプラグイン';
-$description	 = '任意のテキスト一括置換できるプラグインです。';
-$author			 = 'arata';
-$url			 = 'http://www.materializing.net/';
-$adminLink		 = array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index');
-$installMessage	 = '置換はデータベース内のテキストを直接変更するため、実行すると元に戻すことはできません。<br />';
+$title = 'TextReplaceプラグイン';
+$description = '任意のテキスト一括置換できるプラグインです。';
+$author = 'arata';
+$url = 'http://www.materializing.net/';
+$adminLink = array('admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index');
+$installMessage = '置換はデータベース内のテキストを直接変更するため、実行すると元に戻すことはできません。<br />';
 $installMessage .= '実施する際は、データベースのバックアップを行った上で実行することを推奨してます。<br />';

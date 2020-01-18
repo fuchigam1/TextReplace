@@ -2,11 +2,11 @@
 /**
  * [ADMIN] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
- * 
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
+ *
  * @property TextReplaceHelper $TextReplace Description
  */
 $this->BcBaser->css('TextReplace.admin/text_replace', array('inline' => false));

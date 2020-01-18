@@ -1,12 +1,11 @@
 <?php
-
 /**
  * [Config] TextReplace
  *
- * @link			http://www.materializing.net/
- * @author			arata
- * @package			TextReplace
- * @license			MIT
+ * @link http://www.materializing.net/
+ * @author arata
+ * @package TextReplace
+ * @license MIT
  */
 App::uses('TextReplaceUtil', 'TextReplace.Lib');
 /**
@@ -50,7 +49,7 @@ CakeLog::config('log_text_replace_before', array(
 
 /**
  * テキスト置換用設定
- * 
+ *
  */
 $config['TextReplace'] = array(
 	// フィールドタイプ種別
@@ -191,7 +190,7 @@ $config['TextReplace'] = array(
 
 /**
  * /Plugin/TextReplace/Config 内に置いたphpファイルの設定内容を読み込む
- * 
+ *
  */
 $path		 = dirname(__FILE__);
 $dir		 = new Folder($path);
