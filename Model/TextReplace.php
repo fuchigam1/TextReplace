@@ -54,8 +54,8 @@ class TextReplace extends AppModel
 	 */
 	public $validate = array(
 		'search_pattern'	 => array(
-			'notEmpty'	 => array(
-				'rule'		 => array('notEmpty'),
+			'notBlank'	 => array(
+				'rule'		 => array('notBlank'),
 				'message'	 => '検索語句を入力してください。'
 			),
 			'maxLength'	 => array(
