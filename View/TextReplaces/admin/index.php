@@ -106,8 +106,15 @@ if ($searchType === 'search-and-replace') {
 		<tr>
 			<th class="col-head bca-form-table__label"><?php echo $this->BcForm->label('TextReplace.search_pattern', '検索語句') ?></th>
 			<td class="col-input bca-form-table__input">
-				<?php echo $this->BcForm->input('TextReplace.search_pattern', array('type' => 'text', 'size' => '76', 'maxlength' => '255', 'counter' => true)) ?>
-				<i class="bca-icon--question-circle btn help bca-help"></i>
+				<?php echo $this->BcForm->input('TextReplace.search_pattern', array(
+					'type' => 'text', 'size' => '76', 'maxlength' => '255',
+					'class' => 'full-width', 'counter' => true, 'style' => 'width: 85%;',
+				)) ?>
+				<?php if ($siteConfig['admin_theme']): ?>
+					<i class="bca-icon--question-circle btn help bca-help"></i>
+				<?php else: ?>
+					<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpSearchPattern', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<?php endif; ?>
 				<div id="helptextSearchPattern" class="helptext">
 					<ul>
 						<li>検索する文字列を指定します。</li>
@@ -128,8 +135,15 @@ if ($searchType === 'search-and-replace') {
 		<tr>
 			<th class="col-head bca-form-table__label"><?php echo $this->BcForm->label('TextReplace.replace_pattern', '置換後') ?></th>
 			<td class="col-input bca-form-table__input">
-				<?php echo $this->BcForm->input('TextReplace.replace_pattern', array('type' => 'text', 'size' => '76', 'maxlength' => '255', 'counter' => true)) ?>
-				<i class="bca-icon--question-circle btn help bca-help"></i>
+				<?php echo $this->BcForm->input('TextReplace.replace_pattern', array(
+					'type' => 'text', 'size' => '76', 'maxlength' => '255',
+					'class' => 'full-width', 'counter' => true, 'style' => 'width: 85%;',
+				)) ?>
+				<?php if ($siteConfig['admin_theme']): ?>
+					<i class="bca-icon--question-circle btn help bca-help"></i>
+				<?php else: ?>
+					<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpReplacePattern', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<?php endif; ?>
 				<div id="helptextReplacePattern" class="helptext">
 					<ul>
 						<li>置換後の文字列を指定します。</li>
@@ -211,9 +225,9 @@ if ($searchType === 'search-and-replace') {
 					<?php if ($isReplace): ?>
 					<td class="col-input bca-form-table__input" nowrap="nowrap"<?php echo $rowspan; ?>>
 						<span class="bca-checkbox">
-							<input type="checkbox" 
-								name="data[ReplaceTarget][][<?php echo $modelName; ?>.<?php echo $fieldName; ?>]" 
-								value="<?php echo $result[$modelName]['id']; ?>" 
+							<input type="checkbox"
+								name="data[ReplaceTarget][][<?php echo $modelName; ?>.<?php echo $fieldName; ?>]"
+								value="<?php echo $result[$modelName]['id']; ?>"
 								id="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>"
 								class="bca-checkbox__input">
 							<label for="TextReplaceTarget<?php echo $modelName . Inflector::camelize($fieldName) . $result[$modelName]['id']; ?>"></label>
