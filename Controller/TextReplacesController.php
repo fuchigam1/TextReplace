@@ -171,7 +171,9 @@ class TextReplacesController extends TextReplaceAppController
 								}
 								$message = '検索置換を実行しました。[' . $countResult . '件]';
 								if ($hasPageSaveResult) {
-									$message .= '　「固定ページテンプレート書出」を実行してください。';
+									if (BcUtil::isAdminUser()) {
+										$message .= '　「固定ページテンプレート書出」を実行してください。';
+									}
 								}
 								$this->setMessage($message, false, true);
 							} else {
