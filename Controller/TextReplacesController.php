@@ -456,8 +456,14 @@ class TextReplacesController extends TextReplaceAppController
 		$matchDataList = array();
 
 		try {
+			$conditions = array();
+			if ($modelName === 'Content') {
+				$conditions = array(
+					'NOT' => $this->TextReplace->getConditionTrash(),
+				);
+			}
 			$allData = $this->{$modelName}->find('all', array(
-				'conditions' => array(),
+				'conditions' => $conditions,
 				'order'		 => '',
 				'recursive'	 => -1,
 			));
