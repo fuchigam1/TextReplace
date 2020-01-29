@@ -87,4 +87,16 @@ class TextReplace extends AppModel
 		return $data;
 	}
 
+	/**
+	 * ゴミ箱データの検索条件を取得する
+	 *
+	 * @return array
+	 */
+	public function getConditionTrash()
+	{
+		return array(
+			'Content.deleted' => true
+		);
+	}
+
 }

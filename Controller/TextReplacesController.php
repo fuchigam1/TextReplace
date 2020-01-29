@@ -427,6 +427,10 @@ class TextReplacesController extends TextReplaceAppController
 			$target		 = implode('.', array($modelName, $field));
 			$conditions	 = array($target . ' LIKE' => "%{$searchText}%");
 
+			if ($modelName === 'Content') {
+				$conditions['NOT'] = $this->TextReplace->getConditionTrash();
+			}
+
 			$allData = $this->{$modelName}->find('all', array(
 				'conditions' => $conditions,
 				'order'		 => '',
