@@ -87,35 +87,50 @@ class TextReplaceHelper extends AppHelper
 	 */
 	public function getEditUrl($modelName, $data)
 	{
-		$setting		 = self::$pluginSetting['target'];
-		$editUrlSetting	 = array();
-		foreach ($setting as $model => $fieldData) {
-			if ($fieldData['name'] == $modelName) {
-				if (!empty($fieldData['edit_url'])) {
-					$editUrlSetting = $fieldData['edit_url'];
-					break;
+
+		if ($modelName === 'Content') {
+			// Contentデータの場合とそれ以外では、編集用URLの取得処理が異なるため
+			$configBcContentsItems = Configure::read('BcContents.items');
+			$urlParams = ['plugin' => false, 'content_id' => $data[$modelName]['id']];
+			if($data[$modelName]['entity_id']) {
+				$urlParams = array_merge($urlParams, [$data[$modelName]['entity_id']]);
+			}
+			$urlParams = array_merge($configBcContentsItems['Core'][$data[$modelName]['type']]['routes']['edit'], $urlParams);
+			$editUrl = $this->BcBaser->getUrl($urlParams);
+
+		} else {
+			$setting		 = self::$pluginSetting['target'];
+			$editUrlSetting	 = array();
+			foreach ($setting as $model => $fieldData) {
+
+				if ($fieldData['name'] == $modelName) {
+					if (!empty($fieldData['edit_url'])) {
+						$editUrlSetting = $fieldData['edit_url'];
+						break;
+					}
+				}
+			}
+
+			$editUrl		 = array();
+			$replacedPass	 = array();
+
+			if ($editUrlSetting) {
+				foreach ($editUrlSetting['pass'] as $key => $args) {
+					$replacedPass[$key] = str_replace($args, $data[$modelName][$args], $editUrlSetting['pass'][$key]);
+				}
+			} else {
+				return;
+			}
+
+			if ($replacedPass) {
+				$editUrl = $editUrlSetting;
+				unset($editUrl['pass']);
+				foreach ($replacedPass as $pass) {
+					$editUrl[] = $pass;
 				}
 			}
 		}
 
-		$editUrl		 = array();
-		$replacedPass	 = array();
-
-		if ($editUrlSetting) {
-			foreach ($editUrlSetting['pass'] as $key => $args) {
-				$replacedPass[$key] = str_replace($args, $data[$modelName][$args], $editUrlSetting['pass'][$key]);
-			}
-		} else {
-			return;
-		}
-
-		if ($replacedPass) {
-			$editUrl = $editUrlSetting;
-			unset($editUrl['pass']);
-			foreach ($replacedPass as $pass) {
-				$editUrl[] = $pass;
-			}
-		}
 		return $editUrl;
 	}
 
