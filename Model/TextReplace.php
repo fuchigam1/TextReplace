@@ -95,7 +95,19 @@ class TextReplace extends AppModel
 	public function getConditionTrash()
 	{
 		return array(
-			'Content.deleted' => true
+			'Content.deleted' => true,
+		);
+	}
+
+	/**
+	 * コンテンツモデル内の固定ページの検索条件を取得する
+	 *
+	 * @return array
+	 */
+	public function getConditionContentTypePage()
+	{
+		return array(
+			'Content.type' => 'Page',
 		);
 	}
 

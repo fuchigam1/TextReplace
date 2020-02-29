@@ -431,6 +431,7 @@ class TextReplacesController extends TextReplaceAppController
 
 			if ($modelName === 'Content') {
 				$conditions['NOT'] = $this->TextReplace->getConditionTrash();
+				$conditions[] = $this->TextReplace->getConditionContentTypePage();
 			}
 
 			$allData = $this->{$modelName}->find('all', array(
@@ -460,9 +461,8 @@ class TextReplacesController extends TextReplaceAppController
 		try {
 			$conditions = array();
 			if ($modelName === 'Content') {
-				$conditions = array(
-					'NOT' => $this->TextReplace->getConditionTrash(),
-				);
+				$conditions['NOT'] = $this->TextReplace->getConditionTrash();
+				$conditions[] = $this->TextReplace->getConditionContentTypePage();
 			}
 			$allData = $this->{$modelName}->find('all', array(
 				'conditions' => $conditions,
