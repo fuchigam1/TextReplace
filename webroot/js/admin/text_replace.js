@@ -70,7 +70,7 @@ $(function () {
 	$('.target-check fieldset legend').on('click', function () {
 		var isChecked = $(this).find('input[type=checkbox]').prop('checked');
 		if (isChecked) {
-			// 動的に付与した「対象」チェックチェックがついてるときは、配下の対象チェックをオフにする
+			// 動的に付与した「対象」にチェックがついてるときは、配下の対象チェックをオフにする
 			$(this).find('input.model-range').prop('checked', false);
 			$(this).parent().find('input[type=checkbox]').prop('checked', false);
 		} else {
@@ -79,7 +79,14 @@ $(function () {
 			$(this).parent().find('input[type=checkbox]').prop('checked', true);
 		}
 	});
-
+	// 検索置換対象のモデル単位で、チェックボックスを全てチェックする／チェック外す（操作対象は動的に付与したチェックボックス）
+	$('.target-check fieldset legend .model-range').on('click', function () {
+		if ($(this).prop('checked')) {
+			$(this).prop('checked', false);
+		} else {
+			$(this).prop('checked', true);
+		}
+	});
 
 	/**
 	 * 検索・置換ボタン実行時の操作
