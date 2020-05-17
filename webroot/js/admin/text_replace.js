@@ -39,23 +39,33 @@ $(function () {
 	});
 
 	// 「対象」配下全てにチェックボックスが入ってる場合は、その「対象」にチェックを入れる（検索・置換実行後のための制御）
-	$('.target-check fieldset legend').each(function () {
-		var isAllChecked = true;
-		$(this).parent().find('label input[type=checkbox]').each(function () {
-			if (!$(this).prop('checked')) {
-				isAllChecked = false;
-				return false;
+	var checkTargetUnderAllCheckboxContainChecked = function() {
+		$('.target-check fieldset legend').each(function () {
+			console.log($(this).text());	// 対象モデル名称
+			var checkboxList = [];	// 対象モデルのチェックボックスのリスト
+			$(this).parent('fieldset').find('input[type=checkbox]').each(function (index, value) {
+				// 1個目は「対象」の全指定用チェックボックスなのでスルー
+				if (index > 0) {
+					checkboxList.push($(value).prop('checked'));
+				}
+			});
+
+			var isAllChecked = false;
+			if (checkboxList.indexOf(false) == -1){
+				// チェックナシが存在しないときは全部チェックアリ
+				isAllChecked = true;
+			}
+
+			if (isAllChecked) {
+				// 動的に付与した「対象」チェックボックスを操作する
+				$(this).parent().find('input.model-range').prop('checked', true);
+			} else {
+				// 動的に付与した「対象」チェックボックスを操作する
+				$(this).parent().find('input.model-range').prop('checked', false);
 			}
 		});
-		if (isAllChecked) {
-			// 動的に付与した「対象」チェックボックスを操作する
-			$(this).parent().find('input.model-range').prop('checked', true);
-		} else {
-			// 動的に付与した「対象」チェックボックスを操作する
-			$(this).parent().find('input.model-range').prop('checked', false);
-		}
-	});
-
+	};
+	checkTargetUnderAllCheckboxContainChecked();
 
 	// 検索置換対象のチェックボックスを全てチェックする
 	$('#TextReplaceCheckAll').on('click', function () {
@@ -70,7 +80,7 @@ $(function () {
 	$('.target-check fieldset legend').on('click', function () {
 		var isChecked = $(this).find('input[type=checkbox]').prop('checked');
 		if (isChecked) {
-			// 動的に付与した「対象」チェックチェックがついてるときは、配下の対象チェックをオフにする
+			// 動的に付与した「対象」にチェックがついてるときは、配下の対象チェックをオフにする
 			$(this).find('input.model-range').prop('checked', false);
 			$(this).parent().find('input[type=checkbox]').prop('checked', false);
 		} else {
@@ -79,7 +89,14 @@ $(function () {
 			$(this).parent().find('input[type=checkbox]').prop('checked', true);
 		}
 	});
-
+	// 検索置換対象のモデル単位で、チェックボックスを全てチェックする／チェック外す（操作対象は動的に付与したチェックボックス）
+	$('.target-check fieldset legend .model-range').on('click', function () {
+		if ($(this).prop('checked')) {
+			$(this).prop('checked', false);
+		} else {
+			$(this).prop('checked', true);
+		}
+	});
 
 	/**
 	 * 検索・置換ボタン実行時の操作
