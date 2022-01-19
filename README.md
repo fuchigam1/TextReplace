@@ -101,9 +101,42 @@ $config['TextReplace'] = array(
 ```
 
 
+### TODO
+
+- 通常検索では大文字小文字を区別なく探してヒットするが、ヒットした文字が検索文字そのものでないと該当箇所としてマークされない
+
+
+### Version Info
+
+対応するbaserCMSのバージョン: baserCMS4系
+
+| Version | baserCMS | admin-second | admin-thrid |
+|:--|:--|:--|:--|
+| 3.0.0 | 4.5.3 | 対応 | 対応 |
+
+### Development Rules
+
+開発ブランチの規則は以下です。
+
+- master
+- dev-4・・・開発版 (Pull Request Target)
+
+
+### NoDevelopmentPlan
+
+以下対応予定はありません。
+
+- シリアライズされているデータの検索・置換への対応
+- コンテンツデータのフォルダ、リンク、エイリアスへの対応
+
+
 ## Bug reports, Discuss, Support
 
 - [Issue](https://github.com/materializing/TextReplace/issues)
+
+
+## License
+This software is released under the MIT License, see [LICENSE](https://choosealicense.com/licenses/mit/).
 
 
 ## Thanks
@@ -112,12 +145,3 @@ $config['TextReplace'] = array(
 - [http://wiki.basercms.net/](http://wiki.basercms.net/)
 - [http://cakephp.jp](http://cakephp.jp)
 - [Semantic Versioning 2.0.0](http://semver.org/lang/ja/)
-
-
-### TODO
-
-- シリアライズされているデータの検索・置換への対応
-- 設定画面を作り、設定ファイルのテキスト置換用設定を、JSON形式で記載できる
-- 設定画面を作り、設定ファイルの「検索置換対象の指定」のデフォルト値を、JSON形式で記載できる
-- コンテンツデータは固定ページまでの対応なので、フォルダやリンク、エイリアスをどうするか？
-- 通常検索では大文字小文字を区別なく探してヒットするが、ヒットした文字が検索文字そのものでないと該当箇所としてマークされない
