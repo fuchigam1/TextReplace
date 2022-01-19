@@ -192,15 +192,19 @@ class TextReplacesController extends TextReplaceAppController
 					case 'search':
 					case 'dryrun':
 					default:
-						// 正規表現検索時、バックスラッシュで検索語句を指定していない場合のErrorをキャッチするための ErrorHandler
-						// http://stackoverflow.com/questions/30005616/can-missing-delimiter-errors-in-a-preg-php-regexp-be-read-programmatically
-						set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
-							// error was suppressed with the @-operator
-							if (0 === error_reporting()) {
-								return false;
-							}
-							throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-						});
+						if (version_compare(phpversion(), '7.0.0', '<')) {
+							// php7系以上で利用不可
+							// 正規表現検索時、バックスラッシュで検索語句を指定していない場合のErrorをキャッチするための ErrorHandler
+							// http://stackoverflow.com/questions/30005616/can-missing-delimiter-errors-in-a-preg-php-regexp-be-read-programmatically
+							set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
+								// error was suppressed with the @-operator
+								if (0 === error_reporting()) {
+									return false;
+								}
+								throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+							});
+						}
+
 						$hasSearchReplaceError = false;
 
 						foreach ($this->request->data['TextReplace']['replace_target'] as $value) {
