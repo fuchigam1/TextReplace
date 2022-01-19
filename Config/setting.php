@@ -43,6 +43,10 @@ $config['BcApp.adminNavigation'] = [
 					'title' => 'テキスト置換ログ',
 					'url' => ['admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'index'],
 				],
+				'TextReplaceLogsDownloadCsv' => [
+					'title' => 'テキスト置換ログCSVダウンロード',
+					'url' => ['admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'download_csv'],
+				],
 			]
 		],
 	],
