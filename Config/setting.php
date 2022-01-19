@@ -30,22 +30,47 @@ $config['BcApp.adminNavi.text_replace'] = array(
 		)
 	)
 );
+$config['BcApp.adminNavigation'] = [
+	'Contents' => [
+		'TextReplace' => [
+			'title' => 'テキスト検索置換',
+			'menus' => [
+				'TextReplaces' => [
+					'title' => 'テキスト検索置換処理',
+					'url' => ['admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replaces', 'action' => 'index'],
+				],
+				'TextReplaceLogs' => [
+					'title' => 'テキスト置換ログ',
+					'url' => ['admin' => true, 'plugin' => 'text_replace', 'controller' => 'text_replace_logs', 'action' => 'index'],
+				],
+			]
+		],
+	],
+];
 
 /**
  * TextReplace専用ログ
  */
-define('LOG_TEXT_REPLACE', 'log_text_replace');
-CakeLog::config('log_text_replace', array(
-	'engine' => 'FileLog',
-	'types'	 => array('log_text_replace'),
-	'file'	 => 'log_text_replace',
-));
-define('LOG_TEXT_REPLACE_BEFORE', 'log_text_replace_before');
-CakeLog::config('log_text_replace_before', array(
-	'engine' => 'FileLog',
-	'types'	 => array('log_text_replace_before'),
-	'file'	 => 'log_text_replace_before',
-));
+if (!defined('LOG_TEXT_REPLACE')) {
+	define('LOG_TEXT_REPLACE', 'log_text_replace');
+	CakeLog::config('log_text_replace', array(
+		'engine' => 'FileLog',
+		'types' => array('log_text_replace'),
+		'file' => 'log_text_replace',
+		'size' => '5MB',
+		'rotate' => 5,
+	));
+}
+if (!defined('LOG_TEXT_REPLACE_BEFORE')) {
+	define('LOG_TEXT_REPLACE_BEFORE', 'log_text_replace_before');
+	CakeLog::config('log_text_replace_before', array(
+		'engine' => 'FileLog',
+		'types' => array('log_text_replace_before'),
+		'file' => 'log_text_replace_before',
+		'size' => '5MB',
+		'rotate' => 5,
+	));
+}
 
 /**
  * テキスト置換用設定
