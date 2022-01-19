@@ -175,7 +175,12 @@ class TextReplacesController extends TextReplaceAppController
 										$message .= '　「固定ページテンプレート書出」を実行してください。';
 									}
 								}
-								$this->setMessage($message, false, true);
+								// BcMessageを持たないバージョンに対応
+								if (in_array('BcMessage', $this->components, true)) {
+									$this->BcMessage->setSuccess($message);
+								} else {
+									$this->setMessage($message, false, true);
+								}
 							} else {
 								$message = '置換対象が選択されていません。';
 							}
@@ -253,7 +258,11 @@ class TextReplacesController extends TextReplaceAppController
 				}
 
 				if (!$countResult) {
-					$this->setMessage($message, true);
+					if (in_array('BcMessage', $this->components, true)) {
+						$this->BcMessage->setInfo($message);
+					} else {
+						$this->setMessage($message, true);
+					}
 				}
 			}
 		} else {
@@ -395,11 +404,21 @@ class TextReplacesController extends TextReplaceAppController
 	private function isNoinputSearchReplace($data)
 	{
 		if (!$data['TextReplace']['search_pattern']) {
-			$this->setMessage('検索語句を指定してください。', true);
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError('検索語句を指定してください。');
+			} else {
+				$this->setMessage('検索語句を指定してください。', true);
+			}
+
 			return true;
 		}
 		if (!$data['TextReplace']['replace_target']) {
-			$this->setMessage('検索置換対象を指定してください。', true);
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError('検索置換対象を指定してください。');
+			} else {
+				$this->setMessage('検索置換対象を指定してください。', true);
+			}
+
 			return true;
 		}
 		return false;

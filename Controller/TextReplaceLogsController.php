@@ -134,7 +134,11 @@ class TextReplaceLogsController extends TextReplaceAppController
 		$originalData	 = array();
 
 		if (!$id) {
-			$this->setMessage('無効な処理です。', true);
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError('無効な処理です。');
+			} else {
+				$this->setMessage('無効な処理です。', true);
+			}
 			$this->redirect(array('action' => 'index'));
 		}
 		if (empty($this->request->data)) {
@@ -164,15 +168,30 @@ class TextReplaceLogsController extends TextReplaceAppController
 	public function admin_delete($id = null)
 	{
 		if (!$id) {
-			$this->setMessage('無効な処理です。', true);
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError('無効な処理です。');
+			} else {
+				$this->setMessage('無効な処理です。', true);
+			}
+
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->{$this->modelClass}->delete($id)) {
 			$message = 'NO.' . $id . 'のデータを削除しました。';
-			$this->setMessage($message);
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError($message);
+			} else {
+				$this->setMessage($message, true);
+			}
+
 			$this->redirect(array('action' => 'index'));
 		} else {
-			$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError('データベース処理中にエラーが発生しました。');
+			} else {
+				$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			}
+
 		}
 		$this->redirect(array('action' => 'index'));
 	}

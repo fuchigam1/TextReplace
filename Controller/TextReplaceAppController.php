@@ -66,7 +66,13 @@ class TextReplaceAppController extends AppController
 		$disabledModelList = TextReplaceUtil::getDisabledModel();
 		if ($disabledModelList) {
 			$disabledModel	 = implode('、', $disabledModelList);
-			$this->setMessage('設定ファイルに利用できないモデルの指定があります。<br>（' . $disabledModel . '）', true);
+
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError('設定ファイルに利用できないモデルの指定があります。（' . $disabledModel . '）');
+			} else {
+				$this->setMessage('設定ファイルに利用できないモデルの指定があります。（' . $disabledModel . '）', true);
+			}
+
 			$isEnableSearch	 = false;
 		}
 
@@ -76,7 +82,11 @@ class TextReplaceAppController extends AppController
 		// 設定ファイルのフィールド指定にエラーがないかチェックする
 		$this->hasFieldError = $this->hasFieldError($this->pluginSetting['target']);
 		if ($this->hasFieldError) {
-			$this->setMessage($this->errorFieldInfo, true);
+			if (in_array('BcMessage', $this->components, true)) {
+				$this->BcMessage->setError($this->errorFieldInfo);
+			} else {
+				$this->setMessage($this->errorFieldInfo, true);
+			}
 			$isEnableSearch = false;
 		}
 
