@@ -106,10 +106,20 @@ if ($searchType === 'search-and-replace') {
 		<tr>
 			<th class="col-head bca-form-table__label"><?php echo $this->BcForm->label('TextReplace.search_pattern', '検索語句') ?></th>
 			<td class="col-input bca-form-table__input">
-				<?php echo $this->BcForm->input('TextReplace.search_pattern', array(
+
+			<?php
+				$inputTextOption = [
 					'type' => 'text', 'size' => '76', 'maxlength' => '255',
 					'class' => 'full-width', 'counter' => true, 'style' => 'width: 85%;',
-				)) ?>
+				];
+				if ($siteConfig['admin_theme']) {
+					$inputTextOption = [
+						'type' => 'text', 'size' => '70', 'maxlength' => '255',
+						'counter' => true,
+					];
+				}
+			?>
+				<?php echo $this->BcForm->input('TextReplace.search_pattern', $inputTextOption) ?>
 				<?php if ($siteConfig['admin_theme']): ?>
 					<i class="bca-icon--question-circle btn help bca-help"></i>
 				<?php else: ?>
@@ -135,10 +145,7 @@ if ($searchType === 'search-and-replace') {
 		<tr>
 			<th class="col-head bca-form-table__label"><?php echo $this->BcForm->label('TextReplace.replace_pattern', '置換後') ?></th>
 			<td class="col-input bca-form-table__input">
-				<?php echo $this->BcForm->input('TextReplace.replace_pattern', array(
-					'type' => 'text', 'size' => '76', 'maxlength' => '255',
-					'class' => 'full-width', 'counter' => true, 'style' => 'width: 85%;',
-				)) ?>
+				<?php echo $this->BcForm->input('TextReplace.replace_pattern', $inputTextOption) ?>
 				<?php if ($siteConfig['admin_theme']): ?>
 					<i class="bca-icon--question-circle btn help bca-help"></i>
 				<?php else: ?>
@@ -207,8 +214,8 @@ if ($searchType === 'search-and-replace') {
 	<?php foreach ($modelData as $fieldName => $fieldValue): ?>
 		<?php $fieldCount = $fieldCount + count($fieldValue); ?>
 		<div class="box-field-result">
-		<table cellpadding="0" cellspacing="0" class="list-table form-table">
-			<tbody>
+		<table cellpadding="0" cellspacing="0" class="list-table bca-table-listup form-table">
+			<tbody class="bca-table-listup__tbody">
 				<?php // フィールド毎にヒットした結果のループ ?>
 				<?php foreach ($fieldValue as $num => $result): ?>
 				<tr>
@@ -223,7 +230,7 @@ if ($searchType === 'search-and-replace') {
 						<?php endif ?>
 					</th>
 					<?php if ($isReplace): ?>
-					<td class="col-input bca-form-table__input" nowrap="nowrap"<?php echo $rowspan; ?>>
+					<td class="col-input bca-form-table__input" nowrap="nowrap"<?php echo $rowspan; ?> style="width:5%;">
 						<span class="bca-checkbox">
 							<input type="checkbox"
 								name="data[ReplaceTarget][][<?php echo $modelName; ?>.<?php echo $fieldName; ?>]"
@@ -234,7 +241,7 @@ if ($searchType === 'search-and-replace') {
 						</span>
 					</td>
 					<?php endif ?>
-					<td class="col-input replace-before bca-form-table__input" style="width: 100%;">
+					<td class="col-input replace-before bca-form-table__input">
 						<?php echo nl2br(
 							TextReplaceUtil::getBeforeSearchReplaceData(
 								h($result[$modelName][$fieldName]),
