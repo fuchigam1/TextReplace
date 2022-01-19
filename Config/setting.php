@@ -215,8 +215,8 @@ foreach ($files as $file) {
 		$original = $config;
 		include $dir->pwd() . DS . $file; // $config に内容が格納される
 		// 追加した設定ファイル内の独自の「検索置換対象の指定」のデフォルト値を優先する
-		if (isset($config['TextReplace']['default_replace_target']) && !empty($config['TextReplace']['default_replace_target'])) {
-			$original['TextReplace']['default_replace_target'] = $config['TextReplace']['default_replace_target'];
+		if (isset($config['TextReplace']) && !empty($config['TextReplace'])) {
+			$original['TextReplace'] = $config['TextReplace'];
 		}
 
 		$config = Hash::merge($original, $config); // デフォルト設定とマージする
